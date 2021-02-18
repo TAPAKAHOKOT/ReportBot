@@ -153,10 +153,10 @@ with codecs.open("send_data.txt", encoding = 'utf-8', mode = 'r') as file:
 	while line:
 		if clear_line(line) != "":
 			if clear_line(line)[0] == "-" or another_set:
-				if clear_line(line) == "-1":
+				if clear_line(line)[1] == "1":
 					another_set = True
 					hists['cities'] = True
-				elif clear_line(line) == "-2":
+				elif clear_line(line)[1] == "2":
 					hists['cities'] = False
 					hists['binance'] = True
 				else:
@@ -167,6 +167,7 @@ with codecs.open("send_data.txt", encoding = 'utf-8', mode = 'r') as file:
 
 			else:
 				sup_arr = line.split(": ", 1)
+
 				settings_info[sup_arr[0]] = clear_line(sup_arr[1])
 				settings_info_line += sup_arr[0] + ":\t" + clear_line(sup_arr[1]) + "\n"
 

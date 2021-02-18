@@ -16,10 +16,14 @@ from threading import Thread
 from datetime import datetime
 from binance.client import Client
 
+b_vers = 1.6
+
 api_key = 'd0uy6vPg0CbCsPOSAZOborpqMJMWmLwp1trqa8Mz8UeobliYpBTnmZWBauoQZsrc'
 api_secret = 'MPDLBUCjFVhYq6zcytoAxvJNX98ilaBbDXbO1ql9RSBla9mC0exMLk9NvANnD3yg'
 
 client = Client(api_key, api_secret)
+
+print("Bot varsion " + str(b_vers))
 
 my_id = 472914986
 
@@ -239,27 +243,29 @@ async def echo(message: types.Message):
 		if command != "main":
 			settings_info[changing_settings] = command
 
-		if (changing_settings == "City"):
-			if command.title() not in cities_history:
-				if command.title() != "Main":
-					cities_history = [command.title(), *cities_history[:-1]]
-			else:
-				cities_history.remove(command.title())
-				cities_history = [command.title(), *cities_history]
-			create_keyboard_cities()
-		elif (changing_settings == "Binance Currency"):
-			settings_info[changing_settings] = command.upper()
-			if command.upper() not in binance_val_list:
-				if command.title() != "Main":
-					binance_val_list = [command.upper(), *binance_val_list[:-1]]
-			else:
-				binance_val_list.remove(command.upper())
-				binance_val_list = [command.upper(), *binance_val_list]
-			create_keyboard_binance()
+			if (changing_settings == "City"):
+				if command.title() not in cities_history:
+					if command.title() != "Main":
+						cities_history = [command.title(), *cities_history[:-1]]
+				else:
+					cities_history.remove(command.title())
+					cities_history = [command.title(), *cities_history]
+				create_keyboard_cities()
+			elif (changing_settings == "Binance Currency"):
+				settings_info[changing_settings] = command.upper()
+				if command.upper() not in binance_val_list:
+					if command.title() != "Main":
+						binance_val_list = [command.upper(), *binance_val_list[:-1]]
+				else:
+					binance_val_list.remove(command.upper())
+					binance_val_list = [command.upper(), *binance_val_list]
+				create_keyboard_binance()
 
-		settings_info_line = update_info_line()
-		await message.answer(settings_info_line, reply_markup=keyboard_main)
-		write_into_file()
+			settings_info_line = update_info_line()
+			await message.answer(settings_info_line, reply_markup=keyboard_main)
+			write_into_file()
+		else:
+			await message.answer("Back to main", reply_markup=keyboard_main)
 
 	elif calculate_readline:
 		calculate_readline = False

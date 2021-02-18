@@ -1,7 +1,10 @@
 Send To: it_reports@bk.ru
 FileName: otchet.xlsx
-File Send: 1
+File Send: 0
 City: Москва
-Sending Activate: 0
--
+Sending Activate: 1
+Binance Currency: BTCUSDT
+-1
 Москва, Клинцы, Салехард, Ярославль
+-2
+BTCUSDT, NEOBTC, TRXBTC, TRXUSDT

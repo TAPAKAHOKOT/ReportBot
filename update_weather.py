@@ -33,4 +33,5 @@ def update_img(city):
 
 		return ""
 	except Exception as e:
+		print(e)
 		return "City Error"

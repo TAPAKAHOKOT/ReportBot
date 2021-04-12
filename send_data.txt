@@ -3,8 +3,8 @@ FileName: otchet.xlsx
 File Send: 0
 City: Москва
 Sending Activate: 1
-Binance Currency: BTCUSDT
+Binance Currency: XEMBTC
 -1
-Москва, Клинцы, Салехард, Ярославль
+Москва, City, Клинцы, Салехард
 -2
-BTCUSDT, NEOBTC, TRXBTC, TRXUSDT
+XEMBTC, BTCUSDT, NEOBTC, TRXBTC

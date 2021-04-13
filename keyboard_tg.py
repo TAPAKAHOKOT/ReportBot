@@ -30,8 +30,21 @@ class Keyboard:
 		set_keys = [*self.settings.settings_info.keys()]
 		for k in range(len(set_keys)//2):
 			self.keyboard_settings.add(types.KeyboardButton(text=set_keys[k*2]), types.KeyboardButton(text=set_keys[k*2 + 1]))
-		if (len(set_keys) % 2 != 0): self.keyboard_settings.add(types.KeyboardButton(text=set_keys[-1]))
-		self.keyboard_settings.add(types.KeyboardButton(text="Main"))
+		if (len(set_keys) % 2 != 0): 
+			self.keyboard_settings.add(types.KeyboardButton(text=set_keys[-1]), types.KeyboardButton(text="Main"))
+		else:
+			self.keyboard_settings.add(types.KeyboardButton(text="Main"))
+
+		# self.keyboard_settings = types.ReplyKeyboardMarkup(resize_keyboard=True)
+		# set_keys = [*self.settings.settings_info.keys()]
+		# for k in range(len(set_keys)//3):
+		# 	self.keyboard_settings.add(types.KeyboardButton(text=set_keys[k*3]), types.KeyboardButton(text=set_keys[k*3 + 1]), types.KeyboardButton(text=set_keys[k*3 + 2]))
+		
+		# if (len(set_keys) % 3 == 1): 
+		# 	self.keyboard_settings.add(types.KeyboardButton(text=set_keys[-1]))
+		# elif (len(set_keys) % 3 == 2): 
+		# 	self.keyboard_settings.add(types.KeyboardButton(text=set_keys[-2]), types.KeyboardButton(text=set_keys[-1]))
+		# self.keyboard_settings.add(types.KeyboardButton(text="Main"))
 
 	def create_keyboard_cities(self):
 		cities_history = self.settings.cities_history

@@ -4,6 +4,7 @@ from sendShit import *
 import aioschedule as schedule
 import asyncio
 import codecs
+from datetime import date
 
 settings = Settings()
 
@@ -71,6 +72,15 @@ async def send():
 		if line:
 			await settings.bot.send_message(settings.my_id, line)
 
+	async def check_noIp():
+		global settings
+		today = date.today()
+
+		day = today.strftime("%d")
+		if day == settings.settings_info["NoIp"]:
+			await settings.bot.send_message(settings.my_id, "Update HostName on NoIp")
+
+
 	async def check_sending():
 		global settings
 
@@ -111,6 +121,8 @@ async def send():
 	schedule.every().day.at("23:00").do(check_binance)
 
 	schedule.every().day.at("23:00").do(update_flags)
+
+	schedule.every().day.at("12:00").do(check_noIp)
 
 	while True:
 		await schedule.run_pending()

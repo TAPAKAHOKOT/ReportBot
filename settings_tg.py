@@ -2,6 +2,8 @@ import logging
 from binance.client import Client
 import codecs
 from aiogram import Bot, Dispatcher
+from work import Work
+import os
 
 class Settings:
 	def __init__(self):
@@ -33,6 +35,16 @@ class Settings:
 		self.another_set = False
 		self.hists =  {'cities': False, 'binance': False}
 		self.fill_data()
+
+		self.csv_dir = "csv_data"
+		self.csv_filename = "data.csv"
+
+		if not os.path.isdir(self.csv_dir):
+			os.mkdir(self.csv_dir)
+		if not os.path.isfile(self.csv_dir + "/" + self.csv_filename):
+			open(self.csv_dir + "/" + self.csv_filename, "w").close()
+
+		self.work_time = Work(self.csv_dir + "/" + self.csv_filename)
 
 	def clear_line(self, line):
 		return line.replace("\n", "").replace(" ", "")

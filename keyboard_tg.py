@@ -6,9 +6,21 @@ class Keyboard:
 		
 		# KEYBOARD_MAIN
 		self.keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
-		self.keyboard_main.add(types.KeyboardButton(text="Настройки"), types.KeyboardButton(text="Отправить"))
-		self.keyboard_main.add(types.KeyboardButton(text="Кулькулятор"), types.KeyboardButton(text="Погода"))
-		self.keyboard_main.add(types.KeyboardButton(text="Living time"), types.KeyboardButton(text="Binance Info"))
+		self.keyboard_main.add(types.KeyboardButton(text="Настройки"), types.KeyboardButton(text="Living time"))
+		self.keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text="Начать работать"))
+		self.keyboard_main.add(types.KeyboardButton(text="Submain"))
+
+		# KEYBOARD_SUBMAIN
+		self.keyboard_submain = types.ReplyKeyboardMarkup(resize_keyboard=True)
+		self.keyboard_submain.add(types.KeyboardButton(text="Binance info"), types.KeyboardButton(text="Отправить"))
+		self.keyboard_submain.add(types.KeyboardButton(text="Кулькулятор"), types.KeyboardButton(text="Погода"))
+		self.keyboard_submain.add(types.KeyboardButton(text="Main"))
+
+		# KEYBOARD WORK
+		self.keyboard_work = types.ReplyKeyboardMarkup(resize_keyboard=True)
+		self.keyboard_work.add(types.KeyboardButton(text="Начать работать"), types.KeyboardButton(text="Закончить работать"))
+		self.keyboard_work.add(types.KeyboardButton(text="Отработанные часы"), types.KeyboardButton(text="Отработанные периоды"))
+		self.keyboard_work.add(types.KeyboardButton(text="Main"))
 
 		# KEYBOARD_BIN
 		self.keyboard_bin = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -63,9 +75,22 @@ class Keyboard:
 		if len(binance_val_list) % 2 != 0: self.keyboard_binance.add(types.KeyboardButton(text=binance_val_list[-1]))
 
 		self.keyboard_binance.add(types.KeyboardButton(text="Main"))
+	
+	def update_keyboard_main(self, work_status):
+		# KEYBOARD_MAIN
+		self.keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
+		self.keyboard_main.add(types.KeyboardButton(text="Настройки"), types.KeyboardButton(text="Living time"))
+		self.keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text=work_status))
+		self.keyboard_main.add(types.KeyboardButton(text="Submain"))
 
 	def get_main(self):
 		return self.keyboard_main
+	
+	def get_submain(self):
+		return self.keyboard_submain
+	
+	def get_work(self):
+		return self.keyboard_work
 
 	def get_bin(self):
 		return self.keyboard_bin
@@ -78,3 +103,4 @@ class Keyboard:
 
 	def get_settings(self):
 		return self.keyboard_settings
+	

@@ -18,11 +18,39 @@ keyboard = Keyboard(settings)
 async def on_startup(x):
 	asyncio.create_task(send())
 
+# ! TODO: add autosave working time into json file every 2 minutes
+# ? TODO: translate all features in english
+# TODO: add autocreating csv-file for every month like csv_data_05_2021
+# TODO: add opportunity to add working period throught telegram
+# TODO: add opportunity for editing periods
+# TODO: add opportunity for deleting periods
+# * TODO: improve code by adding logs
+# * TODO: improve work.py file code
+# * TODO: improve all code by adding annotations
+
 # <<<<<<<<<<<<<<<<<< Start >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(commands=["start"])
 async def cmd_start(message: types.Message):
 	global keyboard
 	await message.answer("Запуск основной клавиатуры", reply_markup=keyboard.get_main())
+
+# <<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='main', ignore_case=True))
+async def cmd_start(message: types.Message):
+	global keyboard
+	await message.answer("Openning main keyboard", reply_markup=keyboard.get_main())
+
+# <<<<<<<<<<<<<<<<<< submain >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='submain', ignore_case=True))
+async def cmd_start(message: types.Message):
+	global keyboard
+	await message.answer("Openning submain keyboard", reply_markup=keyboard.get_submain())
+
+# <<<<<<<<<<<<<<<<<< Рабочая клавиатура >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='рабочая клавиатура', ignore_case=True))
+async def cmd_start(message: types.Message):
+	global keyboard
+	await message.answer("Openning work keyboard", reply_markup=keyboard.get_work())
 
 # <<<<<<<<<<<<<<<<<< Настройки >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='настройки', ignore_case=True))
@@ -44,6 +72,35 @@ async def cmd_start(message: types.Message):
 		await message.answer("Message Send")
 		settings.settings_info["File Send"] = "1"
 		settings.settings_info_line = update_info_line()
+
+# <<<<<<<<<<<<<<<<<< Начать работать >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='начать работать', ignore_case=True))
+async def cmd_start(message: types.Message):
+	global settings
+	keyboard.update_keyboard_main("Закончить работать")
+	await message.answer(settings.work_time.start_working(), reply_markup=keyboard.get_main())
+
+# <<<<<<<<<<<<<<<<<< Закончить работать >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='закончить работать', ignore_case=True))
+async def cmd_start(message: types.Message):
+	global settings
+	keyboard.update_keyboard_main("Начать работать")
+	await message.answer(settings.work_time.end_working(), reply_markup=keyboard.get_main())
+
+# <<<<<<<<<<<<<<<<<< Отработанные часы >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='отработанные часы', ignore_case=True))
+async def cmd_start(message: types.Message):
+	global settings
+	if settings.work_time.is_working:
+		await message.answer(settings.work_time.get_current_working_info())
+	else:
+		await message.answer(settings.work_time.get_finfo_day_sum())
+
+# <<<<<<<<<<<<<<<<<< Отработанные периоды >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='отработанные периоды', ignore_case=True))
+async def cmd_start(message: types.Message):
+	global settings
+	await message.answer(settings.work_time.get_finfo_day_intervals())
 
 # <<<<<<<<<<<<<<<<<< Кулькулятор >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='кулькулятор', ignore_case=True))
@@ -101,12 +158,6 @@ async def cmd_start(message: types.Message):
 				await message.answer("Image load error")
 	except:
 		await message.answer("Image error")
-
-# <<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='main', ignore_case=True))
-async def cmd_start(message: types.Message):
-	global keyboard
-	await message.answer("Openning main keyboard", reply_markup=keyboard.get_main())
 
 # <<<<<<<<<<<<<<<<<< Another >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler()

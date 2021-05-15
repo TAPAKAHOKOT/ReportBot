@@ -39,12 +39,9 @@ class Settings:
 		self.csv_dir = "csv_data"
 		self.csv_filename = "data.csv"
 
-		if not os.path.isdir(self.csv_dir):
-			os.mkdir(self.csv_dir)
-		if not os.path.isfile(self.csv_dir + "/" + self.csv_filename):
-			open(self.csv_dir + "/" + self.csv_filename, "w").close()
+		self.work_time_dict = {}
 
-		self.work_time = Work(self.csv_dir + "/" + self.csv_filename)
+		# self.work_time = Work(self.csv_dir + "/" + self.csv_filename)
 
 	def clear_line(self, line):
 		return line.replace("\n", "").replace(" ", "")

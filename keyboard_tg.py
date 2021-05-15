@@ -6,21 +6,33 @@ class Keyboard:
 		
 		# KEYBOARD_MAIN
 		self.keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
-		self.keyboard_main.add(types.KeyboardButton(text="Настройки"), types.KeyboardButton(text="Living time"))
+		self.keyboard_main.add(types.KeyboardButton(text="Настройки"), types.KeyboardButton(text="Studying"))
 		self.keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text="Начать работать"))
 		self.keyboard_main.add(types.KeyboardButton(text="Submain"))
 
 		# KEYBOARD_SUBMAIN
 		self.keyboard_submain = types.ReplyKeyboardMarkup(resize_keyboard=True)
-		self.keyboard_submain.add(types.KeyboardButton(text="Binance info"), types.KeyboardButton(text="Отправить"))
+		self.keyboard_submain.add(types.KeyboardButton(text="Binance info"), types.KeyboardButton(text="Living time"))
 		self.keyboard_submain.add(types.KeyboardButton(text="Кулькулятор"), types.KeyboardButton(text="Погода"))
-		self.keyboard_submain.add(types.KeyboardButton(text="Main"))
+		self.keyboard_submain.add(types.KeyboardButton(text="Отправить"), types.KeyboardButton(text="Main"))
 
 		# KEYBOARD WORK
 		self.keyboard_work = types.ReplyKeyboardMarkup(resize_keyboard=True)
-		self.keyboard_work.add(types.KeyboardButton(text="Начать работать"), types.KeyboardButton(text="Закончить работать"))
+		self.keyboard_work.add(types.KeyboardButton(text="Выбрать тэг"), types.KeyboardButton(text="Доп."))
 		self.keyboard_work.add(types.KeyboardButton(text="Отработанные часы"), types.KeyboardButton(text="Отработанные периоды"))
 		self.keyboard_work.add(types.KeyboardButton(text="Main"))
+
+		# KEYBOARD DOP WORK
+		self.keyboard_dop_work = types.ReplyKeyboardMarkup(resize_keyboard=True)
+		self.keyboard_dop_work.add(types.KeyboardButton(text="Отработанные часы (прошлая неделя)"))
+		self.keyboard_dop_work.add(types.KeyboardButton(text="Отработанные периоды (прошлая неделя)"))
+		self.keyboard_dop_work.add(types.KeyboardButton(text="Main"))
+
+		# KEYBOARD WORK TAG
+		self.keyboard_work_tag = types.ReplyKeyboardMarkup(resize_keyboard=True)
+		self.keyboard_work_tag.add(types.KeyboardButton(text="#reading"), types.KeyboardButton(text="#coding"))
+		self.keyboard_work_tag.add(types.KeyboardButton(text="#listening"), types.KeyboardButton(text="#reporting"))
+		self.keyboard_work_tag.add(types.KeyboardButton(text="#testing"), types.KeyboardButton(text="Main"))
 
 		# KEYBOARD_BIN
 		self.keyboard_bin = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -76,12 +88,19 @@ class Keyboard:
 
 		self.keyboard_binance.add(types.KeyboardButton(text="Main"))
 	
-	def update_keyboard_main(self, work_status):
+	def update_keyboard_main(self, work_status, status):
 		# KEYBOARD_MAIN
 		self.keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
-		self.keyboard_main.add(types.KeyboardButton(text="Настройки"), types.KeyboardButton(text="Living time"))
+		self.keyboard_main.add(types.KeyboardButton(text="Настройки"), types.KeyboardButton(text=status))
 		self.keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text=work_status))
 		self.keyboard_main.add(types.KeyboardButton(text="Submain"))
+	
+	def update_keyboard_work(self, work_status):
+		# KEYBOARD WORK
+		self.keyboard_work = types.ReplyKeyboardMarkup(resize_keyboard=True)
+		self.keyboard_work.add(types.KeyboardButton(text="Выбрать тэг"), types.KeyboardButton(text={work_status}))
+		self.keyboard_work.add(types.KeyboardButton(text="Отработанные часы"), types.KeyboardButton(text="Отработанные периоды"))
+		self.keyboard_work.add(types.KeyboardButton(text="Main"))
 
 	def get_main(self):
 		return self.keyboard_main
@@ -91,6 +110,12 @@ class Keyboard:
 	
 	def get_work(self):
 		return self.keyboard_work
+	
+	def get_work_tag(self):
+		return self.keyboard_work_tag
+
+	def get_dop_work(self):
+		return self.keyboard_dop_work
 
 	def get_bin(self):
 		return self.keyboard_bin

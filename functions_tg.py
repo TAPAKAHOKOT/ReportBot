@@ -5,6 +5,7 @@ import aioschedule as schedule
 import asyncio
 import codecs
 from datetime import date
+from work import Work
 
 settings = Settings()
 
@@ -38,6 +39,10 @@ def start_process():
     p1 = Thread(target=send, args=())
     p1.start()
 
+def get_work_time(settigns, u_id):
+	if not u_id in settings.work_time_dict.keys():
+		settings.work_time_dict[u_id] = Work()
+	return settings.work_time_dict[u_id]
 
 async def send():
 	global settings
@@ -45,6 +50,9 @@ async def send():
 		if settings.settings_info["Sending Activate"] == "1":
 			if settings.settings_info["File Send"] == "0":
 				await settings.bot.send_message(settings.my_id, "Send report pls!!!")
+	
+	async def knopa_memery_on():
+		await settings.bot.send_message(settings.my_id, "Don't forget to comb Knopa")
 
 	async def update_flags():
 		global settings
@@ -123,6 +131,8 @@ async def send():
 	schedule.every().day.at("23:00").do(update_flags)
 
 	schedule.every().day.at("12:00").do(check_noIp)
+
+	schedule.every().day.at("22:00").do(knopa_memery_on)
 
 	while True:
 		await schedule.run_pending()

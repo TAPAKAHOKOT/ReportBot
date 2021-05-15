@@ -5,6 +5,7 @@ City: Москва
 Sending Activate: 1
 Binance Currency: XEMBTC
 NoIp: 13
+None: date: 1
 -1
 Москва, City, Клинцы, Салехард
 -2

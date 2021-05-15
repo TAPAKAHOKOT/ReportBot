@@ -1,13 +1,12 @@
-import csv
 import datetime
 
-from time import sleep
+from time import sleep, time_ns
 from typing import Sequence
 
-class Work:
-    def __init__(self, filename: str):
-        self.filename = filename
+from pysql_database import DataBaseConnector
 
+class Work:
+    def __init__(self):
         self.timeformat = "%H.%M.%S"
         self.dateformat = "%d.%m.%Y"
         
@@ -16,57 +15,14 @@ class Work:
         self.start_date_working = None
         self.end_date_working = None
         self.start_time_working = None
-        
-        self.csv_data = self.read_csv()
 
-    def test_write_csv(self):
-        with open(self.filename, "w") as file:
-            writer = csv.DictWriter(file, ["Day", "WorkIntervals"])
+        self.tag = "testing"
+        self.status = "studying"
 
-            writer.writeheader()
-            writer.writerows([{"Day": "12.05.2021", "WorkIntervals": ["14.00.10-15.00.25", "15.10.45-16.14.57"]},
-                            {"Day": "13.05.2021", "WorkIntervals": ["14.00.30-15.00.13", "15.10.00-16.14.03"]}])
-    
-    def write_csv(self, new_data):
-        with open(self.filename, "w") as file:
-            writer = csv.DictWriter(file, ["Day", "WorkIntervals"])
+        self.db = DataBaseConnector()
 
-            writer.writeheader()
-            writer.writerows(new_data)
-
-    def read_csv(self) -> list:
-        res = []
-        with open(self.filename) as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                row["Day"] = self.get_day_from(row["Day"])
-                row["WorkIntervals"] = [
-                    self.get_time_from(t) for t in row["WorkIntervals"].replace("'", "").strip('][').split(', ')
-                ]
-
-                res.append(row)
-        return res
-
-    def saving_data(self):
-        date_founded = False
-        self.csv_data = self.read_csv()
-        new_data = []
-        for row in self.csv_data:
-            if row["Day"].date() == self.start_date_working.date():
-                date_founded = True
-                row["WorkIntervals"].append([self.start_date_working, self.end_date_working])
-
-            row["Day"] = row["Day"].strftime(self.dateformat)
-            for k, el in enumerate(row["WorkIntervals"]):
-                row["WorkIntervals"][k] = self.get_day_time_formated(el[0], el[1])
-            new_data.append(row)
-
-        if not date_founded:
-            new_data.append({"Day": self.start_date_working.strftime(self.dateformat),
-                            "WorkIntervals": [self.get_day_time_formated(self.start_time_working, self.end_time_working)]})
-
-        self.write_csv(new_data)
-        self.csv_data = self.read_csv()
+    def saving_data(self, u_id: int):
+        self.db.add_row(u_id, self.tag, self.status, self.start_time_working, self.end_time_working)
 
     def start_working(self) -> str:
         if self.is_working:
@@ -75,16 +31,16 @@ class Work:
         self.start_time_working = self.get_current_time()
         self.start_date_working = self.get_current_day()
 
-        return "Start working time: " + self.start_time_working.strftime(self.timeformat)
+        return "Start working time: " + self.start_time_working.strftime(self.timeformat) + " #" + self.tag
     
-    def end_working(self) -> str:
+    def end_working(self, u_id: int) -> str:
         if not self.is_working:
             return "You aren't working now"
         self.is_working = False
         self.end_time_working = self.get_current_time()
         self.end_date_working = self.get_current_day()
 
-        self.saving_data()
+        self.saving_data(u_id)
 
         return "End working time: {}\nWorking time: {}".format(self.end_time_working.strftime(self.timeformat), str(self.get_difference()).split(".")[0])
 
@@ -111,37 +67,88 @@ class Work:
     def get_difference(self) -> datetime.timedelta:
         return self.end_time_working - self.start_time_working
     
-    def get_day_working_time_sum(self, working_time) -> datetime.timedelta:
-        timesum = datetime.timedelta()
-        for t in working_time:
-            timesum += self.get_difference_betwen(*t)
-        return timesum
-    
-    def get_finfo_day_sum(self) -> str:
-        res = ""
-        for row in self.csv_data:
-            res += "-" * 10 + "\n"
-            res += row["Day"].strftime(self.dateformat) + ":\n"
-            res += " "*4 + str(self.get_day_working_time_sum(row["WorkIntervals"])) + "\n\n"
-        return res if res else "None"
-
-    def get_finfo_day_intervals(self) ->str:
-        res = ""
-        for row in self.csv_data:
-            res += "\n" + "-" * 10 + "\n"
-            res += row["Day"].strftime(self.dateformat) + ":\n"
-            for k, el in enumerate(row["WorkIntervals"]):
-                res += " "*4 + str(self.get_day_time_formated(*el)) + " => " + str(self.get_difference_betwen(*el)).split(".")[0] + "\n"
-            res += " "*4 + "Time sum: " + str(self.get_day_working_time_sum(row["WorkIntervals"])) + "\n"
-        return res if res else "None"
-    
     def get_day_time_formated(self, s_time=None, e_time=None) -> str:
         if not s_time: s_time = self.start_time_working
         if not e_time: e_time = self.end_time_working
-        return s_time.strftime(self.timeformat) + "-" + e_time.strftime(self.timeformat)
+        return s_time.strftime(self.timeformat) + " - " + e_time.strftime(self.timeformat)
     
     def get_current_working_info(self):
         if not self.is_working:
             return "You aren't working now"
         delta = str(self.get_difference_betwen(self.start_time_working, self.get_current_time())).split(".")[0]
         return "Start working time: {}\nTime delta: {}".format(self.start_time_working.strftime(self.timeformat), delta)
+    
+    def get_finfo_day_intervals(self, u_id: int, last_week: bool = False):
+        res = "<<<" + self.status.title() + ">>>\n"
+        arr = {}
+        if last_week:
+            info = self.db.get_last_week_rows(u_id, self.status)
+        else:
+            info = self.db.get_this_week_rows(u_id, self.status)
+        s_date = None
+        for row in info:
+            if s_date is None or s_date.date() != row[2].date():
+                s_date = row[2]
+                arr[s_date] = {}
+            if not (row[1] in arr[s_date].keys()): arr[s_date][row[1]] = []
+            delta = str(self.get_difference_betwen(row[2], row[3])).split(".")[0]
+            arr[s_date][row[1]].append(self.get_day_time_formated(row[2], row[3]) + " => " + delta)
+        
+        for key, val in arr.items():
+            arr[key] = {k: v for k, v in sorted(val.items(), key=lambda item: item[0])}
+        
+        for key, val in arr.items():
+            res += str(key.strftime(self.dateformat)) + "\n" + "-"*10 + "\n"
+
+            for k, v in val.items():
+                res += " "*4 + "#" + k + "\n"
+                for el in v:
+                    res += " "*8 + el + "\n"
+            res += "\n"
+        return res if res != "" else "None"
+    
+    def get_finfo_day_sum(self, u_id: int, last_week: bool = False):
+        res = "<<<" + self.status.title() + ">>>\n"
+        arr = {}
+        if last_week:
+            info = self.db.get_last_week_rows(u_id, self.status)
+        else:
+            info = self.db.get_this_week_rows(u_id, self.status)
+        s_date = None
+        for row in info:
+            if s_date is None or s_date.date() != row[2].date():
+                s_date = row[2]
+                arr[s_date] = {}
+            if not (row[1] in arr[s_date].keys()): arr[s_date][row[1]] = []
+            delta = self.get_difference_betwen(row[2], row[3])
+            arr[s_date][row[1]].append(delta)
+        
+        for key, val in arr.items():
+            arr[key] = {k: v for k, v in sorted(val.items(), key=lambda item: item[0])}
+        
+        alltimesum = datetime.timedelta()
+        for key, val in arr.items():
+            res += str(key.strftime(self.dateformat)) + "\n" + "-"*10 + "\n"
+
+            timesum = datetime.timedelta()
+            tagtimesum = None
+
+            for k, v in val.items():
+                if not tagtimesum is None: res += " "*8 + "TAG SUM >> " + str(tagtimesum).split(".")[0] + "\n"
+                tagtimesum = datetime.timedelta()
+                res += " "*4 + "#" + k + "\n"
+                for el in v:
+
+                    tagtimesum += el
+                    timesum += el
+                    alltimesum += el
+            res += " "*8 + "TAG SUM >> " + str(tagtimesum).split(".")[0] + "\n"
+            res += " "*4 + "DAY SUM >> " + str(timesum).split(".")[0] + "\n"
+            res += "\n"
+        res += "WEEK SUM >> " + str(alltimesum).split(".")[0] + "\n"
+        return res if res != "" else "None"
+
+
+# w = Work("csv_data/data.csv")
+# print(w.get_finfo_day_intervals(472914986))
+# print(w.get_finfo_day_sum(472914986))

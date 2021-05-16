@@ -4,11 +4,17 @@ class Keyboard:
 	def __init__(self, settings):
 		self.settings = settings
 		
-		# KEYBOARD_MAIN
-		self.keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
-		self.keyboard_main.add(types.KeyboardButton(text="Настройки"), types.KeyboardButton(text="Studying"))
-		self.keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text="Начать работать"))
-		self.keyboard_main.add(types.KeyboardButton(text="Submain"))
+		# KEYBOARDS_MAIN
+		self.keyboards_main = {"Studying": {"Начать работать": None, "Закончить работать": None},
+								"Working": {"Начать работать": None, "Закончить работать": None}}
+		
+		for s in ["Studying", "Working"]:
+			for w in ["Начать работать", "Закончить работать"]:
+				keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
+				keyboard_main.add(types.KeyboardButton(text="Настройки"), types.KeyboardButton(text=s))
+				keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text=w))
+				keyboard_main.add(types.KeyboardButton(text="Submain"))
+				self.keyboards_main[s][w] = keyboard_main
 
 		# KEYBOARD_SUBMAIN
 		self.keyboard_submain = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -90,20 +96,22 @@ class Keyboard:
 	
 	def update_keyboard_main(self, work_status, status):
 		# KEYBOARD_MAIN
-		self.keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
-		self.keyboard_main.add(types.KeyboardButton(text="Настройки"), types.KeyboardButton(text=status))
-		self.keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text=work_status))
-		self.keyboard_main.add(types.KeyboardButton(text="Submain"))
+		# self.keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
+		# self.keyboard_main.add(types.KeyboardButton(text="Настройки"), types.KeyboardButton(text=status))
+		# self.keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text=work_status))
+		# self.keyboard_main.add(types.KeyboardButton(text="Submain"))
+		pass
 	
 	def update_keyboard_work(self, work_status):
 		# KEYBOARD WORK
-		self.keyboard_work = types.ReplyKeyboardMarkup(resize_keyboard=True)
-		self.keyboard_work.add(types.KeyboardButton(text="Выбрать тэг"), types.KeyboardButton(text={work_status}))
-		self.keyboard_work.add(types.KeyboardButton(text="Отработанные часы"), types.KeyboardButton(text="Отработанные периоды"))
-		self.keyboard_work.add(types.KeyboardButton(text="Main"))
+		# self.keyboard_work = types.ReplyKeyboardMarkup(resize_keyboard=True)
+		# self.keyboard_work.add(types.KeyboardButton(text="Выбрать тэг"), types.KeyboardButton(text={work_status}))
+		# self.keyboard_work.add(types.KeyboardButton(text="Отработанные часы"), types.KeyboardButton(text="Отработанные периоды"))
+		# self.keyboard_work.add(types.KeyboardButton(text="Main"))
+		pass
 
-	def get_main(self):
-		return self.keyboard_main
+	def get_main(self, s, w):
+		return self.keyboards_main[s][w]
 	
 	def get_submain(self):
 		return self.keyboard_submain

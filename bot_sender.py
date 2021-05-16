@@ -28,6 +28,9 @@ async def on_startup(x):
 # // TODO: add weeks works hours autocounter
 # TODO: add emoji into keyboard
 # TODO: add graphics and statistics of working time
+# TODO: add admin keyboard
+# TODO: add help command
+# TODO: make a video about the capabilities of the bot
 # * TODO: improve code by adding logs
 # * TODO: improve work.py file code
 # * TODO: improve all code by adding annotations
@@ -36,17 +39,17 @@ async def on_startup(x):
 @settings.dp.message_handler(commands=["start"])
 async def cmd_start(message: types.Message):
 	global keyboard
-	await message.answer("Запуск основной клавиатуры", reply_markup=keyboard.get_main())
+	work_time =  get_work_time(settings, message.from_user["id"])
+	w, s = "Начать работать" if not work_time.is_working else "Закончить работать", work_time.status.title()
+	await message.answer("Запуск основной клавиатуры", reply_markup=keyboard.get_main(s, w))
 
 # <<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='main', ignore_case=True))
 async def cmd_start(message: types.Message):
 	global keyboard
-
-	# print(message.from_user["id"])
-	# print(settings.my_id)
-
-	await message.answer("Openning main keyboard", reply_markup=keyboard.get_main())
+	work_time =  get_work_time(settings, message.from_user["id"])
+	w, s = "Начать работать" if not work_time.is_working else "Закончить работать", work_time.status.title()
+	await message.answer("Openning main keyboard", reply_markup=keyboard.get_main(s, w))
 
 # <<<<<<<<<<<<<<<<<< submain >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='submain', ignore_case=True))
@@ -101,40 +104,46 @@ async def cmd_start(message: types.Message):
 async def cmd_start(message: types.Message):
 	global settings
 	work_time =  get_work_time(settings, message.from_user["id"])
+	w, s = "Закончить работать", work_time.status.title()
 
-	keyboard.update_keyboard_main("Закончить работать", work_time.status.title())
+	# keyboard.update_keyboard_main("Закончить работать", work_time.status.title())
 	# keyboard.update_keyboard_work("Закончить работать")
-	await message.answer(work_time.start_working(), reply_markup=keyboard.get_main())
+	await message.answer(work_time.start_working(), reply_markup=keyboard.get_main(s, w))
 
 # <<<<<<<<<<<<<<<<<< Закончить работать >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='закончить работать', ignore_case=True))
 async def cmd_start(message: types.Message):
 	global settings
 	work_time =  get_work_time(settings, message.from_user["id"])
+	w, s = "Начать работать", work_time.status.title()
 
-	keyboard.update_keyboard_main("Начать работать", work_time.status.title())
+	# keyboard.update_keyboard_main("Начать работать", work_time.status.title())
 	# keyboard.update_keyboard_work("Начать работать")
-	await message.answer(work_time.end_working(message.from_user["id"]), reply_markup=keyboard.get_main())
+	await message.answer(work_time.end_working(message.from_user["id"]), reply_markup=keyboard.get_main(s, w))
 
 # <<<<<<<<<<<<<<<<<< Studying >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='studying', ignore_case=True))
 async def cmd_start(message: types.Message):
 	global settings
 	work_time =  get_work_time(settings, message.from_user["id"])
-
-	keyboard.update_keyboard_main("Начать работать" if not work_time.is_working else "Закончить работать", "Working")
 	work_time.status = "working"
-	await message.answer("Status => Working", reply_markup=keyboard.get_main())
+
+	w, s = "Начать работать" if not work_time.is_working else "Закончить работать", work_time.status.title()
+
+	# keyboard.update_keyboard_main("Начать работать" if not work_time.is_working else "Закончить работать", "Working")
+	await message.answer("Status => Working", reply_markup=keyboard.get_main(s, w))
 
 # <<<<<<<<<<<<<<<<<< Working >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='working', ignore_case=True))
 async def cmd_start(message: types.Message):
 	global settings
 	work_time =  get_work_time(settings, message.from_user["id"])
-
-	keyboard.update_keyboard_main("Начать работать" if not work_time.is_working else "Закончить работать", "Studying")
 	work_time.status = "studying"
-	await message.answer("Status => Studying", reply_markup=keyboard.get_main())
+
+	w, s = "Начать работать" if not work_time.is_working else "Закончить работать", work_time.status.title()
+
+	# keyboard.update_keyboard_main("Начать работать" if not work_time.is_working else "Закончить работать", "Studying")
+	await message.answer("Status => Studying", reply_markup=keyboard.get_main(s, w))
 
 # <<<<<<<<<<<<<<<<<< Выбрать тэг >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='выбрать тэг', ignore_case=True))
@@ -146,9 +155,10 @@ async def cmd_start(message: types.Message):
 async def cmd_start(message: types.Message):
 	global settings
 	work_time =  get_work_time(settings, message.from_user["id"])
+	w, s = "Начать работать" if not work_time.is_working else "Закончить работать", work_time.status.title()
 
 	work_time.tag = message.text[1:]
-	await message.answer("Tag changed to: #" + work_time.tag, reply_markup=keyboard.get_main())
+	await message.answer("Tag changed to: #" + work_time.tag, reply_markup=keyboard.get_main(s, w))
 
 # <<<<<<<<<<<<<<<<<< Отработанные часы >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='отработанные часы', ignore_case=True))
@@ -256,6 +266,9 @@ async def cmd_start(message: types.Message):
 async def echo(message: types.Message):
 	global settings, keyboard
 
+	work_time =  get_work_time(settings, message.from_user["id"])
+	w, s = "Начать работать" if not work_time.is_working else "Закончить работать", work_time.status.title()
+
 	canonical_command = message.text
 	command = canonical_command.lower()
 	
@@ -283,10 +296,10 @@ async def echo(message: types.Message):
 				keyboard.create_keyboard_binance()
 
 			settings.settings_info_line = update_info_line()
-			await message.answer(settings.settings_info_line, reply_markup=keyboard.get_main())
+			await message.answer(settings.settings_info_line, reply_markup=keyboard.get_main(s, w))
 			write_into_file()
 		else:
-			await message.answer("Back to main", reply_markup=keyboard.get_main())
+			await message.answer("Back to main", reply_markup=keyboard.get_main(s, w))
 
 	elif settings.calculate_readline:
 		settings.calculate_readline = False
@@ -318,6 +331,9 @@ async def echo(message: types.Message):
 async def process_callback_button1(callback_query: types.CallbackQuery):
 	global settings, keyboard
 
+	work_time =  get_work_time(settings, callback_query.from_user["id"])
+	w, s = "Начать работать" if not work_time.is_working else "Закончить работать", work_time.status.title()
+
 	data = callback_query.data
 	
 	settings.change_settings = False
@@ -329,12 +345,12 @@ async def process_callback_button1(callback_query: types.CallbackQuery):
 		settings.settings_info_line = update_info_line()
 
 		await settings.bot.answer_callback_query(callback_query.id)
-		await settings.bot.send_message(callback_query.from_user.id, settings.settings_info_line, reply_markup=keyboard.get_main())
+		await settings.bot.send_message(callback_query.from_user.id, settings.settings_info_line, reply_markup=keyboard.get_main(s, w))
 
 		write_into_file()
 
 	else:
-		await settings.bot.send_message(callback_query.from_user.id, "Back to main", reply_markup=keyboard.get_main())
+		await settings.bot.send_message(callback_query.from_user.id, "Back to main", reply_markup=keyboard.get_main(s, w))
 
 
 start_time = time.time()

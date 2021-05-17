@@ -7,6 +7,8 @@ import codecs
 from datetime import date
 from work import Work
 
+import logging
+
 settings = Settings()
 
 def n2n(num, n1, n2, res_1 = 0, res_2 = "", arr = []):
@@ -40,30 +42,43 @@ def start_process():
     p1.start()
 
 def get_work_time(settigns, u_id):
+	logging.info("Start get_work_time(...)")
 	if not u_id in settings.work_time_dict.keys():
+		logging.info("Created Work() for %s" % u_id)
 		settings.work_time_dict[u_id] = Work()
+	logging.info("End get_work_time(...)")
 	return settings.work_time_dict[u_id]
 
 async def send():
 	global settings
 	async def memery_on():
+		logging.info("Start memory_on()")
 		if settings.settings_info["Sending Activate"] == "1":
 			if settings.settings_info["File Send"] == "0":
+				logging.info("Sended for %s: 'Send report pls!!!'" % settings.my_id)
 				await settings.bot.send_message(settings.my_id, "Send report pls!!!")
+		logging.info("End memory_on()")
 	
 	async def knopa_memery_on():
+		logging.info("Start knopa_memery_on()")
+		logging.info("Sended for %s: 'Don't forget to comb Knopa'" % settings.my_id)
 		await settings.bot.send_message(settings.my_id, "Don't forget to comb Knopa")
+		logging.info("End knopa_memery_on()")
 
 	async def update_flags():
+		logging.info("Start update_flags()")
 		global settings
 
 		if (settings.settings_info["File Send"] != "0" or settings.settings_info["Sending Activate"] == "1"):
 			settings.settings_info["File Send"] = "0"
 			settings.settings_info_line = update_info_line()
 			write_into_file()
+			logging.info("Sended for %s: 'Flags updated'" % settings.my_id)
 			await settings.bot.send_message(settings.my_id, "Flags updated")
+		logging.info("End update_flags()")
 
 	async def check_binance():
+		logging.info("Start check_binance()")
 		global settings
 		prices = settings.client.get_all_tickers()
 
@@ -79,34 +94,45 @@ async def send():
 
 		if line:
 			await settings.bot.send_message(settings.my_id, line)
+		logging.info("End check_binance()")
 
 	async def check_noIp():
+		logging.info("Start check_noIp()")
 		global settings
 		today = date.today()
 
 		day = today.strftime("%d")
 		if day == settings.settings_info["NoIp"]:
+			logging.info("Sended for %s: 'Update HostName on NoIp'" % settings.my_id)
 			await settings.bot.send_message(settings.my_id, "Update HostName on NoIp")
+		logging.info("End check_noIp()")
 
 
 	async def check_sending():
+		logging.info("Start check_sending()")
 		global settings
 
 		if settings.settings_info["Sending Activate"] == "1":
 			if settings.settings_info["File Send"] == "0":
+				logging.info("Sended for %s: 'Start loading message'" % settings.my_id)
 				await settings.bot.send_message(settings.my_id, "Start loading message")
 				feadback = send_otchet()
 
 				if feadback != "None":
+					logging.info("Sended for %s: '%s'" % (settings.my_id, feadback))
 					await settings.bot.send_message(settings.my_id, feadback)
+					logging.info("Sended for %s: '%s'" % (settings.my_id, "Check your settings:\n     " + settings.settings_info_line.replace(": ", "   >>>   ").replace("\n", "\n     ")))
 					await settings.bot.send_message(settings.my_id, "Check your settings:\n     " + settings.settings_info_line.replace(": ", "   >>>   ").replace("\n", "\n     "))
 
 				else:
+					logging.info("Sended for %s: '%s'" % (settings.my_id, "Message Send"))
 					await settings.bot.send_message(settings.my_id, "Message Send")
 					settings.settings_info["File Send"] = "1"
 					settings.settings_info_line = update_info_line()
 					write_into_file()
+		logging.info("End check_sending()")
 
+	logging.info("Start initing all schedules")
 	for k in range(1, 27, 15):
 		cur_time = "13:" + str(k)
 
@@ -134,6 +160,9 @@ async def send():
 
 	schedule.every().day.at("22:00").do(knopa_memery_on)
 
+	logging.info("End initing all schedules")
+
+	logging.info("Start running schedules cycle (while True)")
 	while True:
 		await schedule.run_pending()
 		await asyncio.sleep(60)

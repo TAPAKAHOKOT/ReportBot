@@ -4,6 +4,7 @@ from time import sleep
 import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+import logging
 
 class DataBaseConnector:
 	def __init__(self):
@@ -13,9 +14,21 @@ class DataBaseConnector:
 		self.port="5432"
 		self.db_name = "my_test_py_database"
 		self.works_table_name = "works_times"
+		self.user_status_tabel_name = "users_statuses"
 
-		self.create_db()
-		self.create_table()
+		self.create_db(self.db_name)
+		self.create_table(self.works_table_name)
+
+		# stat_query = '''CREATE TABLE {}
+		# 				(id INT PRIMARY KEY NOT NULL,
+		# 				user_id INT NOT NULL,
+		# 				is_working BOOL
+		# 				tag TEXT NOT NULL,
+		# 				status TEXT NOT NULL,
+		# 				start_time TIMESTAMP NOT NULL,
+		# 				update_time TIMESTAMP NOT NULL); '''.format(self.user_status_tabel_name)
+
+		# self.create_table(self.user_status_tabel_name, stat_query)
 
 		self.connection = psycopg2.connect(user=self.user,
 										password=self.password,
@@ -32,7 +45,8 @@ class DataBaseConnector:
 		and start_time < date_trunc('week', CURRENT_TIMESTAMP))"""
 		self.select_columns = "user_id, tag, start_time, end_time"
 
-	def create_db(self):
+	def create_db(self, name):
+		logging.info("Start creating database %s" % name)
 		try:
 			connection = psycopg2.connect(user=self.user,
 										password=self.password,
@@ -41,18 +55,20 @@ class DataBaseConnector:
 			connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
 			cursor = connection.cursor()
-			sql_create_database = 'create database ' + self.db_name
+			sql_create_database = 'create database ' + name
 			cursor.execute(sql_create_database)
 		except (Exception, Error) as error:
-			print(error)
+			logging.error("Create database %s error: %s" % (name, error))
 		finally:
 			if connection:
 				cursor.close()
 				connection.close()
+				logging.info("Connection closed for database %s" % name)
 	
-	def create_table(self):
+	def create_table(self, name, query=None):
+		logging.info("Start creating table %s" % name)
 		try:
-
+			
 			connection = psycopg2.connect(user=self.user,
 										password=self.password,
 										host=self.host,
@@ -62,24 +78,29 @@ class DataBaseConnector:
 
 			cursor = connection.cursor()
 
-			create_table_query = '''CREATE TABLE {}
-								  (id INT PRIMARY KEY NOT NULL,
-								  user_id INT NOT NULL,
-								  tag TEXT NOT NULL,
-								  status TEXT NOT NULL,
-								  start_time TIMESTAMP NOT NULL,
-								  end_time TIMESTAMP NOT NULL); '''.format(self.works_table_name)
+			if query is None:
+				create_table_query = '''CREATE TABLE {}
+									(id INT PRIMARY KEY NOT NULL,
+									user_id INT NOT NULL,
+									tag TEXT NOT NULL,
+									status TEXT NOT NULL,
+									start_time TIMESTAMP NOT NULL,
+									end_time TIMESTAMP NOT NULL); '''.format(name)
+			else:
+				create_table_query = query
 
 			cursor.execute(create_table_query)
 			connection.commit()
 		except (Exception, Error) as error:
-			print(error)
+			logging.error("Create table %s error: %s" % (name, error))
 		finally:
 			if connection:
 				cursor.close()
 				connection.close()
+				logging.info("Connection closed for table %s" % name)
 	
 	def add_row(self, user_id: int, tag: str, status: str, start_time: datetime.datetime, end_time: datetime.datetime):
+		logging.info("Start adding row [u_id=%s, tag=%s, status=%s, start_time=%s, end_time=%s]" % (user_id, tag, status, str(start_time), str(end_time)))
 		self.cursor.execute("SELECT MAX(id) from %s" % self.works_table_name)
 		max_id = self.cursor.fetchall()[0][0]
 		max_id = 0 if max_id is None else max_id
@@ -89,6 +110,7 @@ class DataBaseConnector:
 		self.cursor.execute(insert_query, inp_tuple)
 
 		self.connection.commit()
+		logging.info("End adding row for %s: succesfull" % user_id)
 	
 	def get_all_rows(self, u_id: int, status: str):
 		self.cursor.execute("SELECT %s FROM %s WHERE user_id=%s AND status=%s ORDER BY start_time" %\

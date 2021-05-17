@@ -4,9 +4,11 @@ from time import sleep, time_ns
 from typing import Sequence
 
 from pysql_database import DataBaseConnector
+import logging
 
 class Work:
     def __init__(self):
+        logging.info("Start initing Work")
         self.timeformat = "%H.%M.%S"
         self.dateformat = "%d.%m.%Y"
         
@@ -21,27 +23,37 @@ class Work:
 
         self.db = DataBaseConnector()
 
+        logging.info("End initing Work")
+
     def saving_data(self, u_id: int):
+        logging.info("Start saving_data(...)")
         self.db.add_row(u_id, self.tag, self.status, self.start_time_working, self.end_time_working)
+        logging.info("End saving_data(...)")
 
     def start_working(self) -> str:
+        logging.info("Start start_working(...)")
         if self.is_working:
+            logging.info("End start_working(...)")
             return "You are already working from {} {}".format(self.start_date_working, self.start_time_working)
         self.is_working = True 
         self.start_time_working = self.get_current_time()
         self.start_date_working = self.get_current_day()
 
+        logging.info("End start_working(...)")
         return "Start working time: " + self.start_time_working.strftime(self.timeformat) + " #" + self.tag
+        
     
     def end_working(self, u_id: int) -> str:
+        logging.info("Start end_working(...)")
         if not self.is_working:
+            logging.info("End end_working(...)")
             return "You aren't working now"
         self.is_working = False
         self.end_time_working = self.get_current_time()
         self.end_date_working = self.get_current_day()
 
         self.saving_data(u_id)
-
+        logging.info("End end_working(...)")
         return "End working time: {}\nWorking time: {}".format(self.end_time_working.strftime(self.timeformat), str(self.get_difference()).split(".")[0])
 
     def get_current_day(self) -> datetime.datetime:
@@ -79,6 +91,7 @@ class Work:
         return "Start working time: {}\nTime delta: {}".format(self.start_time_working.strftime(self.timeformat), delta)
     
     def get_finfo_day_intervals(self, u_id: int, last_week: bool = False):
+        logging.info("Start get_finfo_day_intervals(...)")
         res = "<<<" + self.status.title() + ">>>\n"
         arr = {}
         if last_week:
@@ -105,9 +118,11 @@ class Work:
                 for el in v:
                     res += " "*8 + el + "\n"
             res += "\n"
+        logging.info("End get_finfo_day_intervals(...)")
         return res if res != "" else "None"
     
     def get_finfo_day_sum(self, u_id: int, last_week: bool = False):
+        logging.info("Start get_finfo_day_sum(...)")
         res = "<<<" + self.status.title() + ">>>\n"
         arr = {}
         if last_week:
@@ -146,6 +161,7 @@ class Work:
             res += " "*4 + "DAY SUM >> " + str(timesum).split(".")[0] + "\n"
             res += "\n"
         res += "WEEK SUM >> " + str(alltimesum).split(".")[0] + "\n"
+        logging.info("End get_finfo_day_sum(...)")
         return res if res != "" else "None"
 
 

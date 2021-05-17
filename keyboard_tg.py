@@ -1,31 +1,34 @@
 from aiogram import types
+import logging
 
 class Keyboard:
 	def __init__(self, settings):
+		logging.info("Start initing Settings")
 		self.settings = settings
 		
 		# KEYBOARDS_MAIN
-		self.keyboards_main = {"Studying": {"Начать работать": None, "Закончить работать": None},
-								"Working": {"Начать работать": None, "Закончить работать": None}}
+		self.keyboards_main = {"Studying": {"Начать работать": {}, "Закончить работать": {}},
+								"Working": {"Начать работать": {}, "Закончить работать": {}}}
 		
 		for s in ["Studying", "Working"]:
 			for w in ["Начать работать", "Закончить работать"]:
-				keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
-				keyboard_main.add(types.KeyboardButton(text="Настройки"), types.KeyboardButton(text=s))
-				keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text=w))
-				keyboard_main.add(types.KeyboardButton(text="Submain"))
-				self.keyboards_main[s][w] = keyboard_main
-
+				for t in ["#reading", "#coding", "#listening", "#reporting", "#testing"]:
+					keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
+					keyboard_main.add(types.KeyboardButton(text="Tag: %s" % t), types.KeyboardButton(text=s))
+					keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text=w))
+					self.keyboards_main[s][w][t] = keyboard_main
+				
 		# KEYBOARD_SUBMAIN
 		self.keyboard_submain = types.ReplyKeyboardMarkup(resize_keyboard=True)
 		self.keyboard_submain.add(types.KeyboardButton(text="Binance info"), types.KeyboardButton(text="Living time"))
 		self.keyboard_submain.add(types.KeyboardButton(text="Кулькулятор"), types.KeyboardButton(text="Погода"))
-		self.keyboard_submain.add(types.KeyboardButton(text="Отправить"), types.KeyboardButton(text="Main"))
+		self.keyboard_submain.add(types.KeyboardButton(text="Отправить"), types.KeyboardButton(text="Настройки"))
+		self.keyboard_submain.add(types.KeyboardButton(text="Main"))
 
 		# KEYBOARD WORK
 		self.keyboard_work = types.ReplyKeyboardMarkup(resize_keyboard=True)
-		self.keyboard_work.add(types.KeyboardButton(text="Выбрать тэг"), types.KeyboardButton(text="Доп."))
 		self.keyboard_work.add(types.KeyboardButton(text="Отработанные часы"), types.KeyboardButton(text="Отработанные периоды"))
+		self.keyboard_work.add(types.KeyboardButton(text="Отработанные часы (прошлая неделя)"), types.KeyboardButton(text="Отработанные периоды (прошлая неделя)"))
 		self.keyboard_work.add(types.KeyboardButton(text="Main"))
 
 		# KEYBOARD DOP WORK
@@ -36,9 +39,8 @@ class Keyboard:
 
 		# KEYBOARD WORK TAG
 		self.keyboard_work_tag = types.ReplyKeyboardMarkup(resize_keyboard=True)
-		self.keyboard_work_tag.add(types.KeyboardButton(text="#reading"), types.KeyboardButton(text="#coding"))
-		self.keyboard_work_tag.add(types.KeyboardButton(text="#listening"), types.KeyboardButton(text="#reporting"))
-		self.keyboard_work_tag.add(types.KeyboardButton(text="#testing"), types.KeyboardButton(text="Main"))
+		self.keyboard_work_tag.add(types.KeyboardButton(text="#reading"), types.KeyboardButton(text="#coding"), types.KeyboardButton(text="#listening"))
+		self.keyboard_work_tag.add(types.KeyboardButton(text="#reporting"), types.KeyboardButton(text="#testing"), types.KeyboardButton(text="Main"))
 
 		# KEYBOARD_BIN
 		self.keyboard_bin = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -76,7 +78,10 @@ class Keyboard:
 		# 	self.keyboard_settings.add(types.KeyboardButton(text=set_keys[-2]), types.KeyboardButton(text=set_keys[-1]))
 		# self.keyboard_settings.add(types.KeyboardButton(text="Main"))
 
+		logging.info("End initing Settings")
+
 	def create_keyboard_cities(self):
+		logging.info("Start create_keyboard_cities()")
 		cities_history = self.settings.cities_history
 		self.keyboard_cities = types.ReplyKeyboardMarkup(resize_keyboard=True)
 		for k in range(len(cities_history)//2):
@@ -84,8 +89,10 @@ class Keyboard:
 		if len(cities_history) % 2 != 0: self.keyboard_cities.add(types.KeyboardButton(text=cities_history[-1]))
 
 		self.keyboard_cities.add(types.KeyboardButton(text="Main"))
+		logging.info("End create_keyboard_cities()")
 
 	def create_keyboard_binance(self):
+		logging.info("Start create_keyboard_binance()")
 		binance_val_list = self.settings.binance_val_list
 		self.keyboard_binance = types.ReplyKeyboardMarkup(resize_keyboard=True)
 		for k in range(len(binance_val_list)//2):
@@ -93,6 +100,7 @@ class Keyboard:
 		if len(binance_val_list) % 2 != 0: self.keyboard_binance.add(types.KeyboardButton(text=binance_val_list[-1]))
 
 		self.keyboard_binance.add(types.KeyboardButton(text="Main"))
+		logging.info("End create_keyboard_binance()")
 	
 	def update_keyboard_main(self, work_status, status):
 		# KEYBOARD_MAIN
@@ -110,8 +118,8 @@ class Keyboard:
 		# self.keyboard_work.add(types.KeyboardButton(text="Main"))
 		pass
 
-	def get_main(self, s, w):
-		return self.keyboards_main[s][w]
+	def get_main(self, s, w, t, u_id):
+		return self.keyboards_main[s][w][t]
 	
 	def get_submain(self):
 		return self.keyboard_submain

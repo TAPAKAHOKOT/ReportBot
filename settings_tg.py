@@ -7,6 +7,22 @@ import os
 
 class Settings:
 	def __init__(self):
+		# ! <<< TESTING >>>
+		TESTING = True
+		# ! <<< TESTING >>>
+
+		# Logging settings
+		# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		file_log = logging.FileHandler('Log.log', mode='w')
+		console_out = logging.StreamHandler()
+		logging.basicConfig(level=logging.INFO, 
+				handlers=(file_log, console_out),
+				format='%(asctime)s %(levelname)s:%(message)s',
+				datefmt='%H:%M:%S')
+		# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+		logging.info("Init settigs in the %s mode" % TESTING)
+
 		self.b_vers = 2.0
 		print("Bot version " + str(self.b_vers))
 
@@ -18,7 +34,9 @@ class Settings:
 		self.my_id = 472914986
 
 		self.token = '1454531950:AAHPgH_Ekh5mXqzoWCu9tSWLvara9pGI6aY'
-		logging.basicConfig(level=logging.INFO)
+		self.test_token = '1827389971:AAEZu447pakmIIVKG4182szXxXojvDFnGYY'
+		self.token = self.test_token if TESTING else self.token
+
 		self.bot = Bot(token=self.token)
 		self.dp = Dispatcher(self.bot)
 
@@ -41,15 +59,19 @@ class Settings:
 
 		self.work_time_dict = {}
 
+		logging.info("Settings are initialized")
+
 		# self.work_time = Work(self.csv_dir + "/" + self.csv_filename)
 
 	def clear_line(self, line):
 		return line.replace("\n", "").replace(" ", "")
 
 	def fill_data(self):
+		logging.info("Start filling data")
 		with codecs.open("send_data.txt", encoding = 'utf-8', mode = 'r') as file:
 			line = file.readline()
 			while line:
+				logging.info("Filling line: " + line)
 				if self.clear_line(line) != "":
 					if self.clear_line(line)[0] == "-" or self.another_set:
 						if self.clear_line(line)[1] == "1":
@@ -71,3 +93,4 @@ class Settings:
 						self.settings_info_line += sup_arr[0] + ":\t" + self.clear_line(sup_arr[1]) + "\n"
 
 				line = file.readline()
+		logging.info("End filling data")

@@ -1,0 +1,110 @@
+12:29:37 INFO:Init settigs in the True mode
+12:29:39 INFO:Start filling data
+12:29:39 INFO:Filling line: Send To: it_reports@bk.ru
+
+12:29:39 INFO:Filling line: FileName: otchet.xlsx
+
+12:29:39 INFO:Filling line: File Send: 0
+
+12:29:39 INFO:Filling line: City: Москва
+
+12:29:39 INFO:Filling line: Sending Activate: 1
+
+12:29:39 INFO:Filling line: Binance Currency: XEMBTC
+
+12:29:39 INFO:Filling line: NoIp: 13
+
+12:29:39 INFO:Filling line: None: date: 1
+
+12:29:39 INFO:Filling line: -1
+
+12:29:39 INFO:Filling line: Москва, City, Клинцы, Салехард
+
+12:29:39 INFO:Filling line: -2
+
+12:29:39 INFO:Filling line: XEMBTC, BTCUSDT, NEOBTC, TRXBTC
+12:29:39 INFO:End filling data
+12:29:39 INFO:Settings are initialized
+12:29:39 INFO:Start initing Settings
+12:29:39 INFO:Start create_keyboard_cities()
+12:29:39 INFO:End create_keyboard_cities()
+12:29:39 INFO:Start create_keyboard_binance()
+12:29:39 INFO:End create_keyboard_binance()
+12:29:39 INFO:End initing Settings
+12:29:39 INFO:Bot: tapakahokot test bot [@TapakahoBot]
+12:29:41 WARNING:Updates were skipped successfully.
+12:29:41 INFO:Start initing all schedules
+12:29:41 INFO:End initing all schedules
+12:29:41 INFO:Start running schedules cycle (while True)
+12:29:41 INFO:Start polling.
+12:30:19 INFO:Start рабочая клавиатура message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:19 INFO:Sended Openning work keyboard for (472914986 <=> TAPAKAHOKOT)
+12:30:20 INFO:End рабочая клавиатура message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:20 INFO:Start main message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:20 INFO:Start get_work_time(...)
+12:30:20 INFO:Created Work() for 472914986
+12:30:20 INFO:Start initing Work
+12:30:20 INFO:Start creating database my_test_py_database
+12:30:21 ERROR:Create database my_test_py_database error: ОШИБКА:  база данных "my_test_py_database" уже существует
+
+12:30:21 INFO:Connection closed for database my_test_py_database
+12:30:21 INFO:Start creating table works_times
+12:30:21 ERROR:Create table works_times error: ОШИБКА:  отношение "works_times" уже существует
+
+12:30:21 INFO:Connection closed for table works_times
+12:30:21 INFO:End initing Work
+12:30:21 INFO:End get_work_time(...)
+12:30:21 INFO:Sended Openning main keyboard for (472914986 <=> TAPAKAHOKOT)
+12:30:21 INFO:End main message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:25 INFO:Start get_work_time(...)
+12:30:25 INFO:End get_work_time(...)
+12:30:27 INFO:Start get_work_time(...)
+12:30:27 INFO:End get_work_time(...)
+12:30:28 INFO:Start get_work_time(...)
+12:30:28 INFO:End get_work_time(...)
+12:30:29 INFO:Start начать работать message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:29 INFO:Start get_work_time(...)
+12:30:29 INFO:End get_work_time(...)
+12:30:29 INFO:Start start_working(...)
+12:30:29 INFO:End start_working(...)
+12:30:29 INFO:Sended Start working time: 12.30.29 #testing for (472914986 <=> TAPAKAHOKOT)
+12:30:29 INFO:End начать работать message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:31 INFO:Start закончить работать message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:31 INFO:Start get_work_time(...)
+12:30:31 INFO:End get_work_time(...)
+12:30:31 INFO:Start end_working(...)
+12:30:31 INFO:Start saving_data(...)
+12:30:31 INFO:Start adding row [u_id=472914986, tag=testing, status=studying, start_time=2021-05-17 12:30:29.662600, end_time=2021-05-17 12:30:31.399666]
+12:30:31 INFO:End adding row for 472914986: succesfull
+12:30:31 INFO:End saving_data(...)
+12:30:31 INFO:End end_working(...)
+12:30:31 INFO:Sended End working time: 12.30.31
+Working time: 0:00:01 for (472914986 <=> TAPAKAHOKOT)
+12:30:31 INFO:End закончить работать message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:32 INFO:Start рабочая клавиатура message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:32 INFO:Sended Openning work keyboard for (472914986 <=> TAPAKAHOKOT)
+12:30:32 INFO:End рабочая клавиатура message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:33 INFO:Start get_work_time(...)
+12:30:33 INFO:End get_work_time(...)
+12:30:33 INFO:Start get_finfo_day_sum(...)
+12:30:33 INFO:End get_finfo_day_sum(...)
+12:30:34 INFO:Start get_work_time(...)
+12:30:34 INFO:End get_work_time(...)
+12:30:34 INFO:Start get_finfo_day_sum(...)
+12:30:34 INFO:End get_finfo_day_sum(...)
+12:30:35 INFO:Start get_work_time(...)
+12:30:35 INFO:End get_work_time(...)
+12:30:35 INFO:Start get_finfo_day_intervals(...)
+12:30:35 INFO:End get_finfo_day_intervals(...)
+12:30:36 INFO:Start get_work_time(...)
+12:30:36 INFO:End get_work_time(...)
+12:30:36 INFO:Start get_finfo_day_intervals(...)
+12:30:36 INFO:End get_finfo_day_intervals(...)
+12:30:42 INFO:Start submain message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:42 INFO:Sended Openning submain keyboard for (472914986 <=> TAPAKAHOKOT)
+12:30:42 INFO:End submain message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:44 INFO:Start main message handler by (472914986 <=> TAPAKAHOKOT)
+12:30:44 INFO:Start get_work_time(...)
+12:30:44 INFO:End get_work_time(...)
+12:30:44 INFO:Sended Openning main keyboard for (472914986 <=> TAPAKAHOKOT)
+12:30:44 INFO:End main message handler by (472914986 <=> TAPAKAHOKOT)

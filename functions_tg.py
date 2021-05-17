@@ -11,7 +11,7 @@ import logging
 
 settings = Settings()
 
-def n2n(num, n1, n2, res_1 = 0, res_2 = "", arr = []):
+def n2n(num, n1, n2, res_1=0, res_2="", arr=[]):
 	for k in range(10, 36): arr.append(k); arr.append(chr(87 + k).upper())
 	for k in range(len(num)):
 		nk = num[-1-k].upper()

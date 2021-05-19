@@ -1,14 +1,20 @@
 import datetime
+from os import stat
 
 from time import sleep, time_ns
 from typing import Sequence
 
 from pysql_database import DataBaseConnector
+from work_statuses_database import WorkStatusesDataBaseConnector
 import logging
 
 class Work:
-    def __init__(self):
-        logging.info("Start initing Work")
+    def __init__(self, u_id):
+        logging.info("Start initing Work for %s" % u_id)
+        self.user_id = u_id
+
+        self.last_online_time = datetime.datetime.now()
+
         self.timeformat = "%H.%M.%S"
         self.dateformat = "%d.%m.%Y"
         
@@ -22,8 +28,24 @@ class Work:
         self.status = "studying"
 
         self.db = DataBaseConnector()
+        self.st_db = WorkStatusesDataBaseConnector()
+
+        u_data = self.st_db.get_user_status(self.user_id)
+        if u_data:
+            self.tag = u_data[0][0]
+            self.status = u_data[0][1]
+        else:
+            self.st_db.add_row(self.user_id, self.tag, self.status)
 
         logging.info("End initing Work")
+
+    def set_tag(self, tag):
+        self.tag = tag
+        self.st_db.set_tag(self.user_id, tag)
+    
+    def set_status(self, status):
+        self.status = status
+        self.st_db.set_status(self.user_id, status)
 
     def saving_data(self, u_id: int):
         logging.info("Start saving_data(...)")
@@ -32,6 +54,7 @@ class Work:
 
     def start_working(self) -> str:
         logging.info("Start start_working(...)")
+        self.last_online_time = datetime.datetime.now()
         if self.is_working:
             logging.info("End start_working(...)")
             return "You are already working from {} {}".format(self.start_date_working, self.start_time_working)
@@ -45,6 +68,7 @@ class Work:
     
     def end_working(self, u_id: int) -> str:
         logging.info("Start end_working(...)")
+        self.last_online_time = datetime.datetime.now()
         if not self.is_working:
             logging.info("End end_working(...)")
             return "You aren't working now"
@@ -80,11 +104,13 @@ class Work:
         return self.end_time_working - self.start_time_working
     
     def get_day_time_formated(self, s_time=None, e_time=None) -> str:
+        self.last_online_time = datetime.datetime.now()
         if not s_time: s_time = self.start_time_working
         if not e_time: e_time = self.end_time_working
         return s_time.strftime(self.timeformat) + " - " + e_time.strftime(self.timeformat)
     
     def get_current_working_info(self):
+        self.last_online_time = datetime.datetime.now()
         if not self.is_working:
             return "You aren't working now"
         delta = str(self.get_difference_betwen(self.start_time_working, self.get_current_time())).split(".")[0]
@@ -92,6 +118,7 @@ class Work:
     
     def get_finfo_day_intervals(self, u_id: int, last_week: bool = False):
         logging.info("Start get_finfo_day_intervals(...)")
+        self.last_online_time = datetime.datetime.now()
         res = "<<<" + self.status.title() + ">>>\n"
         arr = {}
         if last_week:
@@ -123,6 +150,7 @@ class Work:
     
     def get_finfo_day_sum(self, u_id: int, last_week: bool = False):
         logging.info("Start get_finfo_day_sum(...)")
+        self.last_online_time = datetime.datetime.now()
         res = "<<<" + self.status.title() + ">>>\n"
         arr = {}
         if last_week:

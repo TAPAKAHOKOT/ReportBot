@@ -14,19 +14,16 @@ class DataBaseConnector:
 		self.port="5432"
 		self.db_name = "my_test_py_database"
 		self.works_table_name = "works_times"
-		self.user_status_tabel_name = "users_statuses"
+		self.user_status_tabel_name = "users_work_statuses"
 
-		self.create_db(self.db_name)
-		self.create_table(self.works_table_name)
+		# self.create_db(self.db_name)
+		# self.create_table(self.works_table_name)
 
 		# stat_query = '''CREATE TABLE {}
 		# 				(id INT PRIMARY KEY NOT NULL,
 		# 				user_id INT NOT NULL,
-		# 				is_working BOOL
 		# 				tag TEXT NOT NULL,
-		# 				status TEXT NOT NULL,
-		# 				start_time TIMESTAMP NOT NULL,
-		# 				update_time TIMESTAMP NOT NULL); '''.format(self.user_status_tabel_name)
+		# 				status TEXT NOT NULL); '''.format(self.user_status_tabel_name)
 
 		# self.create_table(self.user_status_tabel_name, stat_query)
 
@@ -98,7 +95,7 @@ class DataBaseConnector:
 				cursor.close()
 				connection.close()
 				logging.info("Connection closed for table %s" % name)
-	
+
 	def add_row(self, user_id: int, tag: str, status: str, start_time: datetime.datetime, end_time: datetime.datetime):
 		logging.info("Start adding row [u_id=%s, tag=%s, status=%s, start_time=%s, end_time=%s]" % (user_id, tag, status, str(start_time), str(end_time)))
 		self.cursor.execute("SELECT MAX(id) from %s" % self.works_table_name)

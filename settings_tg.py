@@ -8,7 +8,7 @@ import os
 class Settings:
 	def __init__(self):
 		# ! <<< TESTING >>>
-		TESTING = True
+		TESTING = False
 		# ! <<< TESTING >>>
 
 		# Logging settings

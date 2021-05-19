@@ -6,6 +6,7 @@ import asyncio
 import codecs
 from datetime import date
 from work import Work
+import datetime
 
 import logging
 
@@ -45,7 +46,7 @@ def get_work_time(settigns, u_id):
 	logging.info("Start get_work_time(...)")
 	if not u_id in settings.work_time_dict.keys():
 		logging.info("Created Work() for %s" % u_id)
-		settings.work_time_dict[u_id] = Work()
+		settings.work_time_dict[u_id] = Work(u_id)
 	logging.info("End get_work_time(...)")
 	return settings.work_time_dict[u_id]
 
@@ -106,7 +107,14 @@ async def send():
 			logging.info("Sended for %s: 'Update HostName on NoIp'" % settings.my_id)
 			await settings.bot.send_message(settings.my_id, "Update HostName on NoIp")
 		logging.info("End check_noIp()")
-
+	
+	async def check_work_last_online():
+		global settings
+		for key in list(settings.work_time_dict):
+			val = settings.work_time_dict[key]
+			t = datetime.datetime.now() - val.last_online_time
+			if t > datetime.timedelta(days=5):
+				del settings.work_time_dict[key]
 
 	async def check_sending():
 		logging.info("Start check_sending()")
@@ -159,6 +167,8 @@ async def send():
 	schedule.every().day.at("12:00").do(check_noIp)
 
 	schedule.every().day.at("22:00").do(knopa_memery_on)
+
+	schedule.every().hour.do(check_work_last_online)
 
 	logging.info("End initing all schedules")
 

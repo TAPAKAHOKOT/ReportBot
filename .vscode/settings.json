@@ -1,0 +1,15 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "127.0.0.1",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Works timer db",
+            "database": "my_test_py_database",
+            "username": "postgres",
+            "password": "4608",
+            "connectionTimeout": 60
+        }
+    ]
+}

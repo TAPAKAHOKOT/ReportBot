@@ -155,7 +155,7 @@ async def cmd_start(message: types.Message):
 async def cmd_start(message: types.Message):
 	global settings
 	work_time =  get_work_time(settings, message.from_user["id"])
-	work_time.status = "working"
+	work_time.set_status("working")
 
 	w, s, t = "Начать работать" if not work_time.is_working else "Закончить работать", work_time.status.title(), "#" + work_time.tag
 
@@ -167,7 +167,7 @@ async def cmd_start(message: types.Message):
 async def cmd_start(message: types.Message):
 	global settings
 	work_time =  get_work_time(settings, message.from_user["id"])
-	work_time.status = "studying"
+	work_time.set_status("studying")
 
 	w, s, t = "Начать работать" if not work_time.is_working else "Закончить работать", work_time.status.title(), "#" + work_time.tag
 
@@ -187,7 +187,7 @@ async def cmd_start(message: types.Message):
 	w, s = "Начать работать" if not work_time.is_working else "Закончить работать", work_time.status.title()
 	t = message.text
 
-	work_time.tag = message.text[1:]
+	work_time.set_tag(message.text[1:])
 	await message.answer("Tag changed to: #" + work_time.tag, reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
 
 # <<<<<<<<<<<<<<<<<< Отработанные часы >>>>>>>>>>>>>>>>>>

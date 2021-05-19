@@ -1,0 +1,1 @@
+select * from users_work_statuses order by id;

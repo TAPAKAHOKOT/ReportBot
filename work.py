@@ -1,18 +1,16 @@
 import datetime
-from os import stat
-
-from time import sleep, time_ns
-from typing import Sequence
-
-from pysql_database import DataBaseConnector
-from work_statuses_database import WorkStatusesDataBaseConnector
-from tag_history_database import WorkTagHistoryDataBaseConnector
-from user_tags_database import WorkTagsDataBaseConnector
+from Settings import Settings
+from WorksMainDataBaseConnector import WorksMainDataBaseConnector
+from WorkStatusesDataBaseConnector import WorkStatusesDataBaseConnector
+from WorkTagHistoryDataBaseConnector import WorkTagHistoryDataBaseConnector
+from WorkTagsDataBaseConnector import WorkTagsDataBaseConnector
 import logging
 
 class Work:
-    def __init__(self, u_id):
+    def __init__(self, settings:Settings, u_id):
         logging.info("Start initing Work for %s" % u_id)
+
+        self.setttings = settings
         self.user_id = u_id
 
         self.last_online_time = datetime.datetime.now()
@@ -29,10 +27,10 @@ class Work:
         self.tag = "testing"
         self.status = "studying"
 
-        self.db = DataBaseConnector()
-        self.st_db = WorkStatusesDataBaseConnector()
-        self.tag_db = WorkTagHistoryDataBaseConnector()
-        self.u_tag_db = WorkTagsDataBaseConnector()
+        self.db = WorksMainDataBaseConnector(self.setttings)
+        self.st_db = WorkStatusesDataBaseConnector(self.setttings)
+        self.tag_db = WorkTagHistoryDataBaseConnector(self.setttings)
+        self.u_tag_db = WorkTagsDataBaseConnector(self.setttings)
 
         u_data = self.st_db.get_user_status(self.user_id)
         if u_data:
@@ -42,6 +40,18 @@ class Work:
             self.st_db.add_row(self.user_id, self.tag, self.status)
 
         logging.info("End initing Work")
+
+    def get_is_working(self) -> bool:
+        return self.is_working
+    
+
+    def get_status(self) -> str:
+        return self.status.title()
+    
+
+    def get_tag(self) -> str:
+        return self.tag
+
 
     def set_tag(self, tag):
         self.tag = tag
@@ -100,7 +110,7 @@ class Work:
     def get_current_day(self) -> datetime.datetime:
         return datetime.datetime.today()
     def get_current_time(self) -> datetime.datetime:
-         return datetime.datetime.now()
+        return datetime.datetime.now()
 
     def get_time_from(self, line) -> datetime.datetime:
         start, end = line.split("-")

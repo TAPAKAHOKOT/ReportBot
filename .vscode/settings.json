@@ -12,5 +12,7 @@
             "connectionTimeout": 60
         }
     ],
-    "python.pythonPath": "C:\\Users\\Igrok\\AppData\\Local\\Programs\\Python\\Python38\\python.exe"
+    "python.pythonPath": "C:\\Users\\Igrok\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": false
 }

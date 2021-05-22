@@ -1,5 +1,5 @@
-SELECT table_name FROM information_schema.tables
-WHERE table_schema NOT IN ('information_schema','pg_catalog');
+-- SELECT table_name FROM information_schema.tables
+-- WHERE table_schema NOT IN ('information_schema','pg_catalog');
 
 -- select * from users_tag_history;
 
@@ -16,3 +16,13 @@ WHERE table_schema NOT IN ('information_schema','pg_catalog');
 -- )
 
 -- delete from users_tags
+
+-- CREATE TABLE tg_api_table 
+-- (bot_name TEXT PRIMARY KEY NOT NULL,
+-- api_key TEXT NOT NULL);
+
+
+-- INSERT INTO tg_api_table VALUES 
+-- ('clear_reports_sender_bot', '1454531950:AAGdb0c7fowkg7NkhS83gkPIGvbQhYHWVYY');
+
+select * from tg_api_table;

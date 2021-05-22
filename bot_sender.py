@@ -19,6 +19,8 @@ async def on_startup(x):
 	asyncio.create_task(send())
 
 # ! TODO: add autosave working time into json file every 2 minutes
+# ~ TODO: add getters and setters, add encapsulation
+# ~ TODO: add inheritance into db classes
 # ? TODO: translate all features in english
 # ? TODO: add language chooser
 # // TODO: make a beautiful working time output
@@ -33,11 +35,14 @@ async def on_startup(x):
 # TODO: add help command
 # TODO: make a video about the capabilities of the bot
 # TODO: add table in database with user settings
-# TODO: add user's cpecific tags
+# TODO: add border between studing and working tags
+# TODO: change names of db, tables, change structure of tables 
+# TODO: (ex: make ser_id the primary key)
+# // TODO: add user's cpecific tags
 # // TODO: add user's tag history
 # // TODO: add table in database with user statuses
 # // * TODO: improve code by adding logs
-# * TODO: add logging for another files
+# // * TODO: add logging for another files
 # * TODO: improve work.py file code
 # * TODO: improve all code by adding annotations
 

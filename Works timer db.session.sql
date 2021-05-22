@@ -1,3 +1,6 @@
+SELECT table_name FROM information_schema.tables
+WHERE table_schema NOT IN ('information_schema','pg_catalog');
+
 -- select * from users_tag_history;
 
 -- SELECT COUNT(*)
@@ -12,4 +15,4 @@
 --     LIMIT 1
 -- )
 
-delete from users_tags
+-- delete from users_tags

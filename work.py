@@ -6,6 +6,8 @@ from typing import Sequence
 
 from pysql_database import DataBaseConnector
 from work_statuses_database import WorkStatusesDataBaseConnector
+from tag_history_database import WorkTagHistoryDataBaseConnector
+from user_tags_database import WorkTagsDataBaseConnector
 import logging
 
 class Work:
@@ -29,6 +31,8 @@ class Work:
 
         self.db = DataBaseConnector()
         self.st_db = WorkStatusesDataBaseConnector()
+        self.tag_db = WorkTagHistoryDataBaseConnector()
+        self.u_tag_db = WorkTagsDataBaseConnector()
 
         u_data = self.st_db.get_user_status(self.user_id)
         if u_data:
@@ -42,6 +46,19 @@ class Work:
     def set_tag(self, tag):
         self.tag = tag
         self.st_db.set_tag(self.user_id, tag)
+        tags_num = self.tag_db.get_count_of_history(self.user_id)
+        if tags_num >= 10:
+            self.tag_db.delete_last_tag_from_history(self.user_id)
+
+        self.tag_db.add_row(self.user_id, tag, datetime.datetime.now())
+
+        tags = self.u_tag_db.get_user_tag_history(self.user_id)
+        if "#" + tag not in tags:
+            tags_num = self.u_tag_db.get_count_of_history(self.user_id)
+            if tags_num >= 5:
+                self.u_tag_db.delete_last_tag_from_history(self.user_id)
+
+            self.u_tag_db.add_row(self.user_id, "#" + tag, datetime.datetime.now())
     
     def set_status(self, status):
         self.status = status

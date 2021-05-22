@@ -33,6 +33,9 @@ async def on_startup(x):
 # TODO: add help command
 # TODO: make a video about the capabilities of the bot
 # TODO: add table in database with user settings
+# TODO: add user's cpecific tags
+# // TODO: add user's tag history
+# // TODO: add table in database with user statuses
 # // * TODO: improve code by adding logs
 # * TODO: add logging for another files
 # * TODO: improve work.py file code
@@ -175,12 +178,13 @@ async def cmd_start(message: types.Message):
 	await message.answer("Status => Studying", reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
 
 # <<<<<<<<<<<<<<<<<< Выбрать тэг >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals=['Tag: #reading', 'Tag: #coding', 'Tag: #listening', 'Tag: #reporting', 'Tag: #testing'], ignore_case=True))
+@settings.dp.message_handler(Text(startswith='Tag: ', ignore_case=True))
 async def cmd_start(message: types.Message):
-	await message.answer("Openning work tag keyboard", reply_markup=keyboard.get_work_tag())
+	work_time =  get_work_time(settings, message.from_user["id"])
+	await message.answer("Openning work tag keyboard", reply_markup=keyboard.get_work_tag(work_time))
 
 # <<<<<<<<<<<<<<<<<< #Tags >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals=['#reading', '#coding', '#listening', '#reporting', '#testing'], ignore_case=True))
+@settings.dp.message_handler(Text(startswith='#', ignore_case=True))
 async def cmd_start(message: types.Message):
 	global settings
 	work_time =  get_work_time(settings, message.from_user["id"])
@@ -189,6 +193,17 @@ async def cmd_start(message: types.Message):
 
 	work_time.set_tag(message.text[1:])
 	await message.answer("Tag changed to: #" + work_time.tag, reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
+
+# <<<<<<<<<<<<<<<<<< Выбрать тэг >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals="история тэгов", ignore_case=True))
+async def cmd_start(message: types.Message):
+	global settings
+	id = message.from_user["id"]
+	work_time =  get_work_time(settings, id)
+	history = work_time.tag_db.get_user_tag_history(id)
+	if not history:
+		history = "None"
+	await message.answer(history)
 
 # <<<<<<<<<<<<<<<<<< Отработанные часы >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='отработанные часы', ignore_case=True))

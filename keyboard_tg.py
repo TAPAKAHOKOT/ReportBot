@@ -1,4 +1,6 @@
+from datetime import datetime
 from aiogram import types
+from time import sleep
 import logging
 
 class Keyboard:
@@ -7,16 +9,16 @@ class Keyboard:
 		self.settings = settings
 		
 		# KEYBOARDS_MAIN
-		self.keyboards_main = {"Studying": {"Начать работать": {}, "Закончить работать": {}},
-								"Working": {"Начать работать": {}, "Закончить работать": {}}}
+		# self.keyboards_main = {"Studying": {"Начать работать": {}, "Закончить работать": {}},
+		# 						"Working": {"Начать работать": {}, "Закончить работать": {}}}
 		
-		for s in ["Studying", "Working"]:
-			for w in ["Начать работать", "Закончить работать"]:
-				for t in ["#reading", "#coding", "#listening", "#reporting", "#testing"]:
-					keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
-					keyboard_main.add(types.KeyboardButton(text="Tag: %s" % t), types.KeyboardButton(text=s))
-					keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text=w))
-					self.keyboards_main[s][w][t] = keyboard_main
+		# for s in ["Studying", "Working"]:
+		# 	for w in ["Начать работать", "Закончить работать"]:
+		# 		for t in ["#reading", "#coding", "#listening", "#reporting", "#testing"]:
+		# 			keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
+		# 			keyboard_main.add(types.KeyboardButton(text="Tag: %s" % t), types.KeyboardButton(text=s))
+		# 			keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text=w))
+		# 			self.keyboards_main[s][w][t] = keyboard_main
 				
 		# KEYBOARD_SUBMAIN
 		self.keyboard_submain = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -119,7 +121,11 @@ class Keyboard:
 		pass
 
 	def get_main(self, s, w, t, u_id):
-		return self.keyboards_main[s][w][t]
+		keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
+		keyboard_main.add(types.KeyboardButton(text="Tag: %s" % t), types.KeyboardButton(text=s))
+		keyboard_main.add(types.KeyboardButton(text="Рабочая клавиатура"), types.KeyboardButton(text=w))
+
+		return keyboard_main
 	
 	def get_submain(self):
 		return self.keyboard_submain
@@ -127,8 +133,16 @@ class Keyboard:
 	def get_work(self):
 		return self.keyboard_work
 	
-	def get_work_tag(self):
-		return self.keyboard_work_tag
+	def get_work_tag(self, work):
+		if work.u_tag_db.get_count_of_history(work.user_id) == 0:
+			for k in ["#reading", "#coding", "#listening", "#reporting", "#testing"]:
+				work.u_tag_db.add_row(work.user_id, k, datetime.now())
+		
+		tags = work.u_tag_db.get_user_tag_history(work.user_id)
+		keyboard_work_tag = types.ReplyKeyboardMarkup(resize_keyboard=True)
+		keyboard_work_tag.add(types.KeyboardButton(text=tags[0]), types.KeyboardButton(text=tags[1]), types.KeyboardButton(text=tags[2]))
+		keyboard_work_tag.add(types.KeyboardButton(text=tags[3]), types.KeyboardButton(text=tags[4]), types.KeyboardButton(text="Main"))
+		return keyboard_work_tag
 
 	def get_dop_work(self):
 		return self.keyboard_dop_work

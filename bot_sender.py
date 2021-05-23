@@ -37,6 +37,7 @@ async def on_startup(x):
 # TODO: add border between studing and working tags
 # TODO: change names of db, tables, change structure of tables 
 # TODO: (ex: make ser_id the primary key)
+# // TODO: files rebase
 # // TODO: add user's cpecific tags
 # // TODO: add user's tag history
 # // TODO: add table in database with user statuses
@@ -296,7 +297,7 @@ async def cmd_start(message: types.Message):
             res = update_img(settings.settings_info["City"])
             weather_update_time = datetime.today().strftime("%d.%m   %H:%M:%S")
 
-            with open("weather.png", "rb") as file:
+            with open("data/weather.png", "rb") as file:
                 data = file.read()
                 if data != None:
                     await settings.bot.send_photo(message.chat.id, data)

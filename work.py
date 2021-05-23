@@ -1,13 +1,13 @@
 import datetime
 from Settings import Settings
-from WorksMainDataBaseConnector import WorksMainDataBaseConnector
-from WorkStatusesDataBaseConnector import WorkStatusesDataBaseConnector
-from WorkTagHistoryDataBaseConnector import WorkTagHistoryDataBaseConnector
-from WorkTagsDataBaseConnector import WorkTagsDataBaseConnector
+from DataBaseConnectors.WorksMainDataBaseConnector import WorksMainDataBaseConnector
+from DataBaseConnectors.WorkStatusesDataBaseConnector import WorkStatusesDataBaseConnector
+from DataBaseConnectors.WorkTagHistoryDataBaseConnector import WorkTagHistoryDataBaseConnector
+from DataBaseConnectors.WorkTagsDataBaseConnector import WorkTagsDataBaseConnector
 import logging
 
 class Work:
-    def __init__(self, settings:Settings, u_id):
+    def __init__(self, settings:Settings, u_id: int) -> None:
         logging.info("Start initing Work for %s" % u_id)
 
         self.setttings = settings
@@ -53,7 +53,7 @@ class Work:
         return self.tag
 
 
-    def set_tag(self, tag):
+    def set_tag(self, tag: str) -> None:
         self.tag = tag
         self.st_db.set_tag(self.user_id, tag)
         tags_num = self.tag_db.get_count_of_history(self.user_id)
@@ -70,11 +70,11 @@ class Work:
 
             self.u_tag_db.add_row(self.user_id, "#" + tag, datetime.datetime.now())
     
-    def set_status(self, status):
+    def set_status(self, status: str) -> None:
         self.status = status
         self.st_db.set_status(self.user_id, status)
 
-    def saving_data(self, u_id: int):
+    def saving_data(self, u_id: int) -> None:
         logging.info("Start saving_data(...)")
         self.db.add_row(u_id, self.tag, self.status, self.start_time_working, self.end_time_working)
         logging.info("End saving_data(...)")
@@ -112,7 +112,7 @@ class Work:
     def get_current_time(self) -> datetime.datetime:
         return datetime.datetime.now()
 
-    def get_time_from(self, line) -> datetime.datetime:
+    def get_time_from(self, line: str) -> datetime.datetime:
         start, end = line.split("-")
 
         start = datetime.datetime.strptime(start, self.timeformat)
@@ -120,30 +120,30 @@ class Work:
 
         return [start, end]
     
-    def get_day_from(self, line) -> datetime.datetime:
+    def get_day_from(self, line: str) -> datetime.datetime:
         return datetime.datetime.strptime(line, self.dateformat)
     
-    def get_difference_betwen(self, s_time, e_time):
+    def get_difference_betwen(self, s_time, e_time) -> datetime.timedelta:
         return e_time - s_time if e_time > s_time \
             else e_time - s_time + datetime.timedelta(1)
 
     def get_difference(self) -> datetime.timedelta:
         return self.end_time_working - self.start_time_working
     
-    def get_day_time_formated(self, s_time=None, e_time=None) -> str:
+    def get_day_time_formated(self, s_time: datetime.datetime = None, e_time: datetime.datetime = None) -> str:
         self.last_online_time = datetime.datetime.now()
         if not s_time: s_time = self.start_time_working
         if not e_time: e_time = self.end_time_working
         return s_time.strftime(self.timeformat) + " - " + e_time.strftime(self.timeformat)
     
-    def get_current_working_info(self):
+    def get_current_working_info(self) -> str:
         self.last_online_time = datetime.datetime.now()
         if not self.is_working:
             return "You aren't working now"
         delta = str(self.get_difference_betwen(self.start_time_working, self.get_current_time())).split(".")[0]
         return "Start working time: {}\nTime delta: {}".format(self.start_time_working.strftime(self.timeformat), delta)
     
-    def get_finfo_day_intervals(self, u_id: int, last_week: bool = False):
+    def get_finfo_day_intervals(self, u_id: int, last_week: bool = False) -> str:
         logging.info("Start get_finfo_day_intervals(...)")
         self.last_online_time = datetime.datetime.now()
         res = "<<<" + self.status.title() + ">>>\n"
@@ -175,7 +175,7 @@ class Work:
         logging.info("End get_finfo_day_intervals(...)")
         return res if res != "" else "None"
     
-    def get_finfo_day_sum(self, u_id: int, last_week: bool = False):
+    def get_finfo_day_sum(self, u_id: int, last_week: bool = False) -> str:
         logging.info("Start get_finfo_day_sum(...)")
         self.last_online_time = datetime.datetime.now()
         res = "<<<" + self.status.title() + ">>>\n"

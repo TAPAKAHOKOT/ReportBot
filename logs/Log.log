@@ -1,0 +1,47 @@
+12:35:42 INFO:Init settigs in the True mode
+12:35:43 INFO:Start filling data
+12:35:43 INFO:Filling line: Send To: tapakahokot@gmail.com
+
+12:35:43 INFO:Filling line: FileName: otchet.xlsx
+
+12:35:43 INFO:Filling line: File Send: 0
+
+12:35:43 INFO:Filling line: City: Москва
+
+12:35:43 INFO:Filling line: Sending Activate: 1
+
+12:35:43 INFO:Filling line: Binance Currency: XEMBTC
+
+12:35:43 INFO:Filling line: NoIp: 13
+
+12:35:43 INFO:Filling line: None: date:1
+
+12:35:43 INFO:Filling line: -1
+
+12:35:43 INFO:Filling line: Москва, City, Клинцы, Салехард
+
+12:35:43 INFO:Filling line: -2
+
+12:35:43 INFO:Filling line: XEMBTC, BTCUSDT, NEOBTC, TRXBTC
+12:35:43 INFO:End filling data
+12:35:43 INFO:Settings are initialized
+12:35:43 INFO:Start initing Settings
+12:35:43 INFO:Start create_keyboard_cities()
+12:35:43 INFO:End create_keyboard_cities()
+12:35:43 INFO:Start create_keyboard_binance()
+12:35:43 INFO:End create_keyboard_binance()
+12:35:43 INFO:End initing Settings
+12:35:43 INFO:Bot: tapakahokot test bot [@TapakahoBot]
+12:35:45 WARNING:Updates were skipped successfully.
+12:35:45 INFO:Start initing all schedules
+12:35:45 INFO:End initing all schedules
+12:35:45 INFO:Start running schedules cycle (while True)
+12:35:45 INFO:Start polling.
+12:35:58 INFO:Start main message handler by (472914986 <=> TAPAKAHOKOT)
+12:35:58 INFO:Start get_work_time(...)
+12:35:58 INFO:Created Work() for 472914986
+12:35:58 INFO:Start initing Work for 472914986
+12:35:59 INFO:End initing Work
+12:35:59 INFO:End get_work_time(...)
+12:35:59 INFO:Sended Openning main keyboard for (472914986 <=> TAPAKAHOKOT)
+12:35:59 INFO:End main message handler by (472914986 <=> TAPAKAHOKOT)

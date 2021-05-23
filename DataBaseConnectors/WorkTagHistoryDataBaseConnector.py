@@ -1,5 +1,4 @@
-from typing import Set
-from DataBaseConnector import DataBaseConnector
+from DataBaseConnectors.DataBaseConnector import DataBaseConnector
 from Settings import Settings
 import datetime
 import psycopg2
@@ -7,13 +6,13 @@ from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 import logging
 
-class WorkTagsDataBaseConnector(DataBaseConnector):
+class WorkTagHistoryDataBaseConnector(DataBaseConnector):
     def __init__(self, settings: Settings):
         super().__init__(settings)
 
-        self.tag_tabel_name = "users_tags"
+        self.tag_history_tabel_name = "users_tag_history"
 
-        # self.create_table(self.tag_tabel_name)
+        # self.create_table(self.tag_history_tabel_name)
 
     
     def create_table(self, name):
@@ -49,11 +48,11 @@ class WorkTagsDataBaseConnector(DataBaseConnector):
     def add_row(self, user_id: int, tag: str, call_time: datetime.datetime):
         logging.info("Start adding user tag in tag history for %s: succesfull" % user_id)
 
-        self.cursor.execute("SELECT MAX(id) from %s" % self.tag_tabel_name)
+        self.cursor.execute("SELECT MAX(id) from %s" % self.tag_history_tabel_name)
         max_id = self.cursor.fetchall()[0][0]
         max_id = 0 if max_id is None else max_id
 
-        insert_query = """ INSERT INTO users_tags (id, user_id, tag, call_time) VALUES (%s, %s, %s, %s)"""  
+        insert_query = """ INSERT INTO users_tag_history (id, user_id, tag, call_time) VALUES (%s, %s, %s, %s)"""  
         inp_tuple = (max_id+1, user_id, tag, call_time)
 
         self.cursor.execute(insert_query, inp_tuple)
@@ -61,36 +60,38 @@ class WorkTagsDataBaseConnector(DataBaseConnector):
         logging.info("End adding user in tag history tag for %s: succesfull" % user_id)
     
 
-    def get_user_tag_history(self, user_id: int) -> list:
-        query = "SELECT tag, call_time FROM %s WHERE user_id=%s ORDER BY call_time DESC" % (self.tag_tabel_name, user_id)
+    def get_user_tag_history(self, user_id: int) -> str:
+        query = "SELECT tag, call_time FROM %s WHERE user_id=%s ORDER BY call_time DESC" % (self.tag_history_tabel_name, user_id)
 
         self.cursor.execute(query)
-        res = []
+        res = ""
         for el in self.cursor.fetchall():
-            res.append(el[0])
+            res += "#" + el[0] + "\n"
         return res
     
 
     def delete_last_tag_from_history(self, user_id: int):
-        query = """DELETE FROM users_tags
+        query = """DELETE FROM users_tag_history
                     WHERE user_id=%s AND call_time=(
                         SELECT call_time 
-                        FROM users_tags
+                        FROM users_tag_history
                         ORDER BY call_time
                         LIMIT 1
                     )""" % user_id
 
         self.cursor.execute(query)
     
-    
+
     def get_count_of_history(self, user_id: int) -> int:
-        query = "SELECT COUNT(*) FROM users_tags WHERE user_id=%s" % user_id
+        query = "SELECT COUNT(*) FROM users_tag_history WHERE user_id=%s" % user_id
         self.cursor.execute(query)
         return self.cursor.fetchall()[0][0]
-
-
                 
 
-# w = WorkTagsDataBaseConnector()
+# w = WorkTagHistoryDataBaseConnector()
 
-# print(w.get_count_of_history(123) == 0)
+# w.delete_last_tag_from_history(123)
+# w.delete_last_tag_from_history(123)
+# w.delete_last_tag_from_history(123)
+
+# print(w.get_user_tag_history(123))

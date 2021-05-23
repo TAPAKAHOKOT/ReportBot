@@ -20,7 +20,7 @@ class Settings:
 
         # Logging settings
         # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        file_log = logging.FileHandler('Log.log', mode='w')
+        file_log = logging.FileHandler('logs/Log.log', mode='w')
         console_out = logging.StreamHandler()
         logging.basicConfig(level=logging.INFO, 
                 handlers=(file_log, console_out),
@@ -73,14 +73,12 @@ class Settings:
 
         logging.info("Settings are initialized")
 
-        # self.work_time = Work(self.csv_dir + "/" + self.csv_filename)
-
     def clear_line(self, line):
         return line.replace("\n", "").replace(" ", "")
 
     def fill_data(self):
         logging.info("Start filling data")
-        with codecs.open("send_data.txt", encoding = 'utf-8', mode = 'r') as file:
+        with codecs.open("data/send_data.txt", encoding = 'utf-8', mode = 'r') as file:
             line = file.readline()
             while line:
                 logging.info("Filling line: " + line)

@@ -23,13 +23,13 @@ def update_img(city):
 
 		browser = webdriver.Chrome(chrome_options=options)
 		browser.get(url)
-		browser.save_screenshot('weather.png')
+		browser.save_screenshot('data/weather.png')
 
-		img = Image.open("weather.png")
+		img = Image.open("data/weather.png")
 		area = (305, 105, 1388, 675)
 		cropped_img = img.crop(area)
 		# cropped_img.show()
-		cropped_img.save("weather.png")
+		cropped_img.save("data/weather.png")
 
 		return ""
 	except Exception as e:

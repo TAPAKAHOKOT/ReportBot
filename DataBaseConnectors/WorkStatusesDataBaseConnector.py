@@ -1,5 +1,4 @@
-
-from DataBaseConnector import DataBaseConnector
+from DataBaseConnectors.DataBaseConnector import DataBaseConnector
 from Settings import Settings
 import psycopg2
 from psycopg2 import Error

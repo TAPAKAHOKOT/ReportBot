@@ -32,7 +32,7 @@ def update_info_line():
     return line
 
 def write_into_file():
-    with codecs.open("send_data.txt", encoding = 'utf-8', mode = 'w') as file:
+    with codecs.open("data/send_data.txt", encoding = 'utf-8', mode = 'w') as file:
         file.write(settings.settings_info_line)
 
         line = "-1\n" + ", ".join(settings.cities_history)

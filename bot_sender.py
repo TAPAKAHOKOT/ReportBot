@@ -17,10 +17,10 @@ async def on_startup(x):
     asyncio.create_task(send())
 
 # ! TODO: add autosave working time into json file every 2 minutes
-# ! RODO: add password crypting
+# // ! TODO: add password crypting
 # // ~ TODO: add getters and setters, add encapsulation
 # // ~ TODO: add inheritance into db classes
-# ? TODO: translate all features in english
+# // ? TODO: translate all features in english
 # ? TODO: add language chooser
 # // TODO: make a beautiful working time output
 # TODO: add opportunity to add working period throught telegram
@@ -50,7 +50,7 @@ async def on_startup(x):
 async def cmd_start(message: types.Message):
     global keyboard
     work = get_work_time(settings, message.from_user["id"])
-    w, s, t = "Начать работать" if not work.get_is_working() else "Закончить работать", work.get_status(), "#" + work.get_tag()
+    w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
     await message.answer("Запуск основной клавиатуры", reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
 
 # <<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
@@ -63,8 +63,7 @@ async def cmd_start(message: types.Message):
 
     # print(message.from_user["id"], message.from_user["username"])
 
-    w, s, t = "Начать работать" if not work.get_is_working() else "Закончить работать", work.get_status(), "#" + work.get_tag()
-    print(s, w, t)
+    w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
     logging.info("Sended %s for (%s <=> %s)" % ("Openning main keyboard", message.from_user["id"], message.from_user["username"]))
     await message.answer("Openning main keyboard", reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
     logging.info("End main message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
@@ -82,23 +81,23 @@ async def cmd_start(message: types.Message):
         await message.answer("Error 403: access is denied")
     logging.info("End submain message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
 
-# <<<<<<<<<<<<<<<<<< Рабочая клавиатура >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='рабочая клавиатура', ignore_case=True))
+# <<<<<<<<<<<<<<<<<< Work reports >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='work reports', ignore_case=True))
 async def cmd_start(message: types.Message):
-    logging.info("Start рабочая клавиатура message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
+    logging.info("Start Work reports message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
     global keyboard
-    logging.info("Sended %s for (%s <=> %s)" % ("Openning work keyboard", message.from_user["id"], message.from_user["username"]))
-    await message.answer("Openning work keyboard", reply_markup=keyboard.get_work())
-    logging.info("End рабочая клавиатура message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
+    logging.info("Sended %s for (%s <=> %s)" % ("Openning 'work reports' keyboard", message.from_user["id"], message.from_user["username"]))
+    await message.answer("Openning 'work reports' keyboard", reply_markup=keyboard.get_work())
+    logging.info("End Work reports message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
 
-# <<<<<<<<<<<<<<<<<< Доп. >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='доп.', ignore_case=True))
-async def cmd_start(message: types.Message):
-    logging.info("Start Доп. message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
-    global keyboard
-    logging.info("Sended %s for (%s <=> %s)" % ("Openning dop. keyboard", message.from_user["id"], message.from_user["username"]))
-    await message.answer("Openning dop. keyboard", reply_markup=keyboard.get_dop_work())
-    logging.info("End Доп. message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
+# # <<<<<<<<<<<<<<<<<< Доп. >>>>>>>>>>>>>>>>>>
+# @settings.dp.message_handler(Text(equals='доп.', ignore_case=True))
+# async def cmd_start(message: types.Message):
+#     logging.info("Start Доп. message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
+#     global keyboard
+#     logging.info("Sended %s for (%s <=> %s)" % ("Openning dop. keyboard", message.from_user["id"], message.from_user["username"]))
+#     await message.answer("Openning dop. keyboard", reply_markup=keyboard.get_dop_work())
+#     logging.info("End Доп. message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
 
 # <<<<<<<<<<<<<<<<<< Настройки >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='настройки', ignore_case=True))
@@ -127,35 +126,33 @@ async def cmd_start(message: types.Message):
     else:
         await message.answer("Error 403: access is denied")
 
-# <<<<<<<<<<<<<<<<<< Начать работать >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='начать работать', ignore_case=True))
+# <<<<<<<<<<<<<<<<<< Start working >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='start working', ignore_case=True))
 async def cmd_start(message: types.Message):
-    logging.info("Start начать работать message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
+    logging.info("Start Start working message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
     global settings
     work = get_work_time(settings, message.from_user["id"])
-    w, s, t = "Закончить работать", work.get_status(), "#" + work.get_tag()
+    w, s, t = "Stop working", work.get_status(), "#" + work.get_tag()
 
-    # keyboard.update_keyboard_main("Закончить работать", work.get_status())
-    # keyboard.update_keyboard_work("Закончить работать")
+    # keyboard.update_keyboard_main("Stop working", work.get_status())
+    # keyboard.update_keyboard_work("Stop working")
     mes = work.start_working()
     logging.info("Sended %s for (%s <=> %s)" % (mes, message.from_user["id"], message.from_user["username"]))
     await message.answer(mes, reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
-    logging.info("End начать работать message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
+    logging.info("End Start working message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
 
-# <<<<<<<<<<<<<<<<<< Закончить работать >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='закончить работать', ignore_case=True))
+# <<<<<<<<<<<<<<<<<< Stop working >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='stop working', ignore_case=True))
 async def cmd_start(message: types.Message):
-    logging.info("Start закончить работать message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
+    logging.info("Start Stop working message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
     global settings
     work = get_work_time(settings, message.from_user["id"])
-    w, s, t = "Начать работать", work.get_status(), "#" + work.get_tag()
+    w, s, t = "Start working", work.get_status(), "#" + work.get_tag()
 
-    # keyboard.update_keyboard_main("Начать работать", work.get_status())
-    # keyboard.update_keyboard_work("Начать работать")
     mes = work.end_working(message.from_user["id"])
     logging.info("Sended %s for (%s <=> %s)" % (mes, message.from_user["id"], message.from_user["username"]))
     await message.answer(mes, reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
-    logging.info("End закончить работать message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
+    logging.info("End Stop working message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
 
 # <<<<<<<<<<<<<<<<<< Studying >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='studying', ignore_case=True))
@@ -164,9 +161,9 @@ async def cmd_start(message: types.Message):
     work = get_work_time(settings, message.from_user["id"])
     work.set_status("working")
 
-    w, s, t = "Начать работать" if not work.get_is_working() else "Закончить работать", work.get_status(), "#" + work.get_tag()
+    w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
 
-    # keyboard.update_keyboard_main("Начать работать" if not work.get_is_working() else "Закончить работать", "Working")
+    # keyboard.update_keyboard_main("Start working" if not work.get_is_working() else "Stop working", "Working")
     await message.answer("Status => Working", reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
 
 # <<<<<<<<<<<<<<<<<< Working >>>>>>>>>>>>>>>>>>
@@ -176,9 +173,9 @@ async def cmd_start(message: types.Message):
     work = get_work_time(settings, message.from_user["id"])
     work.set_status("studying")
 
-    w, s, t = "Начать работать" if not work.get_is_working() else "Закончить работать", work.get_status(), "#" + work.get_tag()
+    w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
 
-    # keyboard.update_keyboard_main("Начать работать" if not work.get_is_working() else "Закончить работать", "Studying")
+    # keyboard.update_keyboard_main("Start working" if not work.get_is_working() else "Stop working", "Studying")
     await message.answer("Status => Studying", reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
 
 # <<<<<<<<<<<<<<<<<< Выбрать тэг >>>>>>>>>>>>>>>>>>
@@ -192,13 +189,13 @@ async def cmd_start(message: types.Message):
 async def cmd_start(message: types.Message):
     global settings
     work = get_work_time(settings, message.from_user["id"])
-    w, s = "Начать работать" if not work.get_is_working() else "Закончить работать", work.get_status()
+    w, s = "Start working" if not work.get_is_working() else "Stop working", work.get_status()
     t = message.text
 
     work.set_tag(message.text[1:])
     await message.answer("Tag changed to: #" + work.get_tag(), reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
 
-# <<<<<<<<<<<<<<<<<< Выбрать тэг >>>>>>>>>>>>>>>>>>
+# <<<<<<<<<<<<<<<<<< История тэгов >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals="история тэгов", ignore_case=True))
 async def cmd_start(message: types.Message):
     global settings
@@ -209,8 +206,8 @@ async def cmd_start(message: types.Message):
         history = "None"
     await message.answer(history)
 
-# <<<<<<<<<<<<<<<<<< Отработанные часы >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='отработанные часы', ignore_case=True))
+# <<<<<<<<<<<<<<<<<< Worked time >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='worked time', ignore_case=True))
 async def cmd_start(message: types.Message):
     global settings
     work = get_work_time(settings, message.from_user["id"])
@@ -220,22 +217,22 @@ async def cmd_start(message: types.Message):
     else:
         await message.answer(work.get_finfo_day_sum(message.from_user["id"]))
 
-# <<<<<<<<<<<<<<<<<< Отработанные часы (прошлая неделя) >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='отработанные часы (прошлая неделя)', ignore_case=True))
+# <<<<<<<<<<<<<<<<<< Last week worked time >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='last week worked time', ignore_case=True))
 async def cmd_start(message: types.Message):
     global settings
     work = get_work_time(settings, message.from_user["id"])
     await message.answer(work.get_finfo_day_sum(message.from_user["id"], True))
 
-# <<<<<<<<<<<<<<<<<< Отработанные периоды >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='отработанные периоды', ignore_case=True))
+# <<<<<<<<<<<<<<<<<< Worked time (details) >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='worked time (details)', ignore_case=True))
 async def cmd_start(message: types.Message):
     global settings
     work = get_work_time(settings, message.from_user["id"])
     await message.answer(work.get_finfo_day_intervals(message.from_user["id"]))
 
-# <<<<<<<<<<<<<<<<<< Отработанные периоды (прошлая неделя) >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='отработанные периоды (прошлая неделя)', ignore_case=True))
+# <<<<<<<<<<<<<<<<<< Last week worked time (details) >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='last week worked time (details)', ignore_case=True))
 async def cmd_start(message: types.Message):
     global settings
     work = get_work_time(settings, message.from_user["id"])
@@ -316,7 +313,7 @@ async def echo(message: types.Message):
     global settings, keyboard
 
     work = get_work_time(settings, message.from_user["id"])
-    w, s, t = "Начать работать" if not work.get_is_working() else "Закончить работать", work.get_status(), "#" + work.get_tag()
+    w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
 
     canonical_command = message.text
     command = canonical_command.lower()
@@ -381,7 +378,7 @@ async def process_callback_button1(callback_query: types.CallbackQuery):
     global settings, keyboard
 
     work = get_work_time(settings, callback_query.from_user["id"])
-    w, s, t = "Начать работать" if not work.get_is_working() else "Закончить работать", work.get_status(), "#" + work.get_tag()
+    w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
 
     data = callback_query.data
     

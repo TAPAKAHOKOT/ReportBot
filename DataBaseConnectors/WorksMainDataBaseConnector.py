@@ -18,6 +18,8 @@ class WorksMainDataBaseConnector(DataBaseConnector):
         and start_time < date_trunc('week', CURRENT_TIMESTAMP + interval '1 week'))"""
         self.last_week_asking = """(start_time >= date_trunc('week', CURRENT_TIMESTAMP - interval '1 week') 
         and start_time < date_trunc('week', CURRENT_TIMESTAMP))"""
+        self.this_month_asking = """(start_time >= date_trunc('month', CURRENT_TIMESTAMP) 
+        and start_time < date_trunc('month', CURRENT_TIMESTAMP + interval '1 month'))"""
         self.select_columns = "user_id, tag, start_time, end_time"
     
 
@@ -103,6 +105,12 @@ class WorksMainDataBaseConnector(DataBaseConnector):
     def get_last_week_rows_by_tag(self, tag: str, u_id: int, status: str) -> list:
         self.cursor.execute("SELECT %s FROM %s WHERE tag=%s AND %s AND user_id=%s AND status=%s GROUP BY start_time ORDER BY start_time" %\
             (self.select_columns, self.works_table_name, self.tagf(tag), self.last_week_asking, u_id, self.tagf(status)))
+        return self.cursor.fetchall()
+    
+
+    def get_this_month_rows(self, u_id: int, status: str) -> list:
+        self.cursor.execute("SELECT %s FROM %s WHERE %s AND user_id=%s AND status=%s ORDER BY start_time" %\
+            (self.select_columns, self.works_table_name, self.this_month_asking, u_id, self.tagf(status)))
         return self.cursor.fetchall()
 
 

@@ -44,6 +44,7 @@ class Settings:
         self.client = Client(self.api_key, self.api_secret)
 
         self.my_id = 472914986
+        self.mom_id = 472914986
 
         self.main_bot_token = data["clear_reports_sender_bot"]
         self.test_bot_token = data["TapakahoBot"]

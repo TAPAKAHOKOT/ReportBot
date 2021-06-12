@@ -1,0 +1,71 @@
+{
+	"folders": [
+		{
+			"name": "Data",
+			"path": "./data"
+		},
+		{
+			"name": "Log",
+			"path": "./logs"
+		},
+		{
+			"name": "DataBase",
+			"path": "./DataBaseConnectors"
+		},
+		{
+			"name": "Bot",
+			"path": "./"
+		},
+		{
+			"name": "csv",
+			"path": "./csv_data"
+		},
+		{
+			"name": "Vk",
+			"path": "./vk_bot"
+		},
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.git": true,
+			"**/.DS_Store": true,
+			"**/__pycache__": true,
+			".vscode": true,
+			"chromedriver.exe": true,
+			"Works timer db.session.sql": true,
+			"csv_data": true,
+			"vk_bot": true,
+			"logs": true,
+			"DataBaseConnectors": true,
+			"data": true
+		},
+		"sqltools.connections": [
+			{
+				"previewLimit": 50,
+				"server": "127.0.0.1",
+				"port": 5432,
+				"driver": "PostgreSQL",
+				"name": "Works timer db",
+				"database": "my_test_py_database",
+				"username": "postgres",
+				"password": "4608",
+				"connectionTimeout": 60
+			}
+		],
+		"files.autoSave": "afterDelay",
+		"editor.fontFamily": "JetBrains Mono, 'Courier New', monospace",
+		// "editor.rulers": [120],
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Python: Текущий файл",
+				"type": "python",
+				"request": "launch",
+				"program": "${file}",
+				"console": "integratedTerminal"
+			}
+		]
+	}
+}

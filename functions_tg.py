@@ -69,6 +69,12 @@ async def send():
         logging.info("Sended for %s: 'Don't forget to comb Knopa'" % settings.my_id)
         await settings.bot.send_message(settings.my_id, "Don't forget to comb Knopa")
         logging.info("End knopa_memery_on()")
+    
+    async def mom_memery_on():
+        logging.info("Start mom_memery_on()")
+        logging.info("Sended for %s: 'Не забудь взвеситься'" % settings.my_id)
+        await settings.bot.send_message(settings.mom_id, "Не забудь взвеситься")
+        logging.info("End mom_memery_on()")
 
     async def update_flags():
         logging.info("Start update_flags()")
@@ -171,6 +177,8 @@ async def send():
     schedule.every().day.at("12:00").do(check_noIp)
 
     schedule.every().day.at("22:00").do(knopa_memery_on)
+    schedule.every().day.at("8:00").do(mom_memery_on)
+    schedule.every().day.at("20:00").do(mom_memery_on)
 
     schedule.every().hour.do(check_work_last_online)
 

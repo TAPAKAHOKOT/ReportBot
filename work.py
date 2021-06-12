@@ -175,7 +175,7 @@ class Work:
         logging.info("End get_finfo_day_intervals(...)")
         return res if res != "" else "None"
     
-    def get_finfo_day_sum(self, u_id: int, last_week: bool = False) -> str:
+    def get_finfo_day_sum(self, u_id: int, last_week: bool = False, month: bool = False) -> str:
         logging.info("Start get_finfo_day_sum(...)")
         self.last_online_time = datetime.datetime.now()
         res = "<<<" + self.status.title() + ">>>\n"
@@ -184,6 +184,10 @@ class Work:
             info = self.db.get_last_week_rows(u_id, self.status)
         else:
             info = self.db.get_this_week_rows(u_id, self.status)
+        
+        if month:
+            info = self.db.get_this_month_rows(u_id, self.status)
+            
         s_date = None
         for row in info:
             if s_date is None or s_date.date() != row[2].date():

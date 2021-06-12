@@ -54,6 +54,11 @@ async def cmd_start(message: types.Message):
     w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
     await message.answer("Запуск основной клавиатуры", reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
 
+# <<<<<<<<<<<<<<<<<< myid >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(commands=["myid"])
+async def cmd_start(message: types.Message):
+    await message.answer("Ваш id: %s" % message.from_user["id"])
+
 # <<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='main', ignore_case=True))
 async def cmd_start(message: types.Message):
@@ -217,6 +222,13 @@ async def cmd_start(message: types.Message):
         await message.answer(work.get_current_working_info())
     else:
         await message.answer(work.get_finfo_day_sum(message.from_user["id"]))
+
+# <<<<<<<<<<<<<<<<<< This month worked time >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='month', ignore_case=True))
+async def cmd_start(message: types.Message):
+    global settings
+    work = get_work_time(settings, message.from_user["id"])
+    await message.answer(work.get_finfo_day_sum(message.from_user["id"], month=True))
 
 # <<<<<<<<<<<<<<<<<< Last week worked time >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='last week worked time', ignore_case=True))

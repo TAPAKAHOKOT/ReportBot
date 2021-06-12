@@ -1,47 +1,118 @@
-12:35:42 INFO:Init settigs in the True mode
-12:35:43 INFO:Start filling data
-12:35:43 INFO:Filling line: Send To: tapakahokot@gmail.com
+20:54:12 INFO:Init settigs in the True mode
+20:54:13 INFO:Start filling data
+20:54:13 INFO:Filling line: Send To: tapakahokot@gmail.com
 
-12:35:43 INFO:Filling line: FileName: otchet.xlsx
+20:54:13 INFO:Filling line: FileName: otchet.xlsx
 
-12:35:43 INFO:Filling line: File Send: 0
+20:54:13 INFO:Filling line: File Send: 0
 
-12:35:43 INFO:Filling line: City: Москва
+20:54:13 INFO:Filling line: City: Москва
 
-12:35:43 INFO:Filling line: Sending Activate: 1
+20:54:13 INFO:Filling line: Sending Activate: 1
 
-12:35:43 INFO:Filling line: Binance Currency: XEMBTC
+20:54:13 INFO:Filling line: Binance Currency: XEMBTC
 
-12:35:43 INFO:Filling line: NoIp: 13
+20:54:13 INFO:Filling line: NoIp: 13
 
-12:35:43 INFO:Filling line: None: date:1
+20:54:13 INFO:Filling line: None: date:1
 
-12:35:43 INFO:Filling line: -1
+20:54:13 INFO:Filling line: -1
 
-12:35:43 INFO:Filling line: Москва, City, Клинцы, Салехард
+20:54:13 INFO:Filling line: Москва, City, Клинцы, Салехард
 
-12:35:43 INFO:Filling line: -2
+20:54:13 INFO:Filling line: -2
 
-12:35:43 INFO:Filling line: XEMBTC, BTCUSDT, NEOBTC, TRXBTC
-12:35:43 INFO:End filling data
-12:35:43 INFO:Settings are initialized
-12:35:43 INFO:Start initing Settings
-12:35:43 INFO:Start create_keyboard_cities()
-12:35:43 INFO:End create_keyboard_cities()
-12:35:43 INFO:Start create_keyboard_binance()
-12:35:43 INFO:End create_keyboard_binance()
-12:35:43 INFO:End initing Settings
-12:35:43 INFO:Bot: tapakahokot test bot [@TapakahoBot]
-12:35:45 WARNING:Updates were skipped successfully.
-12:35:45 INFO:Start initing all schedules
-12:35:45 INFO:End initing all schedules
-12:35:45 INFO:Start running schedules cycle (while True)
-12:35:45 INFO:Start polling.
-12:35:58 INFO:Start main message handler by (472914986 <=> TAPAKAHOKOT)
-12:35:58 INFO:Start get_work_time(...)
-12:35:58 INFO:Created Work() for 472914986
-12:35:58 INFO:Start initing Work for 472914986
-12:35:59 INFO:End initing Work
-12:35:59 INFO:End get_work_time(...)
-12:35:59 INFO:Sended Openning main keyboard for (472914986 <=> TAPAKAHOKOT)
-12:35:59 INFO:End main message handler by (472914986 <=> TAPAKAHOKOT)
+20:54:13 INFO:Filling line: XEMBTC, BTCUSDT, NEOBTC, TRXBTC
+20:54:13 INFO:End filling data
+20:54:13 INFO:Settings are initialized
+20:54:13 INFO:Start initing Settings
+20:54:13 INFO:Start create_keyboard_cities()
+20:54:13 INFO:End create_keyboard_cities()
+20:54:13 INFO:Start create_keyboard_binance()
+20:54:13 INFO:End create_keyboard_binance()
+20:54:13 INFO:End initing Settings
+20:54:13 INFO:Bot: tapakahokot test bot [@TapakahoBot]
+20:54:14 WARNING:Updates were skipped successfully.
+20:54:14 INFO:Start initing all schedules
+20:54:14 INFO:End initing all schedules
+20:54:14 INFO:Start running schedules cycle (while True)
+20:54:14 INFO:Start polling.
+20:55:08 ERROR:Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\bot\api.py", line 139, in make_request
+    async with session.post(url, data=req, **kwargs) as response:
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiohttp\client.py", line 1117, in __aenter__
+    self._resp = await self._coro
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiohttp\client.py", line 544, in _request
+    await resp.start(conn)
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiohttp\client_reqrep.py", line 890, in start
+    message, payload = await self._protocol.read()  # type: ignore
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiohttp\streams.py", line 604, in read
+    await self._waiter
+aiohttp.client_exceptions.ClientOSError: [WinError 1236] Подключение к сети было разорвано локальной системой
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\dispatcher\dispatcher.py", line 359, in start_polling
+    updates = await self.bot.get_updates(limit=limit, offset=offset, timeout=timeout)
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\bot\bot.py", line 97, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\bot\base.py", line 208, in request
+    return await api.make_request(self.session, self.server, self.__token, method, data, files,
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\bot\api.py", line 142, in make_request
+    raise exceptions.NetworkError(f"aiohttp client throws an error: {e.__class__.__name__}: {e}")
+aiogram.utils.exceptions.NetworkError: Aiohttp client throws an error: ClientOSError: [WinError 1236] Подключение к сети было разорвано локальной системой
+20:55:23 ERROR:Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiohttp\connector.py", line 969, in _wrap_create_connection
+    return await self._loop.create_connection(*args, **kwargs)  # type: ignore  # noqa
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\asyncio\base_events.py", line 1025, in create_connection
+    raise exceptions[0]
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\asyncio\base_events.py", line 1010, in create_connection
+    sock = await self._connect_sock(
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\asyncio\base_events.py", line 924, in _connect_sock
+    await self.sock_connect(sock, address)
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\asyncio\proactor_events.py", line 702, in sock_connect
+    return await self._proactor.connect(sock, address)
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\asyncio\windows_events.py", line 808, in _poll
+    value = callback(transferred, key, ov)
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\asyncio\windows_events.py", line 595, in finish_connect
+    ov.getresult()
+ConnectionAbortedError: [WinError 1236] Подключение к сети было разорвано локальной системой
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\bot\api.py", line 139, in make_request
+    async with session.post(url, data=req, **kwargs) as response:
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiohttp\client.py", line 1117, in __aenter__
+    self._resp = await self._coro
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiohttp\client.py", line 520, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiohttp\connector.py", line 535, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiohttp\connector.py", line 892, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiohttp\connector.py", line 1051, in _create_direct_connection
+    raise last_exc
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiohttp\connector.py", line 1020, in _create_direct_connection
+    transp, proto = await self._wrap_create_connection(
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiohttp\connector.py", line 975, in _wrap_create_connection
+    raise client_error(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [Подключение к сети было разорвано локальной системой]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\dispatcher\dispatcher.py", line 359, in start_polling
+    updates = await self.bot.get_updates(limit=limit, offset=offset, timeout=timeout)
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\bot\bot.py", line 97, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\bot\base.py", line 208, in request
+    return await api.make_request(self.session, self.server, self.__token, method, data, files,
+  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\bot\api.py", line 142, in make_request
+    raise exceptions.NetworkError(f"aiohttp client throws an error: {e.__class__.__name__}: {e}")
+aiogram.utils.exceptions.NetworkError: Aiohttp client throws an error: ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [Подключение к сети было разорвано локальной системой]
+20:55:24 INFO:Stop polling...
+20:55:24 WARNING:Goodbye!

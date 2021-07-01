@@ -9,24 +9,24 @@
   <img align="center" src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/tags.png" width="300">
 </p><br>
 <p align="center">
-  In "**Work reports**" you can find different output<br> 
+  In "<b>Work reports</b>" you can find different output<br> 
   ways to get data about worked intervals.
   <br><br>
   <img align="center" src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/im_worked_time_det.png" width="300"> 
 </p><br>
 <p align="center">
-  After clicking "**Start working**" your work timer is starting.<br> 
-  Instead of "**Start working**" appears "**Stop Working**".
+  After clicking "<b>Start working</b>" your work timer is starting.<br> 
+  Instead of "<b>Start working</b>" appears "<b>Stop Working</b>".
   <br><br>
   <img align="center" src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/start.png" width="300"> 
 </p><br>
 <p align="center">
-  After clicking "**Stop working**" your work timer stops and saves.
+  After clicking "<b>Stop working</b>" your work timer stops and saves.
   <br><br>
   <img align="center" src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/stop.png" width="300"> 
 </p><br>
 <p align="center">
-  By clicking "**Studing**" or "**Working**" you can change mode.<br> 
+  By clicking "<b>Studing</b>" or "<b>Working</b>" you can change mode.<br> 
   Data in each mode is stored independently of each other.
   <br><br>
   <img align="center" src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/studying.png" width="300"> 

@@ -46,13 +46,21 @@ def start_process():
     p1.start()
 
 
-def get_work_time(settigns, u_id) -> Work:
+def get_work_time(settigns: Settings, u_id) -> Work:
     logging.info("Start get_work_time(...)")
     if not u_id in settings.work_time_dict.keys():
         logging.info("Created Work() for %s" % u_id)
         settings.work_time_dict[u_id] = Work(settings, u_id)
     logging.info("End get_work_time(...)")
     return settings.work_time_dict[u_id]
+
+
+def create_work_time(settings: Settings, u_id, st_time: datetime.datetime):
+    logging.info("Start create_work_time(...)")
+    w = Work(settings, u_id)
+    w.set_start_working_time(st_time)
+    settings.work_time_dict[u_id] = w
+    logging.info("End create_work_time(...)")
 
 async def send():
     global settings

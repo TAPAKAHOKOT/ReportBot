@@ -1,17 +1,15 @@
-from Settings import Settings
 import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 import logging
 
 class DataBaseConnector:
-    def __init__(self, settings: Settings):
-        self.settings = settings
-        self.user = self.settings.db_user
-        self.password = self.settings.db_password
-        self.host = self.settings.db_host
-        self.port = self.settings.db_port
-        self.db_name = self.settings.db_name
+    def __init__(self, set_dict: dict):
+        self.user = set_dict["usr"]
+        self.password = set_dict["pwd"]
+        self.host = set_dict["host"]
+        self.port = set_dict["port"]
+        self.db_name = set_dict["name"]
 
         self.connection = psycopg2.connect(user=self.user,
                                         password=self.password,

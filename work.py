@@ -3,6 +3,7 @@ from Settings import Settings
 from DataBaseConnectors.WorksMainDataBaseConnector import WorksMainDataBaseConnector
 from DataBaseConnectors.WorkStatusesDataBaseConnector import WorkStatusesDataBaseConnector
 from DataBaseConnectors.WorkTagHistoryDataBaseConnector import WorkTagHistoryDataBaseConnector
+from DataBaseConnectors.WorksStartWorkDataBaseConnector import WorksStartWorkDataBaseConnector
 from DataBaseConnectors.WorkTagsDataBaseConnector import WorkTagsDataBaseConnector
 import logging
 
@@ -27,10 +28,11 @@ class Work:
         self.tag = "testing"
         self.status = "studying"
 
-        self.db = WorksMainDataBaseConnector(self.setttings)
-        self.st_db = WorkStatusesDataBaseConnector(self.setttings)
-        self.tag_db = WorkTagHistoryDataBaseConnector(self.setttings)
-        self.u_tag_db = WorkTagsDataBaseConnector(self.setttings)
+        self.db = WorksMainDataBaseConnector(self.setttings.db_data)
+        self.st_db = WorkStatusesDataBaseConnector(self.setttings.db_data)
+        self.tag_db = WorkTagHistoryDataBaseConnector(self.setttings.db_data)
+        self.u_tag_db = WorkTagsDataBaseConnector(self.setttings.db_data)
+        self.start_db = WorksStartWorkDataBaseConnector(self.setttings.db_data)
 
         u_data = self.st_db.get_user_status(self.user_id)
         if u_data:
@@ -89,6 +91,8 @@ class Work:
         self.start_time_working = self.get_current_time()
         self.start_date_working = self.get_current_day()
 
+        self.start_db.add_row(self.user_id, self.start_time_working)
+
         logging.info("End start_working(...)")
         return "Start working time: " + self.start_time_working.strftime(self.timeformat) + " #" + self.tag
         
@@ -103,9 +107,21 @@ class Work:
         self.end_time_working = self.get_current_time()
         self.end_date_working = self.get_current_day()
 
+        self.start_db.delete_row(self.user_id)
+
         self.saving_data(u_id)
         logging.info("End end_working(...)")
         return "End working time: {}\nWorking time: {}".format(self.end_time_working.strftime(self.timeformat), str(self.get_difference()).split(".")[0])
+
+
+    def set_start_working_time(self, t: datetime.datetime):
+        logging.info("Start set_start_working_time(...)")
+        self.last_online_time = datetime.datetime.now()
+        self.is_working = True 
+        self.start_time_working = t.time()
+        self.start_date_working = t.day()
+        logging.info("End set_start_working_time(...)")
+
 
     def get_current_day(self) -> datetime.datetime:
         return datetime.datetime.today()

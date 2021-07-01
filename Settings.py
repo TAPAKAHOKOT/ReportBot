@@ -17,6 +17,11 @@ class Settings:
         self.db_host="127.0.0.1"
         self.db_port="5432"
         self.db_name = "my_test_py_database"
+        self.db_data = {"usr": self.db_user,
+                        "pwd": self.db_password,
+                        "host": self.db_host,
+                        "port": self.db_port,
+                        "name": self.db_name}
 
         # Logging settings
         # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

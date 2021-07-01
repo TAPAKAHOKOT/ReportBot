@@ -1,5 +1,4 @@
 from DataBaseConnectors.DataBaseConnector import DataBaseConnector
-from Settings import Settings
 import datetime
 import psycopg2
 from psycopg2 import Error
@@ -7,8 +6,8 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 import logging
 
 class WorkTagHistoryDataBaseConnector(DataBaseConnector):
-    def __init__(self, settings: Settings):
-        super().__init__(settings)
+    def __init__(self,  set_dict: dict):
+        super().__init__(set_dict)
 
         self.tag_history_tabel_name = "users_tag_history"
 

@@ -1,6 +1,5 @@
 
 import datetime
-from Settings import Settings
 from DataBaseConnectors.DataBaseConnector import DataBaseConnector
 import psycopg2
 from psycopg2 import Error
@@ -8,8 +7,8 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 import logging
 
 class WorksMainDataBaseConnector(DataBaseConnector):
-    def __init__(self, settings: Settings):
-        super().__init__(settings)
+    def __init__(self, set_dict: dict):
+        super().__init__(set_dict)
 
         self.works_table_name = "works_times"
 

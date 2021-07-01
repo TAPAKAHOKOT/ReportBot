@@ -6,9 +6,10 @@ from functions_tg import *
 
 from aiogram import executor, types
 from aiogram.dispatcher.filters import Text
+from DataBaseConnectors.WorksStartWorkDataBaseConnector import WorksStartWorkDataBaseConnector
 
 import time
-
+import sys
 from datetime import datetime
 
 keyboard = Keyboard(settings)
@@ -414,4 +415,11 @@ async def process_callback_button1(callback_query: types.CallbackQuery):
 
 start_time = time.time()
 if __name__ == "__main__":
+    db = WorksStartWorkDataBaseConnector(settings.db_data)
+    # ! Need to convert resume_work[1] to datetime.datetime
+    resume_work = db.get_all_rows()  
+
+    for row in resume_work:
+        create_work_time(row[0], row[1])
+    
     executor.start_polling(settings.dp, skip_updates=True, on_startup=on_startup)

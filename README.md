@@ -4,23 +4,23 @@ With this bot you can track your worked hours.
 
 Using different tags you can split time intervals. (Also you can create your own tags writing #tag_name).
 
-![Screenshot](imgs/tags.png) 
+<img src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/tags.png" width="200">
 
 
 In "Work reports you can find different output ways to get data about worked intervals.
 
-![Screenshot](imgs/im_worked_time_det.png) 
+<img src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/im_worked_time_det.png" width="200"> 
 
 After clicking "Start working" your work timer is starting. Instead of "Start working" appears "Stop Working".
 
-![Screenshot](imgs/start.png) 
+<img src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/start.png" width="200"> 
 
 After clicking "Stop working" your work timer stops and saves.
 
-![Screenshot](imgs/stop.png) 
+<img src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/stop.png" width="200"> 
 
 By clicking "Studing" or "Working" you can change mode. Data in each mode is stored independently of each other.
 
-![Screenshot](imgs/studying.png)
+<img src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/studying.png" width="200"> 
 
-![Screenshot](imgs/working.png) 
+<img src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/working.png" width="200"> 

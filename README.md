@@ -4,7 +4,7 @@
 
 <p align="center">
   Using different tags you can split time intervals.<br>
-  (Also you can create your own tags writing **#tag_name**).
+  (Also you can create your own tags writing <b>#tag_name</b>).
   <br><br>
   <img align="center" src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/tags.png" width="300">
 </p><br>

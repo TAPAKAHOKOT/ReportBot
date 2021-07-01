@@ -1,7 +1,7 @@
 # ReportBot
 
 ## With this bot you can track your worked hours. 
-
+<p align="center">
 Using different tags you can split time intervals. (Also you can create your own tags writing **#tag_name**).
 <p align="center">
   <img align="center" src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/tags.png" width="300">
@@ -27,3 +27,4 @@ By clicking "**Studing**" or "**Working**" you can change mode. Data in each mod
 </p>
 
 You can [test](https://t.me/clear_reports_sender_bot) this bot
+</p>

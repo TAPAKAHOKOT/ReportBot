@@ -34,5 +34,5 @@
   <img align="center" src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/working.png" width="300"> 
 </p><br>
 <p align="center">
-  You can [test](https://t.me/clear_reports_sender_bot) this bot
+  You can <a href="https://t.me/clear_reports_sender_bot">test</a> this bot
 </p>

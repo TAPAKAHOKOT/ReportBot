@@ -2,7 +2,6 @@
 
 ## With this bot you can track your worked hours. 
 
-
 <p align="center">
   Using different tags you can split time intervals.<br>
   (Also you can create your own tags writing <b>#tag_name</b>).

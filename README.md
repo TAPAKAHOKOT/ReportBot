@@ -26,4 +26,4 @@ By clicking "**Studing**" or "**Working**" you can change mode. Data in each mod
 <img src="https://github.com/TAPAKAHOKOT/ReportBot/blob/main/imgs/working.png" width="300"> 
 
 
-You can [test] (https://t.me/clear_reports_sender_bot) this bot
+You can [test](https://t.me/clear_reports_sender_bot) this bot

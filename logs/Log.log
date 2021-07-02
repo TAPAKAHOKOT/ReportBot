@@ -1,90 +1,82 @@
-21:45:18 INFO:Init settigs in the True mode
-21:45:18 INFO:Start filling data
-21:45:18 INFO:Filling line: Send To: tapakahokot@gmail.com
+23:22:45 INFO:Init settigs in the True mode
+23:22:46 INFO:Start filling data
+23:22:46 INFO:Filling line: Send To: tapakahokot@gmail.com
 
-21:45:18 INFO:Filling line: FileName: otchet.xlsx
+23:22:46 INFO:Filling line: FileName: otchet.xlsx
 
-21:45:18 INFO:Filling line: File Send: 0
+23:22:46 INFO:Filling line: File Send: 0
 
-21:45:18 INFO:Filling line: City: Москва
+23:22:46 INFO:Filling line: City: Москва
 
-21:45:18 INFO:Filling line: Sending Activate: 1
+23:22:46 INFO:Filling line: Sending Activate: 1
 
-21:45:18 INFO:Filling line: Binance Currency: XEMBTC
+23:22:46 INFO:Filling line: Binance Currency: XEMBTC
 
-21:45:18 INFO:Filling line: NoIp: 13
+23:22:46 INFO:Filling line: NoIp: 13
 
-21:45:18 INFO:Filling line: None: date:1
+23:22:46 INFO:Filling line: None: date:1
 
-21:45:18 INFO:Filling line: -1
+23:22:46 INFO:Filling line: -1
 
-21:45:18 INFO:Filling line: Москва, City, Клинцы, Салехард
+23:22:46 INFO:Filling line: Москва, City, Клинцы, Салехард
 
-21:45:18 INFO:Filling line: -2
+23:22:46 INFO:Filling line: -2
 
-21:45:18 INFO:Filling line: XEMBTC, BTCUSDT, NEOBTC, TRXBTC
-21:45:18 INFO:End filling data
-21:45:18 INFO:Settings are initialized
-21:45:18 INFO:Start initing Settings
-21:45:18 INFO:Start create_keyboard_cities()
-21:45:18 INFO:End create_keyboard_cities()
-21:45:18 INFO:Start create_keyboard_binance()
-21:45:18 INFO:End create_keyboard_binance()
-21:45:18 INFO:End initing Settings
-21:45:18 INFO:Start creating table start_working_time
-21:45:18 INFO:Connection closed for table start_working_time
-21:45:19 INFO:Bot: tapakahokot test bot [@TapakahoBot]
-21:45:20 WARNING:Updates were skipped successfully.
-21:45:20 INFO:Start initing all schedules
-21:45:20 INFO:End initing all schedules
-21:45:20 INFO:Start running schedules cycle (while True)
-21:45:20 INFO:Start polling.
-21:45:38 INFO:Start get_work_time(...)
-21:45:38 INFO:Created Work() for 472914986
-21:45:38 INFO:Start initing Work for 472914986
-21:45:38 INFO:Start creating table works_times
-21:45:38 INFO:Connection closed for table works_times
-21:45:38 INFO:Start creating table users_work_statuses
-21:45:38 INFO:Connection closed for table users_work_statuses
-21:45:38 INFO:Start creating table users_tag_history
-21:45:38 INFO:Connection closed for table users_tag_history
-21:45:38 INFO:Start creating table users_tags
-21:45:38 INFO:Connection closed for table users_tags
-21:45:38 INFO:Start creating table start_working_time
-21:45:38 INFO:Connection closed for table start_working_time
-21:45:38 INFO:End initing Work
-21:45:38 INFO:End get_work_time(...)
-21:45:42 INFO:Start get_work_time(...)
-21:45:42 INFO:End get_work_time(...)
-21:45:45 INFO:Start get_work_time(...)
-21:45:45 INFO:End get_work_time(...)
-21:45:45 ERROR:Task exception was never retrieved
-future: <Task finished name='Task-25' coro=<Dispatcher._process_polling_updates() done, defined at C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\dispatcher\dispatcher.py:380> exception=MessageNotModified('Message is not modified: specified new message content and reply markup are exactly the same as a current content and reply markup of the message')>
-Traceback (most recent call last):
-  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\dispatcher\dispatcher.py", line 388, in _process_polling_updates
-    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
-  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\dispatcher\dispatcher.py", line 225, in process_updates
-    return await asyncio.gather(*tasks)
-  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\dispatcher\handler.py", line 117, in notify
-    response = await handler_obj.handler(*args, **partial_data)
-  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\dispatcher\dispatcher.py", line 273, in process_update
-    return await self.callback_query_handlers.notify(update.callback_query)
-  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\dispatcher\handler.py", line 117, in notify
-    response = await handler_obj.handler(*args, **partial_data)
-  File "c:\Users\Igrok\Desktop\ReportBot\bot_sender.py", line 385, in save_min_date_callback
-    await call.message.edit_reply_markup(reply_markup=None)
-  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\types\message.py", line 2622, in edit_reply_markup
-    return await self.bot.edit_message_reply_markup(
-  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\bot\bot.py", line 2346, in edit_message_reply_markup
-    result = await self.request(api.Methods.EDIT_MESSAGE_REPLY_MARKUP, payload)
-  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\bot\base.py", line 208, in request
-    return await api.make_request(self.session, self.server, self.__token, method, data, files,
-  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\bot\api.py", line 140, in make_request
-    return check_result(method, response.content_type, response.status, await response.text())
-  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\bot\api.py", line 115, in check_result
-    exceptions.BadRequest.detect(description)
-  File "C:\Users\Igrok\AppData\Local\Programs\Python\Python38\lib\site-packages\aiogram\utils\exceptions.py", line 139, in detect
-    raise err(cls.text or description)
-aiogram.utils.exceptions.MessageNotModified: Message is not modified: specified new message content and reply markup are exactly the same as a current content and reply markup of the message
-21:47:09 INFO:Stop polling...
-21:47:09 WARNING:Goodbye!
+23:22:46 INFO:Filling line: XEMBTC, BTCUSDT, NEOBTC, TRXBTC
+23:22:46 INFO:End filling data
+23:22:46 INFO:Settings are initialized
+23:22:46 INFO:Start initing Settings
+23:22:46 INFO:Start create_keyboard_cities()
+23:22:46 INFO:End create_keyboard_cities()
+23:22:46 INFO:Start create_keyboard_binance()
+23:22:46 INFO:End create_keyboard_binance()
+23:22:46 INFO:End initing Settings
+23:22:46 INFO:Start creating table start_working_time
+23:22:46 INFO:Connection closed for table start_working_time
+23:22:46 INFO:Bot: tapakahokot test bot [@TapakahoBot]
+23:22:48 WARNING:Updates were skipped successfully.
+23:22:48 INFO:Start initing all schedules
+23:22:48 INFO:End initing all schedules
+23:22:48 INFO:Start running schedules cycle (while True)
+23:22:48 INFO:Start polling.
+23:22:48 INFO:Start Work reports message handler by (472914986 <=> TAPAKAHOKOT)
+23:22:48 INFO:End Work reports message handler by (472914986 <=> TAPAKAHOKOT)
+23:22:51 INFO:Start get_work_time(...)
+23:22:51 INFO:Created Work() for 472914986
+23:22:51 INFO:Start initing Work for 472914986
+23:22:51 INFO:Start creating table works_times
+23:22:51 INFO:Connection closed for table works_times
+23:22:51 INFO:Start creating table users_work_statuses
+23:22:51 INFO:Connection closed for table users_work_statuses
+23:22:51 INFO:Start creating table users_tag_history
+23:22:51 INFO:Connection closed for table users_tag_history
+23:22:52 INFO:Start creating table users_tags
+23:22:52 INFO:Connection closed for table users_tags
+23:22:52 INFO:Start creating table start_working_time
+23:22:52 INFO:Connection closed for table start_working_time
+23:22:52 INFO:End initing Work
+23:22:52 INFO:End get_work_time(...)
+23:22:52 INFO:Start get_finfo_day_sum(...)
+23:22:52 INFO:End get_finfo_day_sum(...)
+23:22:55 INFO:Start get_work_time(...)
+23:22:55 INFO:End get_work_time(...)
+23:22:55 INFO:Start get_finfo_day_sum(...)
+23:22:55 INFO:End get_finfo_day_sum(...)
+23:22:57 INFO:Start get_work_time(...)
+23:22:57 INFO:End get_work_time(...)
+23:22:57 INFO:Start get_finfo_day_intervals(...)
+23:22:57 INFO:End get_finfo_day_intervals(...)
+23:22:58 INFO:Start get_work_time(...)
+23:22:58 INFO:End get_work_time(...)
+23:22:58 INFO:Start get_finfo_day_intervals(...)
+23:22:58 INFO:End get_finfo_day_intervals(...)
+23:23:01 INFO:Start get_work_time(...)
+23:23:01 INFO:End get_work_time(...)
+23:23:01 INFO:Start get_finfo_day_sum(...)
+23:23:01 INFO:End get_finfo_day_sum(...)
+23:23:12 INFO:Start get_work_time(...)
+23:23:12 INFO:End get_work_time(...)
+23:23:12 INFO:Start get_finfo_day_sum(...)
+23:23:12 INFO:End get_finfo_day_sum(...)
+23:23:44 INFO:Stop polling...
+23:23:44 WARNING:Goodbye!

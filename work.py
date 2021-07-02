@@ -34,8 +34,13 @@ class Work:
         self.u_tag_db = WorkTagsDataBaseConnector(self.setttings.db_data)
         self.start_db = WorksStartWorkDataBaseConnector(self.setttings.db_data)
 
+        self.start_constructor_done = False
         self.date_callback_constructor = ""
         self.time_callback_constructor = ""
+
+        self.callback_start_date_working: datetime.datetime = None
+        self.callback_start_time_working: datetime.datetime = None
+        self.callback_end_time_working: datetime.datetime = None
 
         u_data = self.st_db.get_user_status(self.user_id)
         if u_data:
@@ -83,6 +88,12 @@ class Work:
         logging.info("Start saving_data(...)")
         self.db.add_row(u_id, self.tag, self.status, self.start_time_working, self.end_time_working)
         logging.info("End saving_data(...)")
+    
+    def save_spec_data(self, u_id: int, s: datetime.datetime, e: datetime.datetime) -> None:
+        logging.info("save_spec_data saving_data(...)")
+        logging.info("start time : {}\nend time: {}".format(s, e))
+        self.db.add_row(u_id, self.tag, self.status, s, e)
+        logging.info("End save_spec_data(...)")
 
     def start_working(self) -> str:
         logging.info("Start start_working(...)")
@@ -138,6 +149,9 @@ class Work:
         end = datetime.datetime.strptime(end, self.timeformat)
 
         return [start, end]
+    
+    def get_one_time_from(self, line: str) -> datetime.datetime:
+        return datetime.datetime.strptime(line, self.timeformat)
     
     def get_day_from(self, line: str) -> datetime.datetime:
         return datetime.datetime.strptime(line, self.dateformat)

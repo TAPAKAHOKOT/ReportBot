@@ -16,6 +16,7 @@ import sys
 from datetime import datetime
 
 keyboard = Keyboard(settings)
+callback = CallbackItems()
 
 async def on_startup(x):
     asyncio.create_task(send())
@@ -100,10 +101,15 @@ async def cmd_start(message: types.Message):
 @settings.dp.message_handler(Text(equals='work reports', ignore_case=True))
 async def cmd_start(message: types.Message):
     logging.info("Start Work reports message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
-    global keyboard
-    logging.info("Sended %s for (%s <=> %s)" % ("Openning 'work reports' keyboard", message.from_user["id"], message.from_user["username"]))
-    await message.answer("Openning 'work reports' keyboard", reply_markup=keyboard.get_work())
+
+    choose = InlineKeyboardMarkup(row_width=2)
+    choose.insert(callback.reports_btn_callback["last_week"])
+    choose.insert(callback.reports_btn_callback["this_week"])
+    choose.insert(callback.reports_btn_callback["last_week_d"])
+    choose.insert(callback.reports_btn_callback["this_week_d"])
+
     logging.info("End Work reports message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
+    await message.answer("Choose worked time report period", reply_markup=choose)
 
 # # <<<<<<<<<<<<<<<<<< Доп. >>>>>>>>>>>>>>>>>>
 # @settings.dp.message_handler(Text(equals='доп.', ignore_case=True))
@@ -221,16 +227,58 @@ async def cmd_start(message: types.Message):
         history = "None"
     await message.answer(history)
 
-# <<<<<<<<<<<<<<<<<< Worked time >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='worked time', ignore_case=True))
-async def cmd_start(message: types.Message):
-    global settings
-    work = get_work_time(settings, message.from_user["id"])
 
-    if work.get_is_working():
-        await message.answer(work.get_current_working_info())
-    else:
-        await message.answer(work.get_finfo_day_sum(message.from_user["id"]))
+@settings.dp.callback_query_handler(callback.work_reports_callback.filter(period="this_week"))
+async def callback_this_week_work_report(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+    await call.message.edit_text(work.get_finfo_day_sum(call.from_user["id"]))
+
+    choose = InlineKeyboardMarkup(row_width=2)
+    choose.insert(callback.reports_btn_callback["last_week"])
+    choose.insert(callback.reports_btn_callback["this_week"])
+    choose.insert(callback.reports_btn_callback["last_week_d"])
+    choose.insert(callback.reports_btn_callback["this_week_d"])
+    await call.message.edit_reply_markup(reply_markup=choose)
+
+
+@settings.dp.callback_query_handler(callback.work_reports_callback.filter(period="this_week_d"))
+async def callback_this_week_d_work_report(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+    await call.message.edit_text(work.get_finfo_day_intervals(call.from_user["id"]))
+    
+    choose = InlineKeyboardMarkup(row_width=2)
+    choose.insert(callback.reports_btn_callback["last_week"])
+    choose.insert(callback.reports_btn_callback["this_week"])
+    choose.insert(callback.reports_btn_callback["last_week_d"])
+    choose.insert(callback.reports_btn_callback["this_week_d"])
+    await call.message.edit_reply_markup(reply_markup=choose)
+
+
+@settings.dp.callback_query_handler(callback.work_reports_callback.filter(period="last_week"))
+async def callback_last_week_work_report(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+    await call.message.edit_text(work.get_finfo_day_sum(call.from_user["id"], True))
+
+    choose = InlineKeyboardMarkup(row_width=2)
+    choose.insert(callback.reports_btn_callback["last_week"])
+    choose.insert(callback.reports_btn_callback["this_week"])
+    choose.insert(callback.reports_btn_callback["last_week_d"])
+    choose.insert(callback.reports_btn_callback["this_week_d"])
+    await call.message.edit_reply_markup(reply_markup=choose)
+
+
+@settings.dp.callback_query_handler(callback.work_reports_callback.filter(period="last_week_d"))
+async def callback_last_week_d_work_report(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+    await call.message.edit_text(work.get_finfo_day_intervals(call.from_user["id"], True))
+
+    choose = InlineKeyboardMarkup(row_width=2)
+    choose.insert(callback.reports_btn_callback["last_week"])
+    choose.insert(callback.reports_btn_callback["this_week"])
+    choose.insert(callback.reports_btn_callback["last_week_d"])
+    choose.insert(callback.reports_btn_callback["this_week_d"])
+    await call.message.edit_reply_markup(reply_markup=choose)
+
 
 # <<<<<<<<<<<<<<<<<< This month worked time >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='month', ignore_case=True))
@@ -239,26 +287,6 @@ async def cmd_start(message: types.Message):
     work = get_work_time(settings, message.from_user["id"])
     await message.answer(work.get_finfo_day_sum(message.from_user["id"], month=True))
 
-# <<<<<<<<<<<<<<<<<< Last week worked time >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='last week worked time', ignore_case=True))
-async def cmd_start(message: types.Message):
-    global settings
-    work = get_work_time(settings, message.from_user["id"])
-    await message.answer(work.get_finfo_day_sum(message.from_user["id"], True))
-
-# <<<<<<<<<<<<<<<<<< Worked time (details) >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='worked time (details)', ignore_case=True))
-async def cmd_start(message: types.Message):
-    global settings
-    work = get_work_time(settings, message.from_user["id"])
-    await message.answer(work.get_finfo_day_intervals(message.from_user["id"]))
-
-# <<<<<<<<<<<<<<<<<< Last week worked time (details) >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='last week worked time (details)', ignore_case=True))
-async def cmd_start(message: types.Message):
-    global settings
-    work = get_work_time(settings, message.from_user["id"])
-    await message.answer(work.get_finfo_day_intervals(message.from_user["id"], True))
 
 # <<<<<<<<<<<<<<<<<< Кулькулятор >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='кулькулятор', ignore_case=True))
@@ -330,7 +358,6 @@ async def cmd_start(message: types.Message):
         await message.answer("Error 403: access is denied")
 
 
-callback = CallbackItems()
 tr_val = lambda v: str(v) if len(str(v)) == 2 else "0" + str(v)
 @settings.dp.message_handler(commands=["call"])
 async def test_call(message: types.Message):
@@ -339,6 +366,7 @@ async def test_call(message: types.Message):
     for k in range(1, today.day + 1):
         days.insert(callback.days_btn_callback[k])
 
+    await message.answer("Выбери с помощью конструктора время начала работы")
     await message.answer("Привет, это конструктор даты и времени, выбери нужное число", reply_markup=days)
 
 
@@ -347,7 +375,7 @@ async def save_day_date_callback(call: types.CallbackQuery, callback_data: dict)
     work = get_work_time(settings, call.from_user["id"])
 
     today = datetime.today()
-    work.date_callback_constructor = "{}.{}.{}".format(today.year, tr_val(today.month), tr_val(callback_data.get("val")))
+    work.date_callback_constructor = "{2}.{1}.{0}".format(today.year, tr_val(today.month), tr_val(callback_data.get("val")))
     
     hours = InlineKeyboardMarkup(row_width=6)
     for k in range(24):
@@ -360,6 +388,13 @@ async def save_day_date_callback(call: types.CallbackQuery, callback_data: dict)
 @settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="hour"))
 async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
+    if work.start_constructor_done:
+        mes = "Дата: {}\nВремя: {} - ".format(
+            work.date_callback_constructor,
+            work.time_callback_constructor
+        )
+    else: 
+        mes = "Дата: {}\nВремя ".format(work.date_callback_constructor)
 
     work.time_callback_constructor = tr_val(callback_data.get("val"))
     
@@ -367,9 +402,10 @@ async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict
     for k in range(60):
         mins.insert(callback.mins_btn_callback[k])
     
-    await call.message.edit_text("Дата: {}\nВремя {}.\nТеперь выбери нужную минуту".format(
-                                                                    work.date_callback_constructor,
-                                                                    work.time_callback_constructor))
+    await call.message.edit_text(mes + "{}.\nТеперь выбери нужную минуту".format(
+                                                                        work.time_callback_constructor
+                                                                    ))
+
     await call.message.edit_reply_markup(reply_markup=mins)
 
 
@@ -377,12 +413,39 @@ async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict
 async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
 
-    work.time_callback_constructor += ":{}:00".format(tr_val(callback_data.get("val")))
+    work.time_callback_constructor += ":{}".format(tr_val(callback_data.get("val")))
+
+    if not work.start_constructor_done:
+        work.callback_start_date_working = work.get_day_from(work.date_callback_constructor)
+        work.callback_start_time_working = work.get_one_time_from(work.time_callback_constructor.replace(":", ".") + ".00")
+        work.start_constructor_done = True
+
+        hours = InlineKeyboardMarkup(row_width=6)
+        for k in range(24):
+            hours.insert(callback.hours_btn_callback[k])
+        
+        await call.message.edit_text("Отлично, теперь выбери время окончания работы\nДата: {}\nВремя {}\n".format(
+                                                                        work.date_callback_constructor,
+                                                                        work.time_callback_constructor))
+        await call.message.edit_reply_markup(reply_markup=hours)
+    else:
+        work.callback_end_time_working = work.get_one_time_from(work.time_callback_constructor.replace(":", ".") + ".00")
+        work.start_constructor_done = False
+        delta = work.get_difference_betwen(
+                work.callback_start_time_working,
+                work.callback_end_time_working
+            )
+        await call.message.edit_text("Дата: {}\nВремя: {}\nИнтервал: {}".format(
+            work.date_callback_constructor,
+            str(work.callback_start_time_working.time())[:-3] + " - " + str(work.callback_end_time_working.time())[:-3],
+            str(delta)[:-3]
+        ))
+        work.save_spec_data(call.from_user["id"], 
+                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()),
+                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta)
+        await call.answer("Данные сохранены")
+
     
-    await call.message.edit_text("Дата: {}\nВремя {}\n".format(
-                                                                    work.date_callback_constructor,
-                                                                    work.time_callback_constructor))
-    await call.message.edit_reply_markup(reply_markup=None)
 
 
 @settings.dp.callback_query_handler(text_contains="Bin")

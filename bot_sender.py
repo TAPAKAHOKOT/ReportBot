@@ -1,4 +1,5 @@
 
+from re import S
 from aiogram.types.inline_keyboard import InlineKeyboardMarkup
 from Keyboard import Keyboard
 
@@ -64,10 +65,12 @@ async def cmd_start(message: types.Message):
     w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
     await message.answer("Запуск основной клавиатуры", reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
 
+
 # <<<<<<<<<<<<<<<<<< myid >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(commands=["myid"])
 async def cmd_start(message: types.Message):
     await message.answer("Ваш id: %s" % message.from_user["id"])
+
 
 # <<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='main', ignore_case=True))
@@ -84,18 +87,6 @@ async def cmd_start(message: types.Message):
     await message.answer("Openning main keyboard", reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
     logging.info("End main message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
 
-# <<<<<<<<<<<<<<<<<< submain >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(commands=["admin"])
-async def cmd_start(message: types.Message):
-    logging.info("Start submain message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
-    global keyboard
-    if message.from_user["id"] == settings.my_id:
-        logging.info("Sended %s for (%s <=> %s)" % ("Openning submain keyboard", message.from_user["id"], message.from_user["username"]))
-        await message.answer("Openning submain keyboard", reply_markup=keyboard.get_submain())
-    else:
-        logging.info("Sended %s for (%s <=> %s)" % ("Error 403: access is denied", message.from_user["id"], message.from_user["username"]))
-        await message.answer("Error 403: access is denied")
-    logging.info("End submain message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
 
 # <<<<<<<<<<<<<<<<<< Work reports >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='work reports', ignore_case=True))
@@ -111,41 +102,6 @@ async def cmd_start(message: types.Message):
     logging.info("End Work reports message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
     await message.answer("Choose worked time report period", reply_markup=choose)
 
-# # <<<<<<<<<<<<<<<<<< Доп. >>>>>>>>>>>>>>>>>>
-# @settings.dp.message_handler(Text(equals='доп.', ignore_case=True))
-# async def cmd_start(message: types.Message):
-#     logging.info("Start Доп. message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
-#     global keyboard
-#     logging.info("Sended %s for (%s <=> %s)" % ("Openning dop. keyboard", message.from_user["id"], message.from_user["username"]))
-#     await message.answer("Openning dop. keyboard", reply_markup=keyboard.get_dop_work())
-#     logging.info("End Доп. message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
-
-# <<<<<<<<<<<<<<<<<< Настройки >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='настройки', ignore_case=True))
-async def cmd_start(message: types.Message):
-    global keyboard
-    if message.from_user["id"] == settings.my_id:
-        await message.answer(settings.settings_info_line.replace(": ", "   >>>   "), reply_markup=keyboard.get_settings())
-    else:
-        await message.answer("Error 403: access is denied")
-
-# <<<<<<<<<<<<<<<<<< Отправить >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='отправить', ignore_case=True))
-async def cmd_start(message: types.Message):
-    global settings
-    if message.from_user["id"] == settings.my_id:
-        await message.answer("Start loading message")
-        feadback = send_otchet()
-
-        if feadback != "None":
-            await message.answer(feadback)
-            await message.answer("Check your settings:\n     " + settings.settings_info_line.replace(": ", "   >>>   ").replace("\n", "\n     "))
-        else:
-            await message.answer("Message Send")
-            settings.settings_info["File Send"] = "1"
-            settings.settings_info_line = update_info_line()
-    else:
-        await message.answer("Error 403: access is denied")
 
 # <<<<<<<<<<<<<<<<<< Start working >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='start working', ignore_case=True))
@@ -155,12 +111,11 @@ async def cmd_start(message: types.Message):
     work = get_work_time(settings, message.from_user["id"])
     w, s, t = "Stop working", work.get_status(), "#" + work.get_tag()
 
-    # keyboard.update_keyboard_main("Stop working", work.get_status())
-    # keyboard.update_keyboard_work("Stop working")
     mes = work.start_working()
     logging.info("Sended %s for (%s <=> %s)" % (mes, message.from_user["id"], message.from_user["username"]))
     await message.answer(mes, reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
     logging.info("End Start working message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
+
 
 # <<<<<<<<<<<<<<<<<< Stop working >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='stop working', ignore_case=True))
@@ -175,35 +130,6 @@ async def cmd_start(message: types.Message):
     await message.answer(mes, reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
     logging.info("End Stop working message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
 
-# <<<<<<<<<<<<<<<<<< Studying >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='studying', ignore_case=True))
-async def cmd_start(message: types.Message):
-    global settings
-    work = get_work_time(settings, message.from_user["id"])
-    work.set_status("working")
-
-    w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
-
-    # keyboard.update_keyboard_main("Start working" if not work.get_is_working() else "Stop working", "Working")
-    await message.answer("Status => Working", reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
-
-# <<<<<<<<<<<<<<<<<< Working >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='working', ignore_case=True))
-async def cmd_start(message: types.Message):
-    global settings
-    work = get_work_time(settings, message.from_user["id"])
-    work.set_status("studying")
-
-    w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
-
-    # keyboard.update_keyboard_main("Start working" if not work.get_is_working() else "Stop working", "Studying")
-    await message.answer("Status => Studying", reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
-
-# <<<<<<<<<<<<<<<<<< Выбрать тэг >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(startswith='Tag: ', ignore_case=True))
-async def cmd_start(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
-    await message.answer("Openning work tag keyboard", reply_markup=keyboard.get_work_tag(work))
 
 # <<<<<<<<<<<<<<<<<< #Tags >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(startswith='#', ignore_case=True))
@@ -216,6 +142,7 @@ async def cmd_start(message: types.Message):
     work.set_tag(message.text[1:])
     await message.answer("Tag changed to: #" + work.get_tag(), reply_markup=keyboard.get_main(s, w, t, message.from_user["id"]))
 
+
 # <<<<<<<<<<<<<<<<<< История тэгов >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals="история тэгов", ignore_case=True))
 async def cmd_start(message: types.Message):
@@ -227,6 +154,68 @@ async def cmd_start(message: types.Message):
         history = "None"
     await message.answer(history)
 
+
+@settings.dp.message_handler(Text(equals="Status/Tag", ignore_case=True))
+async def cmd_start(message: types.Message):
+    work = get_work_time(settings, message.from_user["id"])
+    w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
+
+    set_callback = InlineKeyboardMarkup(row_width=2)
+    set_callback.insert(callback.get_tag_btn_callback("Tag -> " + t))
+    set_callback.insert(callback.statuses_btn_callback[s])
+
+    await message.answer("Click to change", reply_markup=set_callback)
+
+
+@settings.dp.callback_query_handler(callback.work_settings_callback.filter(parameter="tag"))
+async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+    s, t = work.get_status(), "#" + work.get_tag()
+    if ("Tag -> " in callback_data["value"]):
+        mes = "\n\nChoose a tag or write your tag in chat\n(# + tag name)"
+        tags = work.u_tag_db.get_user_tag_history(work.user_id)
+
+        set_callback = InlineKeyboardMarkup(row_width=3)
+        for tag in tags:
+            set_callback.insert(callback.get_tag_btn_callback(tag))
+        set_callback.insert(callback.get_tag_btn_callback("Back"))
+    elif ("Back" == callback_data["value"]):
+        mes = "\nback"
+        set_callback = InlineKeyboardMarkup(row_width=2)
+        set_callback.insert(callback.get_tag_btn_callback("Tag -> " + t))
+        set_callback.insert(callback.statuses_btn_callback[s])
+    else:
+        mes = "\nTag changed to " + callback_data["value"]
+        work.set_tag(callback_data["value"][1:])
+
+        set_callback = InlineKeyboardMarkup(row_width=2)
+        set_callback.insert(callback.get_tag_btn_callback("Tag -> " + t))
+        set_callback.insert(callback.statuses_btn_callback[s])
+    
+    await call.message.edit_text(call.message.text + mes)
+    await call.message.edit_reply_markup(set_callback)
+
+
+@settings.dp.callback_query_handler(callback.work_settings_callback.filter(parameter="status"))
+async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+    s, t = work.get_status(), "#" + work.get_tag()
+
+    if (callback_data["value"] == "working"):
+        work.set_status("studying")
+        mes = "\nStatus changed to 'Studying'"
+        s = "Studying"
+    elif (callback_data["value"] == "studying"):
+        work.set_status("working")
+        mes = "\nStatus changed to 'Working'"
+        s = "Working"
+
+    set_callback = InlineKeyboardMarkup(row_width=2)
+    set_callback.insert(callback.get_tag_btn_callback("Tag -> " + t))
+    set_callback.insert(callback.statuses_btn_callback[s])
+
+    await call.message.edit_text(call.message.text + mes)
+    await call.message.edit_reply_markup(set_callback)
 
 @settings.dp.callback_query_handler(callback.work_reports_callback.filter(status="period_report"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
@@ -247,6 +236,95 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     choose.insert(callback.reports_btn_callback["last_week_d"])
     choose.insert(callback.reports_btn_callback["this_week_d"])
     await call.message.edit_reply_markup(reply_markup=choose)
+
+
+tr_val = lambda v: str(v) if len(str(v)) == 2 else "0" + str(v)
+@settings.dp.message_handler(Text(equals='Add work period', ignore_case=True))
+async def test_call(message: types.Message):
+    today = datetime.today()
+    days = InlineKeyboardMarkup(row_width=5)
+    for k in range(1, today.day + 1):
+        days.insert(callback.days_btn_callback[k])
+
+    await message.answer("Выбери с помощью конструктора время начала работы")
+    await message.answer("Привет, это конструктор даты и времени, выбери нужное число", reply_markup=days)
+
+
+@settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="day"))
+async def save_day_date_callback(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+
+    today = datetime.today()
+    work.date_callback_constructor = "{2}.{1}.{0}".format(today.year, tr_val(today.month), tr_val(callback_data.get("val")))
+    
+    hours = InlineKeyboardMarkup(row_width=6)
+    for k in range(24):
+        hours.insert(callback.hours_btn_callback[k])
+    
+    await call.message.edit_text("Дата: {}\nТеперь выбери нужный час".format(work.date_callback_constructor))
+    await call.message.edit_reply_markup(reply_markup=hours)
+
+
+@settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="hour"))
+async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+    if work.start_constructor_done:
+        mes = "Дата: {}\nВремя: {} - ".format(
+            work.date_callback_constructor,
+            work.time_callback_constructor
+        )
+    else: 
+        mes = "Дата: {}\nВремя ".format(work.date_callback_constructor)
+
+    work.time_callback_constructor = tr_val(callback_data.get("val"))
+    
+    mins = InlineKeyboardMarkup(row_width=6)
+    for k in range(60):
+        mins.insert(callback.mins_btn_callback[k])
+    
+    await call.message.edit_text(mes + "{}.\nТеперь выбери нужную минуту".format(
+                                                                        work.time_callback_constructor
+                                                                    ))
+
+    await call.message.edit_reply_markup(reply_markup=mins)
+
+
+@settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="min"))
+async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+
+    work.time_callback_constructor += ":{}".format(tr_val(callback_data.get("val")))
+
+    if not work.start_constructor_done:
+        work.callback_start_date_working = work.get_day_from(work.date_callback_constructor)
+        work.callback_start_time_working = work.get_one_time_from(work.time_callback_constructor.replace(":", ".") + ".00")
+        work.start_constructor_done = True
+
+        hours = InlineKeyboardMarkup(row_width=6)
+        for k in range(24):
+            hours.insert(callback.hours_btn_callback[k])
+        
+        await call.message.edit_text("Отлично, теперь выбери время окончания работы\nДата: {}\nВремя {}\n".format(
+                                                                        work.date_callback_constructor,
+                                                                        work.time_callback_constructor))
+        await call.message.edit_reply_markup(reply_markup=hours)
+    else:
+        work.callback_end_time_working = work.get_one_time_from(work.time_callback_constructor.replace(":", ".") + ".00")
+        work.start_constructor_done = False
+        delta = work.get_difference_betwen(
+                work.callback_start_time_working,
+                work.callback_end_time_working
+            )
+        
+        work.save_spec_data(call.from_user["id"], 
+                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()),
+                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta)
+
+        await call.message.edit_text("Дата: {}\nВремя: {}\nИнтервал: {}\n\nДанные сохранены".format(
+            work.date_callback_constructor,
+            str(work.callback_start_time_working.time())[:-3] + " - " + str(work.callback_end_time_working.time())[:-3],
+            str(delta)[:-3]
+        ))
 
 
 # <<<<<<<<<<<<<<<<<< This month worked time >>>>>>>>>>>>>>>>>>
@@ -327,96 +405,6 @@ async def cmd_start(message: types.Message):
         await message.answer("Error 403: access is denied")
 
 
-tr_val = lambda v: str(v) if len(str(v)) == 2 else "0" + str(v)
-@settings.dp.message_handler(commands=["call"])
-async def test_call(message: types.Message):
-    today = datetime.today()
-    days = InlineKeyboardMarkup(row_width=5)
-    for k in range(1, today.day + 1):
-        days.insert(callback.days_btn_callback[k])
-
-    await message.answer("Выбери с помощью конструктора время начала работы")
-    await message.answer("Привет, это конструктор даты и времени, выбери нужное число", reply_markup=days)
-
-
-@settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="day"))
-async def save_day_date_callback(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
-
-    today = datetime.today()
-    work.date_callback_constructor = "{2}.{1}.{0}".format(today.year, tr_val(today.month), tr_val(callback_data.get("val")))
-    
-    hours = InlineKeyboardMarkup(row_width=6)
-    for k in range(24):
-        hours.insert(callback.hours_btn_callback[k])
-    
-    await call.message.edit_text("Дата: {}\nТеперь выбери нужный час".format(work.date_callback_constructor))
-    await call.message.edit_reply_markup(reply_markup=hours)
-
-
-@settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="hour"))
-async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
-    if work.start_constructor_done:
-        mes = "Дата: {}\nВремя: {} - ".format(
-            work.date_callback_constructor,
-            work.time_callback_constructor
-        )
-    else: 
-        mes = "Дата: {}\nВремя ".format(work.date_callback_constructor)
-
-    work.time_callback_constructor = tr_val(callback_data.get("val"))
-    
-    mins = InlineKeyboardMarkup(row_width=6)
-    for k in range(60):
-        mins.insert(callback.mins_btn_callback[k])
-    
-    await call.message.edit_text(mes + "{}.\nТеперь выбери нужную минуту".format(
-                                                                        work.time_callback_constructor
-                                                                    ))
-
-    await call.message.edit_reply_markup(reply_markup=mins)
-
-
-@settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="min"))
-async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
-
-    work.time_callback_constructor += ":{}".format(tr_val(callback_data.get("val")))
-
-    if not work.start_constructor_done:
-        work.callback_start_date_working = work.get_day_from(work.date_callback_constructor)
-        work.callback_start_time_working = work.get_one_time_from(work.time_callback_constructor.replace(":", ".") + ".00")
-        work.start_constructor_done = True
-
-        hours = InlineKeyboardMarkup(row_width=6)
-        for k in range(24):
-            hours.insert(callback.hours_btn_callback[k])
-        
-        await call.message.edit_text("Отлично, теперь выбери время окончания работы\nДата: {}\nВремя {}\n".format(
-                                                                        work.date_callback_constructor,
-                                                                        work.time_callback_constructor))
-        await call.message.edit_reply_markup(reply_markup=hours)
-    else:
-        work.callback_end_time_working = work.get_one_time_from(work.time_callback_constructor.replace(":", ".") + ".00")
-        work.start_constructor_done = False
-        delta = work.get_difference_betwen(
-                work.callback_start_time_working,
-                work.callback_end_time_working
-            )
-        await call.message.edit_text("Дата: {}\nВремя: {}\nИнтервал: {}".format(
-            work.date_callback_constructor,
-            str(work.callback_start_time_working.time())[:-3] + " - " + str(work.callback_end_time_working.time())[:-3],
-            str(delta)[:-3]
-        ))
-        work.save_spec_data(call.from_user["id"], 
-                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()),
-                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta)
-        await call.answer("Данные сохранены")
-
-    
-
-
 @settings.dp.callback_query_handler(text_contains="Bin")
 async def process_callback_button1(callback_query: types.CallbackQuery):
     global settings, keyboard
@@ -440,6 +428,48 @@ async def process_callback_button1(callback_query: types.CallbackQuery):
         write_into_file()
     else:
         await settings.bot.send_message(callback_query.from_user.id, "Back to main", reply_markup=keyboard.get_main(s, w, t, callback_query.from_user["id"]))
+
+
+# <<<<<<<<<<<<<<<<<< submain >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(commands=["admin"])
+async def cmd_start(message: types.Message):
+    logging.info("Start submain message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
+    global keyboard
+    if message.from_user["id"] == settings.my_id:
+        logging.info("Sended %s for (%s <=> %s)" % ("Openning submain keyboard", message.from_user["id"], message.from_user["username"]))
+        await message.answer("Openning submain keyboard", reply_markup=keyboard.get_submain())
+    else:
+        logging.info("Sended %s for (%s <=> %s)" % ("Error 403: access is denied", message.from_user["id"], message.from_user["username"]))
+        await message.answer("Error 403: access is denied")
+    logging.info("End submain message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
+
+
+# <<<<<<<<<<<<<<<<<< Настройки >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='настройки', ignore_case=True))
+async def cmd_start(message: types.Message):
+    global keyboard
+    if message.from_user["id"] == settings.my_id:
+        await message.answer(settings.settings_info_line.replace(": ", "   >>>   "), reply_markup=keyboard.get_settings())
+    else:
+        await message.answer("Error 403: access is denied")
+
+# <<<<<<<<<<<<<<<<<< Отправить >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='отправить', ignore_case=True))
+async def cmd_start(message: types.Message):
+    global settings
+    if message.from_user["id"] == settings.my_id:
+        await message.answer("Start loading message")
+        feadback = send_otchet()
+
+        if feadback != "None":
+            await message.answer(feadback)
+            await message.answer("Check your settings:\n     " + settings.settings_info_line.replace(": ", "   >>>   ").replace("\n", "\n     "))
+        else:
+            await message.answer("Message Send")
+            settings.settings_info["File Send"] = "1"
+            settings.settings_info_line = update_info_line()
+    else:
+        await message.answer("Error 403: access is denied")
 
 
 # <<<<<<<<<<<<<<<<<< Another >>>>>>>>>>>>>>>>>>

@@ -179,7 +179,8 @@ class Work:
     def get_finfo_day_intervals(self, u_id: int, last_week: bool = False) -> str:
         logging.info("Start get_finfo_day_intervals(...)")
         self.last_online_time = datetime.datetime.now()
-        res = "<<<" + self.status.title() + ">>>\n"
+        title = "<<< Status: " + self.status.title() + " >>>\n"
+        res = ""
         arr = {}
         if last_week:
             info = self.db.get_last_week_rows(u_id, self.status)
@@ -206,12 +207,13 @@ class Work:
                     res += " "*8 + el + "\n"
             res += "\n"
         logging.info("End get_finfo_day_intervals(...)")
-        return res if res != "" else "None"
+        return title + res if res != "" else "No records"
     
     def get_finfo_day_sum(self, u_id: int, last_week: bool = False, month: bool = False) -> str:
         logging.info("Start get_finfo_day_sum(...)")
         self.last_online_time = datetime.datetime.now()
-        res = "<<<" + self.status.title() + ">>>\n"
+        title = "<<< Status: " + self.status.title() + " >>>\n"
+        res = ""
         arr = {}
         if last_week:
             info = self.db.get_last_week_rows(u_id, self.status)
@@ -252,9 +254,10 @@ class Work:
             res += " "*8 + "TAG SUM >> " + str(tagtimesum).split(".")[0] + "\n"
             res += " "*4 + "DAY SUM >> " + str(timesum).split(".")[0] + "\n"
             res += "\n"
-        res += "WEEK SUM >> " + str(alltimesum).split(".")[0] + "\n"
+        if (str(alltimesum).split(".")[0] != "0:00:00"):
+            res += "WEEK SUM >> " + str(alltimesum).split(".")[0] + "\n"
         logging.info("End get_finfo_day_sum(...)")
-        return res if res != "" else "None"
+        return title + res if res != "" else "No records"
 
 
 # w = Work("csv_data/data.csv")

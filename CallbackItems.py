@@ -2,6 +2,29 @@ from aiogram.types.inline_keyboard import InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
 class CallbackItems:
     def __init__(self):
+        self.work_settings_callback = CallbackData("work_settings", "parameter", "value")
+        self.statuses_btn_callback = {
+            "Studying": InlineKeyboardButton(
+                text="Status: Studying",
+                callback_data=self.work_settings_callback.new(
+                    parameter="status",
+                    value="studying"
+                )),
+            "Working": InlineKeyboardButton(
+                text="Status: Working",
+                callback_data=self.work_settings_callback.new(
+                    parameter="status",
+                    value="working"
+                ))
+        }
+
+        self.get_tag_btn_callback = lambda name: InlineKeyboardButton(
+                                                    text=name,
+                                                    callback_data=self.work_settings_callback.new(
+                                                        parameter="tag",
+                                                        value=name
+                                                    ))
+
         self.work_reports_callback = CallbackData("report", "period", "status")
         self.reports_btn_callback = {
             "last_week": InlineKeyboardButton(

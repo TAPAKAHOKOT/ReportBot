@@ -9,58 +9,20 @@ class WorkTagsDataBaseConnector(DataBaseConnector):
     def __init__(self, set_dict: dict):
         super().__init__(set_dict)
 
-        self.tag_tabel_name = "users_tags"
+        self.tabel_name = "users_tags"
+        self.add_row_query = """INSERT INTO users_tags (user_id, tag, call_time) VALUES (%s, %s, %s)"""
 
-        # self.create_table(self.tag_tabel_name)
-
-    
-    def create_table(self, name):
-        logging.info("Start creating table %s" % name)
-        try:
-            
-            connection = psycopg2.connect(user=self.user,
-                                        password=self.password,
-                                        host=self.host,
-                                        port=self.port,
-                                        database=self.db_name)
-            connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-
-            cursor = connection.cursor()
-
-            query = '''CREATE TABLE {}
+        create_table_query = '''CREATE TABLE IF NOT EXISTS {}
                         (id INT PRIMARY KEY NOT NULL,
                         user_id INT NOT NULL,
                         tag TEXT NOT NULL,
-                        call_time TIMESTAMP NOT NULL);'''.format(name)
+                        call_time TIMESTAMP NOT NULL);'''.format(self.tabel_name)
 
-            cursor.execute(query)
-            connection.commit()
-        except (Exception, Error) as error:
-            logging.error("Create table %s error: %s" % (name, error))
-        finally:
-            if connection:
-                cursor.close()
-                connection.close()
-                logging.info("Connection closed for table %s" % name)
-    
-
-    def add_row(self, user_id: int, tag: str, call_time: datetime.datetime):
-        logging.info("Start adding user tag in tag history for %s: succesfull" % user_id)
-
-        self.cursor.execute("SELECT MAX(id) from %s" % self.tag_tabel_name)
-        max_id = self.cursor.fetchall()[0][0]
-        max_id = 0 if max_id is None else max_id
-
-        insert_query = """ INSERT INTO users_tags (id, user_id, tag, call_time) VALUES (%s, %s, %s, %s)"""  
-        inp_tuple = (max_id+1, user_id, tag, call_time)
-
-        self.cursor.execute(insert_query, inp_tuple)
-        self.connection.commit()
-        logging.info("End adding user in tag history tag for %s: succesfull" % user_id)
+        self.create_table(self.tabel_name, create_table_query)
     
 
     def get_user_tag_history(self, user_id: int) -> list:
-        query = "SELECT tag, call_time FROM %s WHERE user_id=%s ORDER BY call_time DESC" % (self.tag_tabel_name, user_id)
+        query = "SELECT tag, call_time FROM %s WHERE user_id=%s ORDER BY call_time DESC" % (self.tabel_name, user_id)
 
         self.cursor.execute(query)
         res = []

@@ -5,6 +5,8 @@ import logging
 
 class DataBaseConnector:
     def __init__(self, set_dict: dict):
+        self.add_row_query = ""
+
         self.user = set_dict["usr"]
         self.password = set_dict["pwd"]
         self.host = set_dict["host"]
@@ -39,3 +41,42 @@ class DataBaseConnector:
                 cursor.close()
                 connection.close()
                 logging.info("Connection closed for database %s" % name)
+    
+    def create_table(self, name, query):
+        logging.info("Start creating table %s" % name)
+        try:
+            
+            connection = psycopg2.connect(user=self.user,
+                                        password=self.password,
+                                        host=self.host,
+                                        port=self.port,
+                                        database=self.db_name)
+            connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+
+            cursor = connection.cursor()
+
+            cursor.execute(query)
+            connection.commit()
+        except (Exception, Error) as error:
+            logging.error("Create table %s error: %s" % (name, error))
+        finally:
+            if connection:
+                cursor.close()
+                connection.close()
+                logging.info("Connection closed for table %s" % name)
+    
+    def add_row(self, *args):
+        logging.info("Start adding row [%s]" % " ".join([str(k) for k in args]))
+        
+        self.cursor.execute(self.add_row_query, args)
+        self.connection.commit()
+
+        logging.info("End adding row [%s]" % " ".join([str(k) for k in args]))
+    
+    def test_clear_table(self):
+        self.cursor.execute("DELETE FROM %s" % self.tabel_name)
+    
+    def close_connection(self):
+        if self.connection:
+            self.cursor.close()
+            self.connection.close()

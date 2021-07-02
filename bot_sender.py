@@ -33,9 +33,9 @@ async def on_startup(x):
 # ? TODO: add language chooser +-
 # ? TODO: add settings for users
 # // TODO: make a beautiful working time output
-# TODO: add opportunity to add working period throught telegram
+# // TODO: add opportunity to add working period throught telegram
 # TODO: add opportunity for editing periods
-# TODO: add opportunity for deleting periods
+# // TODO: add opportunity for deleting periods
 # TODO: add opportunity for watching old dates
 # TODO: add opportunity for watching all available dates
 # // TODO: add weeks works hours autocounter

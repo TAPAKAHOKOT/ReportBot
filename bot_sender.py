@@ -155,6 +155,7 @@ async def cmd_start(message: types.Message):
     await message.answer(history)
 
 
+# <<<<<<<<<<<<<<<<<< Меню изменения статуса или тэга >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals="Status/Tag", ignore_case=True))
 async def cmd_start(message: types.Message):
     work = get_work_time(settings, message.from_user["id"])
@@ -167,6 +168,7 @@ async def cmd_start(message: types.Message):
     await message.answer("Click to change", reply_markup=set_callback)
 
 
+# <<<<<<<<<<<<<<<<<< Изменение тэга >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.work_settings_callback.filter(parameter="tag"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
@@ -196,6 +198,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     await call.message.edit_reply_markup(set_callback)
 
 
+# <<<<<<<<<<<<<<<<<< Изменение статуса >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.work_settings_callback.filter(parameter="status"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
@@ -217,6 +220,8 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     await call.message.edit_text(call.message.text + mes)
     await call.message.edit_reply_markup(set_callback)
 
+
+# <<<<<<<<<<<<<<<<<< Отчёт об отработанных часах >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.work_reports_callback.filter(status="period_report"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
@@ -238,6 +243,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     await call.message.edit_reply_markup(reply_markup=choose)
 
 
+# <<<<<<<<<<<<<<<<<< Добавление отработанного периода >>>>>>>>>>>>>>>>>>
 tr_val = lambda v: str(v) if len(str(v)) == 2 else "0" + str(v)
 @settings.dp.message_handler(Text(equals='Add work period', ignore_case=True))
 async def test_call(message: types.Message):
@@ -250,6 +256,7 @@ async def test_call(message: types.Message):
     await message.answer("Привет, это конструктор даты и времени, выбери нужное число", reply_markup=days)
 
 
+# <<<<<<<<<<<<<<<<<< Добавление дня в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="day"))
 async def save_day_date_callback(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
@@ -265,6 +272,7 @@ async def save_day_date_callback(call: types.CallbackQuery, callback_data: dict)
     await call.message.edit_reply_markup(reply_markup=hours)
 
 
+# <<<<<<<<<<<<<<<<<< Добавление часов в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="hour"))
 async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
@@ -289,6 +297,7 @@ async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict
     await call.message.edit_reply_markup(reply_markup=mins)
 
 
+# <<<<<<<<<<<<<<<<<< Добавление минут в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="min"))
 async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])

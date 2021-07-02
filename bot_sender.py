@@ -306,8 +306,8 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
         days.insert(callback.days_btn_callback[k])
     days.insert(callback.date_back_callback)
 
-    await call.message.answer("Выбери с помощью конструктора время начала работы")
-    await call.message.answer("Привет, это конструктор даты и времени, выбери нужное число", reply_markup=days)
+    await call.message.answer("Choose the start working time using the constructor")
+    await call.message.answer("This is a date and time constructor, pick the day you want", reply_markup=days)
 
 
 # <<<<<<<<<<<<<<<<<< Добавление дня в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
@@ -327,7 +327,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     for k in range(h):
         hours.insert(callback.hours_btn_callback[k])
     
-    await call.message.edit_text("Дата: {}\nТеперь выбери нужный час".format(work.date_callback_constructor))
+    await call.message.edit_text("Date: {}\nNow choose the hour you want".format(work.date_callback_constructor))
     await call.message.edit_reply_markup(reply_markup=hours)
 
 
@@ -336,12 +336,12 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
     if work.start_constructor_done:
-        mes = "Дата: {}\nВремя: {} - ".format(
+        mes = "Date: {}\mTime: {} - ".format(
             work.date_callback_constructor,
             work.time_callback_constructor
         )
     else: 
-        mes = "Дата: {}\nВремя ".format(work.date_callback_constructor)
+        mes = "Date: {}\nTime ".format(work.date_callback_constructor)
 
     work.time_callback_constructor = tr_val(callback_data.get("val"))
     
@@ -349,7 +349,7 @@ async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict
     for k in range(60):
         mins.insert(callback.mins_btn_callback[k])
     
-    await call.message.edit_text(mes + "{}.\nТеперь выбери нужную минуту".format(
+    await call.message.edit_text(mes + "{}.\nNow choose the right minute".format(
                                                                         work.time_callback_constructor
                                                                     ))
 
@@ -378,7 +378,7 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
         for k in range(h):
             hours.insert(callback.hours_btn_callback[k])
         
-        await call.message.edit_text("Отлично, теперь выбери время окончания работы\nДата: {}\nВремя {}\n".format(
+        await call.message.edit_text("Great, now choose the end working time\nDate: {}\nTime: {}\n".format(
                                                                         work.date_callback_constructor,
                                                                         work.time_callback_constructor))
         await call.message.edit_reply_markup(reply_markup=hours)
@@ -395,13 +395,13 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
                         datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()),
                         datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta)
 
-            await call.message.edit_text("Дата: {}\nВремя: {}\nИнтервал: {}\n\nДанные сохранены".format(
+            await call.message.edit_text("Date: {}\nTime: {}\nInterval: {}\n\nData saved".format(
                 work.date_callback_constructor,
                 str(work.callback_start_time_working.time())[:-3] + " - " + str(work.callback_end_time_working.time())[:-3],
                 str(delta)[:-3]
             ))
         else:
-            await call.message.edit_text("Данные ошибочны (время начала работы наступило позде времени окончания работы)")
+            await call.message.edit_text("Data error (work start time came after work end time)")
 
 
 # <<<<<<<<<<<<<<<<<< This month worked time >>>>>>>>>>>>>>>>>>

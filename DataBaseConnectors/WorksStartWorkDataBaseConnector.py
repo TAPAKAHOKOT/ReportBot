@@ -51,7 +51,7 @@ class WorksStartWorkDataBaseConnector(DataBaseConnector):
     def add_row(self, user_id: int, start_time: datetime.datetime):
         logging.info("Start adding row [u_id=%s, start_time=%s]" % (user_id, str(start_time)))
 
-        insert_query = """ INSERT INTO works_times (user_id, start_time) VALUES (%s, %s)"""   
+        insert_query = """ INSERT INTO start_wowrking_time (user_id, start_time) VALUES (%s, %s)"""   
         self.cursor.execute(insert_query, (user_id, start_time))
 
         self.connection.commit()
@@ -65,7 +65,7 @@ class WorksStartWorkDataBaseConnector(DataBaseConnector):
     
 
     def delete_row(self, u_id: int):
-        self.cursor.excecute("DELETE FROM %s WHERE user_id=%s", (self.table_name, u_id))
+        self.cursor.execute("DELETE FROM %s WHERE user_id=%s" % (self.table_name, u_id))
 
 
     def close_connection(self):

@@ -1,82 +1,90 @@
-23:22:45 INFO:Init settigs in the True mode
-23:22:46 INFO:Start filling data
-23:22:46 INFO:Filling line: Send To: tapakahokot@gmail.com
+23:28:25 INFO:Init settigs in the True mode
+23:28:25 INFO:Start filling data
+23:28:25 INFO:Filling line: Send To: tapakahokot@gmail.com
 
-23:22:46 INFO:Filling line: FileName: otchet.xlsx
+23:28:25 INFO:Filling line: FileName: otchet.xlsx
 
-23:22:46 INFO:Filling line: File Send: 0
+23:28:25 INFO:Filling line: File Send: 0
 
-23:22:46 INFO:Filling line: City: Москва
+23:28:25 INFO:Filling line: City: Москва
 
-23:22:46 INFO:Filling line: Sending Activate: 1
+23:28:25 INFO:Filling line: Sending Activate: 1
 
-23:22:46 INFO:Filling line: Binance Currency: XEMBTC
+23:28:25 INFO:Filling line: Binance Currency: XEMBTC
 
-23:22:46 INFO:Filling line: NoIp: 13
+23:28:25 INFO:Filling line: NoIp: 13
 
-23:22:46 INFO:Filling line: None: date:1
+23:28:25 INFO:Filling line: None: date:1
 
-23:22:46 INFO:Filling line: -1
+23:28:25 INFO:Filling line: -1
 
-23:22:46 INFO:Filling line: Москва, City, Клинцы, Салехард
+23:28:25 INFO:Filling line: Москва, City, Клинцы, Салехард
 
-23:22:46 INFO:Filling line: -2
+23:28:25 INFO:Filling line: -2
 
-23:22:46 INFO:Filling line: XEMBTC, BTCUSDT, NEOBTC, TRXBTC
-23:22:46 INFO:End filling data
-23:22:46 INFO:Settings are initialized
-23:22:46 INFO:Start initing Settings
-23:22:46 INFO:Start create_keyboard_cities()
-23:22:46 INFO:End create_keyboard_cities()
-23:22:46 INFO:Start create_keyboard_binance()
-23:22:46 INFO:End create_keyboard_binance()
-23:22:46 INFO:End initing Settings
-23:22:46 INFO:Start creating table start_working_time
-23:22:46 INFO:Connection closed for table start_working_time
-23:22:46 INFO:Bot: tapakahokot test bot [@TapakahoBot]
-23:22:48 WARNING:Updates were skipped successfully.
-23:22:48 INFO:Start initing all schedules
-23:22:48 INFO:End initing all schedules
-23:22:48 INFO:Start running schedules cycle (while True)
-23:22:48 INFO:Start polling.
-23:22:48 INFO:Start Work reports message handler by (472914986 <=> TAPAKAHOKOT)
-23:22:48 INFO:End Work reports message handler by (472914986 <=> TAPAKAHOKOT)
-23:22:51 INFO:Start get_work_time(...)
-23:22:51 INFO:Created Work() for 472914986
-23:22:51 INFO:Start initing Work for 472914986
-23:22:51 INFO:Start creating table works_times
-23:22:51 INFO:Connection closed for table works_times
-23:22:51 INFO:Start creating table users_work_statuses
-23:22:51 INFO:Connection closed for table users_work_statuses
-23:22:51 INFO:Start creating table users_tag_history
-23:22:51 INFO:Connection closed for table users_tag_history
-23:22:52 INFO:Start creating table users_tags
-23:22:52 INFO:Connection closed for table users_tags
-23:22:52 INFO:Start creating table start_working_time
-23:22:52 INFO:Connection closed for table start_working_time
-23:22:52 INFO:End initing Work
-23:22:52 INFO:End get_work_time(...)
-23:22:52 INFO:Start get_finfo_day_sum(...)
-23:22:52 INFO:End get_finfo_day_sum(...)
-23:22:55 INFO:Start get_work_time(...)
-23:22:55 INFO:End get_work_time(...)
-23:22:55 INFO:Start get_finfo_day_sum(...)
-23:22:55 INFO:End get_finfo_day_sum(...)
-23:22:57 INFO:Start get_work_time(...)
-23:22:57 INFO:End get_work_time(...)
-23:22:57 INFO:Start get_finfo_day_intervals(...)
-23:22:57 INFO:End get_finfo_day_intervals(...)
-23:22:58 INFO:Start get_work_time(...)
-23:22:58 INFO:End get_work_time(...)
-23:22:58 INFO:Start get_finfo_day_intervals(...)
-23:22:58 INFO:End get_finfo_day_intervals(...)
-23:23:01 INFO:Start get_work_time(...)
-23:23:01 INFO:End get_work_time(...)
-23:23:01 INFO:Start get_finfo_day_sum(...)
-23:23:01 INFO:End get_finfo_day_sum(...)
-23:23:12 INFO:Start get_work_time(...)
-23:23:12 INFO:End get_work_time(...)
-23:23:12 INFO:Start get_finfo_day_sum(...)
-23:23:12 INFO:End get_finfo_day_sum(...)
-23:23:44 INFO:Stop polling...
-23:23:44 WARNING:Goodbye!
+23:28:25 INFO:Filling line: XEMBTC, BTCUSDT, NEOBTC, TRXBTC
+23:28:25 INFO:End filling data
+23:28:25 INFO:Settings are initialized
+23:28:25 INFO:Start initing Settings
+23:28:25 INFO:Start create_keyboard_cities()
+23:28:25 INFO:End create_keyboard_cities()
+23:28:25 INFO:Start create_keyboard_binance()
+23:28:25 INFO:End create_keyboard_binance()
+23:28:25 INFO:End initing Settings
+23:28:25 INFO:Start creating table start_working_time
+23:28:26 INFO:Connection closed for table start_working_time
+23:28:26 INFO:Bot: tapakahokot test bot [@TapakahoBot]
+23:28:27 WARNING:Updates were skipped successfully.
+23:28:27 INFO:Start initing all schedules
+23:28:27 INFO:End initing all schedules
+23:28:27 INFO:Start running schedules cycle (while True)
+23:28:27 INFO:Start polling.
+23:28:28 INFO:Start Work reports message handler by (472914986 <=> TAPAKAHOKOT)
+23:28:28 INFO:End Work reports message handler by (472914986 <=> TAPAKAHOKOT)
+23:28:29 INFO:Start get_work_time(...)
+23:28:29 INFO:Created Work() for 472914986
+23:28:29 INFO:Start initing Work for 472914986
+23:28:29 INFO:Start creating table works_times
+23:28:29 INFO:Connection closed for table works_times
+23:28:29 INFO:Start creating table users_work_statuses
+23:28:29 INFO:Connection closed for table users_work_statuses
+23:28:29 INFO:Start creating table users_tag_history
+23:28:29 INFO:Connection closed for table users_tag_history
+23:28:29 INFO:Start creating table users_tags
+23:28:29 INFO:Connection closed for table users_tags
+23:28:29 INFO:Start creating table start_working_time
+23:28:29 INFO:Connection closed for table start_working_time
+23:28:29 INFO:End initing Work
+23:28:29 INFO:End get_work_time(...)
+23:28:29 INFO:Start get_finfo_day_sum(...)
+23:28:29 INFO:End get_finfo_day_sum(...)
+23:28:32 INFO:Start get_work_time(...)
+23:28:32 INFO:End get_work_time(...)
+23:28:32 INFO:Start get_finfo_day_intervals(...)
+23:28:32 INFO:End get_finfo_day_intervals(...)
+23:28:35 INFO:Start get_work_time(...)
+23:28:35 INFO:End get_work_time(...)
+23:28:35 INFO:Start get_finfo_day_sum(...)
+23:28:35 INFO:End get_finfo_day_sum(...)
+23:28:36 INFO:Start get_work_time(...)
+23:28:36 INFO:End get_work_time(...)
+23:28:36 INFO:Start get_finfo_day_intervals(...)
+23:28:36 INFO:End get_finfo_day_intervals(...)
+23:28:38 INFO:Start get_work_time(...)
+23:28:38 INFO:End get_work_time(...)
+23:28:38 INFO:Start get_finfo_day_sum(...)
+23:28:38 INFO:End get_finfo_day_sum(...)
+23:28:39 INFO:Start get_work_time(...)
+23:28:39 INFO:End get_work_time(...)
+23:28:39 INFO:Start get_finfo_day_intervals(...)
+23:28:39 INFO:End get_finfo_day_intervals(...)
+23:28:41 INFO:Start get_work_time(...)
+23:28:41 INFO:End get_work_time(...)
+23:28:41 INFO:Start get_finfo_day_sum(...)
+23:28:41 INFO:End get_finfo_day_sum(...)
+23:28:42 INFO:Start get_work_time(...)
+23:28:42 INFO:End get_work_time(...)
+23:28:42 INFO:Start get_finfo_day_intervals(...)
+23:28:42 INFO:End get_finfo_day_intervals(...)
+23:28:47 INFO:Stop polling...
+23:28:47 WARNING:Goodbye!

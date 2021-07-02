@@ -228,49 +228,18 @@ async def cmd_start(message: types.Message):
     await message.answer(history)
 
 
-@settings.dp.callback_query_handler(callback.work_reports_callback.filter(period="this_week"))
-async def callback_this_week_work_report(call: types.CallbackQuery, callback_data: dict):
+@settings.dp.callback_query_handler(callback.work_reports_callback.filter(status="period_report"))
+async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
-    await call.message.edit_text(work.get_finfo_day_sum(call.from_user["id"]))
 
-    choose = InlineKeyboardMarkup(row_width=2)
-    choose.insert(callback.reports_btn_callback["last_week"])
-    choose.insert(callback.reports_btn_callback["this_week"])
-    choose.insert(callback.reports_btn_callback["last_week_d"])
-    choose.insert(callback.reports_btn_callback["this_week_d"])
-    await call.message.edit_reply_markup(reply_markup=choose)
-
-
-@settings.dp.callback_query_handler(callback.work_reports_callback.filter(period="this_week_d"))
-async def callback_this_week_d_work_report(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
-    await call.message.edit_text(work.get_finfo_day_intervals(call.from_user["id"]))
-    
-    choose = InlineKeyboardMarkup(row_width=2)
-    choose.insert(callback.reports_btn_callback["last_week"])
-    choose.insert(callback.reports_btn_callback["this_week"])
-    choose.insert(callback.reports_btn_callback["last_week_d"])
-    choose.insert(callback.reports_btn_callback["this_week_d"])
-    await call.message.edit_reply_markup(reply_markup=choose)
-
-
-@settings.dp.callback_query_handler(callback.work_reports_callback.filter(period="last_week"))
-async def callback_last_week_work_report(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
-    await call.message.edit_text(work.get_finfo_day_sum(call.from_user["id"], True))
-
-    choose = InlineKeyboardMarkup(row_width=2)
-    choose.insert(callback.reports_btn_callback["last_week"])
-    choose.insert(callback.reports_btn_callback["this_week"])
-    choose.insert(callback.reports_btn_callback["last_week_d"])
-    choose.insert(callback.reports_btn_callback["this_week_d"])
-    await call.message.edit_reply_markup(reply_markup=choose)
-
-
-@settings.dp.callback_query_handler(callback.work_reports_callback.filter(period="last_week_d"))
-async def callback_last_week_d_work_report(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
-    await call.message.edit_text(work.get_finfo_day_intervals(call.from_user["id"], True))
+    if (callback_data["period"] == "this_week"):
+        await call.message.edit_text(work.get_finfo_day_sum(call.from_user["id"]))
+    elif (callback_data["period"] == "this_week_d"):
+        await call.message.edit_text(work.get_finfo_day_intervals(call.from_user["id"]))
+    elif (callback_data["period"] == "last_week"):
+        await call.message.edit_text(work.get_finfo_day_sum(call.from_user["id"], True))
+    elif (callback_data["period"] == "last_week_d"):
+        await call.message.edit_text(work.get_finfo_day_intervals(call.from_user["id"], True))
 
     choose = InlineKeyboardMarkup(row_width=2)
     choose.insert(callback.reports_btn_callback["last_week"])

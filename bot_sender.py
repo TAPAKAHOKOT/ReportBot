@@ -1,8 +1,11 @@
 
+from aiogram.types.inline_keyboard import InlineKeyboardMarkup
 from Keyboard import Keyboard
 
 from update_weather import *
 from functions_tg import *
+
+from CallbackItems import CallbackItems
 
 from aiogram import executor, types
 from aiogram.dispatcher.filters import Text
@@ -326,6 +329,87 @@ async def cmd_start(message: types.Message):
     else:
         await message.answer("Error 403: access is denied")
 
+
+callback = CallbackItems()
+tr_val = lambda v: str(v) if len(str(v)) == 2 else "0" + str(v)
+@settings.dp.message_handler(commands=["call"])
+async def test_call(message: types.Message):
+    today = datetime.today()
+    days = InlineKeyboardMarkup(row_width=5)
+    for k in range(1, today.day + 1):
+        days.insert(callback.days_btn_callback[k])
+
+    await message.answer("Привет, это конструктор даты и времени, выбери нужное число", reply_markup=days)
+
+
+@settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="day"))
+async def save_day_date_callback(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+
+    today = datetime.today()
+    work.date_callback_constructor = "{}.{}.{}".format(today.year, tr_val(today.month), tr_val(callback_data.get("val")))
+    
+    hours = InlineKeyboardMarkup(row_width=6)
+    for k in range(24):
+        hours.insert(callback.hours_btn_callback[k])
+    
+    await call.message.edit_text("Дата: {}\nТеперь выбери нужный час".format(work.date_callback_constructor))
+    await call.message.edit_reply_markup(reply_markup=hours)
+
+
+@settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="hour"))
+async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+
+    work.time_callback_constructor = tr_val(callback_data.get("val"))
+    
+    mins = InlineKeyboardMarkup(row_width=6)
+    for k in range(60):
+        mins.insert(callback.mins_btn_callback[k])
+    
+    await call.message.edit_text("Дата: {}\nВремя {}.\nТеперь выбери нужную минуту".format(
+                                                                    work.date_callback_constructor,
+                                                                    work.time_callback_constructor))
+    await call.message.edit_reply_markup(reply_markup=mins)
+
+
+@settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="min"))
+async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+
+    work.time_callback_constructor += ":{}:00".format(tr_val(callback_data.get("val")))
+    
+    await call.message.edit_text("Дата: {}\nВремя {}\n".format(
+                                                                    work.date_callback_constructor,
+                                                                    work.time_callback_constructor))
+    await call.message.edit_reply_markup(reply_markup=None)
+
+
+@settings.dp.callback_query_handler(text_contains="Bin")
+async def process_callback_button1(callback_query: types.CallbackQuery):
+    global settings, keyboard
+
+    work = get_work_time(settings, callback_query.from_user["id"])
+    w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
+
+    data = callback_query.data.split(":")[1]
+    
+    settings.change_settings = False
+
+    if data != 'Main':
+        
+        settings.settings_info[settings.changing_settings] = data
+
+        settings.settings_info_line = update_info_line()
+
+        await settings.bot.answer_callback_query(callback_query.id)
+        await settings.bot.send_message(callback_query.from_user.id, settings.settings_info_line, reply_markup=keyboard.get_main(s, w, t, callback_query.from_user["id"]))
+
+        write_into_file()
+    else:
+        await settings.bot.send_message(callback_query.from_user.id, "Back to main", reply_markup=keyboard.get_main(s, w, t, callback_query.from_user["id"]))
+
+
 # <<<<<<<<<<<<<<<<<< Another >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler()
 async def echo(message: types.Message):
@@ -386,36 +470,11 @@ async def echo(message: types.Message):
             await message.answer("Changing <<" + changing_settings + ">> setting", reply_markup=keyboard.get_binance())
         elif changing_settings in ["File Send", "Sending Activate"]:
             buttons = types.InlineKeyboardMarkup()
-            buttons.add(types.InlineKeyboardButton('1', callback_data = '1'), types.InlineKeyboardButton('0', callback_data = '0'))
-            buttons.add(types.InlineKeyboardButton('Main', callback_data = 'Main'))
+            buttons.add(types.InlineKeyboardButton('1', callback_data = 'Bin:1'), types.InlineKeyboardButton('0', callback_data = 'Bin:0'))
+            buttons.add(types.InlineKeyboardButton('Main', callback_data = 'Bin:Main'))
             await message.answer("Changing <<" + changing_settings + ">> setting", reply_markup=buttons)
         else:
             await message.answer("Changing <<" + changing_settings + ">> setting")
-
-@settings.dp.callback_query_handler()
-async def process_callback_button1(callback_query: types.CallbackQuery):
-    global settings, keyboard
-
-    work = get_work_time(settings, callback_query.from_user["id"])
-    w, s, t = "Start working" if not work.get_is_working() else "Stop working", work.get_status(), "#" + work.get_tag()
-
-    data = callback_query.data
-    
-    settings.change_settings = False
-
-    if data != 'Main':
-        
-        settings.settings_info[settings.changing_settings] = data
-
-        settings.settings_info_line = update_info_line()
-
-        await settings.bot.answer_callback_query(callback_query.id)
-        await settings.bot.send_message(callback_query.from_user.id, settings.settings_info_line, reply_markup=keyboard.get_main(s, w, t, callback_query.from_user["id"]))
-
-        write_into_file()
-
-    else:
-        await settings.bot.send_message(callback_query.from_user.id, "Back to main", reply_markup=keyboard.get_main(s, w, t, callback_query.from_user["id"]))
 
 
 start_time = time.time()

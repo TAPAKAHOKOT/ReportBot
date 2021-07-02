@@ -34,6 +34,9 @@ class Work:
         self.u_tag_db = WorkTagsDataBaseConnector(self.setttings.db_data)
         self.start_db = WorksStartWorkDataBaseConnector(self.setttings.db_data)
 
+        self.date_callback_constructor = ""
+        self.time_callback_constructor = ""
+
         u_data = self.st_db.get_user_status(self.user_id)
         if u_data:
             self.tag = u_data[0][0]

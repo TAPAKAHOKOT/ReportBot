@@ -176,6 +176,49 @@ class Work:
         delta = str(self.get_difference_betwen(self.start_time_working, self.get_current_time())).split(".")[0]
         return "Start working time: {}\nTime delta: {}".format(self.start_time_working.strftime(self.timeformat), delta)
     
+    def delete_interval(self, u_id: int, n: int) -> str:
+        self.last_online_time = datetime.datetime.now()
+        info = self.db.get_this_week_rows(u_id, self.status)
+        
+        delta = str(self.get_difference_betwen(info[n - 1][2], info[n - 1][3])).split(".")[0]
+        line = self.get_day_time_formated(info[n - 1][2], info[n - 1][3]) + " => " + delta
+
+        self.db.delete_row_by_id(info[n - 1][-1])
+
+        return line
+
+    def get_intervels_for_deleting(self, u_id: int) -> list:
+        self.last_online_time = datetime.datetime.now()
+        size = 0
+        s = len("Status: " + self.status.title()) - 8
+        title = "<<< {}DELETING{} >>>".format(" " * (s//2), " " * (s - s//2))
+        title += "\n<<< Status: " + self.status.title() + " >>>\n"
+        res = ""
+        arr = {}
+        info = self.db.get_this_week_rows(u_id, self.status)
+        s_date = None
+        for row in info:
+            if s_date is None or s_date.date() != row[2].date():
+                s_date = row[2]
+                arr[s_date] = {}
+            if not (row[1] in arr[s_date].keys()): arr[s_date][row[1]] = []
+            delta = str(self.get_difference_betwen(row[2], row[3])).split(".")[0]
+            arr[s_date][row[1]].append(self.get_day_time_formated(row[2], row[3]) + " => " + delta)
+        
+        for key, val in arr.items():
+            arr[key] = {k: v for k, v in sorted(val.items(), key=lambda item: item[0])}
+        
+        for key, val in arr.items():
+            res += str(key.strftime(self.dateformat)) + "\n" + "-"*10 + "\n"
+
+            for k, v in val.items():
+                res += " "*4 + "#" + k + "\n"
+                for el in v:
+                    size += 1
+                    res += " "*4 + el + " "*6 + "(" + str(size) + ")" + "\n"
+            res += "\n"
+        return [title + res if res != "" else "No records", size]
+
     def get_finfo_day_intervals(self, u_id: int, last_week: bool = False) -> str:
         logging.info("Start get_finfo_day_intervals(...)")
         self.last_online_time = datetime.datetime.now()

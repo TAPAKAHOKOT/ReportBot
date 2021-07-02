@@ -19,7 +19,7 @@ class WorksMainDataBaseConnector(DataBaseConnector):
         and start_time < date_trunc('week', CURRENT_TIMESTAMP))"""
         self.this_month_asking = """(start_time >= date_trunc('month', CURRENT_TIMESTAMP) 
         and start_time < date_trunc('month', CURRENT_TIMESTAMP + interval '1 month'))"""
-        self.select_columns = "user_id, tag, start_time, end_time"
+        self.select_columns = "user_id, tag, start_time, end_time, id"
 
         create_table_query = '''CREATE TABLE IF NOT EXISTS {}
                                     (id INT PRIMARY KEY NOT NULL,
@@ -72,6 +72,11 @@ class WorksMainDataBaseConnector(DataBaseConnector):
         self.cursor.execute("SELECT %s FROM %s WHERE %s AND user_id=%s AND status=%s ORDER BY start_time" %\
             (self.select_columns, self.tabel_name, self.this_month_asking, u_id, self.tagf(status)))
         return self.cursor.fetchall()
+    
+
+    def delete_row_by_id(self, id: int):
+        print("DELETE FROM {} WHERE id={}".format(self.tabel_name, id))
+        self.cursor.execute("DELETE FROM {} WHERE id={}".format(self.tabel_name, id))
 
 
 # db = DataBaseConnector()

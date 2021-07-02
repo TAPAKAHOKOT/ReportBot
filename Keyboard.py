@@ -77,7 +77,7 @@ class Keyboard:
 
     def get_main(self, s, w, t, u_id):
         keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard_main.add(types.KeyboardButton(text="Add work period"), types.KeyboardButton(text="Status/Tag"))
+        keyboard_main.add(types.KeyboardButton(text="Add/delete period"), types.KeyboardButton(text="Status/Tag"))
         keyboard_main.add(types.KeyboardButton(text="Work reports"), types.KeyboardButton(text=w))
 
         return keyboard_main

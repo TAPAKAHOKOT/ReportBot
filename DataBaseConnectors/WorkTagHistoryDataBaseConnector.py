@@ -32,19 +32,19 @@ class WorkTagHistoryDataBaseConnector(DataBaseConnector):
     
 
     def delete_last_tag_from_history(self, user_id: int):
-        query = """DELETE FROM users_tag_history
-                    WHERE user_id=%s AND call_time=(
+        query = """DELETE FROM {table}
+                    WHERE user_id={id} AND call_time=(
                         SELECT call_time 
-                        FROM users_tag_history
+                        FROM {table}
                         ORDER BY call_time
                         LIMIT 1
-                    )""" % user_id
+                    )""".format(table=self.tabel_name, id=user_id)
 
         self.cursor.execute(query)
     
 
     def get_count_of_history(self, user_id: int) -> int:
-        query = "SELECT COUNT(*) FROM users_tag_history WHERE user_id=%s" % user_id
+        query = "SELECT COUNT(*) FROM {0} WHERE user_id={1}".format(self.tabel_name, user_id)
         self.cursor.execute(query)
         return self.cursor.fetchall()[0][0]
                 

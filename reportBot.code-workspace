@@ -68,5 +68,5 @@
 			}
 		]
 	},
-	"python.analysis.extraPath": ["DataBaseConnectors"]
+	"python.analysis.extraPath": ["./DataBaseConnectors/DataBaseConnector"]
 }

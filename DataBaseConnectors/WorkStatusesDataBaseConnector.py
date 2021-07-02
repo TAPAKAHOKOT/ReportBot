@@ -28,11 +28,11 @@ class WorkStatusesDataBaseConnector(DataBaseConnector):
     
 
     def set_tag(self, user_id:int, tag:str):
-        self.cursor.execute("UPDATE users_work_statuses SET tag=%s WHERE user_id=%s", 
+        self.cursor.execute("UPDATE {} SET tag=%s WHERE user_id=%s".format(self.tabel_name), 
                     (tag, user_id))
     
     
     def set_status(self, user_id:int, status:str):
-        self.cursor.execute("UPDATE users_work_statuses SET status=%s WHERE user_id=%s", 
+        self.cursor.execute("UPDATE {} SET status=%s WHERE user_id=%s".format(self.tabel_name), 
                     (status, user_id))
                 

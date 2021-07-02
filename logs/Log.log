@@ -1,154 +1,71 @@
-13:06:14 INFO:Init settigs in the True mode
-13:06:15 INFO:Start filling data
-13:06:15 INFO:Filling line: Send To: tapakahokot@gmail.com
+16:13:25 INFO:Init settigs in the True mode
+16:13:26 INFO:Start filling data
+16:13:26 INFO:Filling line: Send To: tapakahokot@gmail.com
 
-13:06:15 INFO:Filling line: FileName: otchet.xlsx
+16:13:26 INFO:Filling line: FileName: otchet.xlsx
 
-13:06:15 INFO:Filling line: File Send: 0
+16:13:26 INFO:Filling line: File Send: 0
 
-13:06:15 INFO:Filling line: City: Москва
+16:13:26 INFO:Filling line: City: Москва
 
-13:06:15 INFO:Filling line: Sending Activate: 1
+16:13:26 INFO:Filling line: Sending Activate: 1
 
-13:06:15 INFO:Filling line: Binance Currency: XEMBTC
+16:13:26 INFO:Filling line: Binance Currency: XEMBTC
 
-13:06:15 INFO:Filling line: NoIp: 13
+16:13:26 INFO:Filling line: NoIp: 13
 
-13:06:15 INFO:Filling line: None: date:1
+16:13:26 INFO:Filling line: None: date:1
 
-13:06:15 INFO:Filling line: -1
+16:13:26 INFO:Filling line: -1
 
-13:06:15 INFO:Filling line: Москва, City, Клинцы, Салехард
+16:13:26 INFO:Filling line: Москва, City, Клинцы, Салехард
 
-13:06:15 INFO:Filling line: -2
+16:13:26 INFO:Filling line: -2
 
-13:06:15 INFO:Filling line: XEMBTC, BTCUSDT, NEOBTC, TRXBTC
-13:06:15 INFO:End filling data
-13:06:15 INFO:Settings are initialized
-13:06:15 INFO:Start initing Settings
-13:06:15 INFO:Start create_keyboard_cities()
-13:06:15 INFO:End create_keyboard_cities()
-13:06:15 INFO:Start create_keyboard_binance()
-13:06:15 INFO:End create_keyboard_binance()
-13:06:15 INFO:End initing Settings
-13:06:15 INFO:Start creating table start_wowrking_time
-13:06:15 INFO:Connection closed for table start_wowrking_time
-13:06:15 INFO:Bot: tapakahokot test bot [@TapakahoBot]
-13:06:16 WARNING:Updates were skipped successfully.
-13:06:16 INFO:Start initing all schedules
-13:06:16 INFO:End initing all schedules
-13:06:16 INFO:Start running schedules cycle (while True)
-13:06:16 INFO:Start polling.
-13:06:18 INFO:Start get_work_time(...)
-13:06:18 INFO:Created Work() for 472914986
-13:06:18 INFO:Start initing Work for 472914986
-13:06:18 INFO:Start creating table works_times
-13:06:18 INFO:Connection closed for table works_times
-13:06:18 INFO:Start creating table users_work_statuses
-13:06:18 INFO:Connection closed for table users_work_statuses
-13:06:18 INFO:Start creating table users_tag_history
-13:06:18 INFO:Connection closed for table users_tag_history
-13:06:18 INFO:Start creating table users_tags
-13:06:18 INFO:Connection closed for table users_tags
-13:06:18 INFO:Start creating table start_wowrking_time
-13:06:18 INFO:Connection closed for table start_wowrking_time
-13:06:18 INFO:End initing Work
-13:06:18 INFO:End get_work_time(...)
-13:06:20 INFO:Start get_work_time(...)
-13:06:20 INFO:End get_work_time(...)
-13:06:20 INFO:Start get_work_time(...)
-13:06:20 INFO:End get_work_time(...)
-13:06:21 INFO:Start get_work_time(...)
-13:06:21 INFO:End get_work_time(...)
-13:06:22 INFO:Start get_work_time(...)
-13:06:22 INFO:End get_work_time(...)
-13:06:23 INFO:Start get_work_time(...)
-13:06:23 INFO:End get_work_time(...)
-13:06:23 INFO:Start adding row [472914986 debugging 2021-07-02 13:06:23.648067]
-13:06:23 INFO:End adding row [472914986 debugging 2021-07-02 13:06:23.648067]
-13:06:28 INFO:Start get_work_time(...)
-13:06:28 INFO:End get_work_time(...)
-13:06:28 INFO:Start adding row [472914986 tttt 2021-07-02 13:06:28.263823]
-13:06:28 INFO:End adding row [472914986 tttt 2021-07-02 13:06:28.263823]
-13:06:28 INFO:Start adding row [472914986 #tttt 2021-07-02 13:06:28.267817]
-13:06:28 INFO:End adding row [472914986 #tttt 2021-07-02 13:06:28.267817]
-13:06:30 INFO:Start Work reports message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:30 INFO:Sended Openning 'work reports' keyboard for (472914986 <=> TAPAKAHOKOT)
-13:06:30 INFO:End Work reports message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:31 INFO:Start get_work_time(...)
-13:06:31 INFO:End get_work_time(...)
-13:06:31 INFO:Start get_finfo_day_sum(...)
-13:06:31 INFO:End get_finfo_day_sum(...)
-13:06:32 INFO:Start get_work_time(...)
-13:06:32 INFO:End get_work_time(...)
-13:06:32 INFO:Start get_finfo_day_intervals(...)
-13:06:32 INFO:End get_finfo_day_intervals(...)
-13:06:33 INFO:Start get_work_time(...)
-13:06:33 INFO:End get_work_time(...)
-13:06:33 INFO:Start get_finfo_day_sum(...)
-13:06:33 INFO:End get_finfo_day_sum(...)
-13:06:33 INFO:Start get_work_time(...)
-13:06:33 INFO:End get_work_time(...)
-13:06:33 INFO:Start get_finfo_day_intervals(...)
-13:06:33 INFO:End get_finfo_day_intervals(...)
-13:06:34 INFO:Start main message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:34 INFO:Start get_work_time(...)
-13:06:34 INFO:End get_work_time(...)
-13:06:34 INFO:Sended Openning main keyboard for (472914986 <=> TAPAKAHOKOT)
-13:06:34 INFO:End main message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:35 INFO:Start Start working message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:35 INFO:Start get_work_time(...)
-13:06:35 INFO:End get_work_time(...)
-13:06:35 INFO:Start start_working(...)
-13:06:35 INFO:Start adding row [472914986 2021-07-02 13:06:35.619891]
-13:06:35 INFO:End adding row [472914986 2021-07-02 13:06:35.619891]
-13:06:35 INFO:End start_working(...)
-13:06:35 INFO:Sended Start working time: 13.06.35 #tttt for (472914986 <=> TAPAKAHOKOT)
-13:06:35 INFO:End Start working message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:38 INFO:Start Stop working message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:38 INFO:Start get_work_time(...)
-13:06:38 INFO:End get_work_time(...)
-13:06:38 INFO:Start end_working(...)
-13:06:38 INFO:Start saving_data(...)
-13:06:38 INFO:Start adding row [472914986 tttt working 2021-07-02 13:06:35.619891 2021-07-02 13:06:38.560938]
-13:06:38 INFO:End adding row [472914986 tttt working 2021-07-02 13:06:35.619891 2021-07-02 13:06:38.560938]
-13:06:38 INFO:End saving_data(...)
-13:06:38 INFO:End end_working(...)
-13:06:38 INFO:Sended End working time: 13.06.38
-Working time: 0:00:02 for (472914986 <=> TAPAKAHOKOT)
-13:06:38 INFO:End Stop working message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:40 INFO:Start Start working message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:40 INFO:Start get_work_time(...)
-13:06:40 INFO:End get_work_time(...)
-13:06:40 INFO:Start start_working(...)
-13:06:40 INFO:Start adding row [472914986 2021-07-02 13:06:40.384644]
-13:06:40 INFO:End adding row [472914986 2021-07-02 13:06:40.384644]
-13:06:40 INFO:End start_working(...)
-13:06:40 INFO:Sended Start working time: 13.06.40 #tttt for (472914986 <=> TAPAKAHOKOT)
-13:06:40 INFO:End Start working message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:41 INFO:Start Stop working message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:41 INFO:Start get_work_time(...)
-13:06:41 INFO:End get_work_time(...)
-13:06:41 INFO:Start end_working(...)
-13:06:41 INFO:Start saving_data(...)
-13:06:41 INFO:Start adding row [472914986 tttt working 2021-07-02 13:06:40.384644 2021-07-02 13:06:41.889329]
-13:06:41 INFO:End adding row [472914986 tttt working 2021-07-02 13:06:40.384644 2021-07-02 13:06:41.889329]
-13:06:41 INFO:End saving_data(...)
-13:06:41 INFO:End end_working(...)
-13:06:41 INFO:Sended End working time: 13.06.41
-Working time: 0:00:01 for (472914986 <=> TAPAKAHOKOT)
-13:06:42 INFO:End Stop working message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:42 INFO:Start Work reports message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:42 INFO:Sended Openning 'work reports' keyboard for (472914986 <=> TAPAKAHOKOT)
-13:06:42 INFO:End Work reports message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:43 INFO:Start get_work_time(...)
-13:06:43 INFO:End get_work_time(...)
-13:06:43 INFO:Start get_finfo_day_intervals(...)
-13:06:43 INFO:End get_finfo_day_intervals(...)
-13:06:45 INFO:Start main message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:45 INFO:Start get_work_time(...)
-13:06:45 INFO:End get_work_time(...)
-13:06:45 INFO:Sended Openning main keyboard for (472914986 <=> TAPAKAHOKOT)
-13:06:46 INFO:End main message handler by (472914986 <=> TAPAKAHOKOT)
-13:06:54 INFO:Stop polling...
-13:06:54 WARNING:Goodbye!
+16:13:26 INFO:Filling line: XEMBTC, BTCUSDT, NEOBTC, TRXBTC
+16:13:26 INFO:End filling data
+16:13:26 INFO:Settings are initialized
+16:13:26 INFO:Start initing Settings
+16:13:26 INFO:Start create_keyboard_cities()
+16:13:26 INFO:End create_keyboard_cities()
+16:13:26 INFO:Start create_keyboard_binance()
+16:13:26 INFO:End create_keyboard_binance()
+16:13:26 INFO:End initing Settings
+16:13:27 INFO:Start creating table start_working_time
+16:13:27 INFO:Connection closed for table start_working_time
+16:13:27 INFO:Start create_work_time(...)
+16:13:27 INFO:Start initing Work for 472914986
+16:13:27 INFO:Start creating table works_times
+16:13:27 INFO:Connection closed for table works_times
+16:13:27 INFO:Start creating table users_work_statuses
+16:13:27 INFO:Connection closed for table users_work_statuses
+16:13:27 INFO:Start creating table users_tag_history
+16:13:27 INFO:Connection closed for table users_tag_history
+16:13:27 INFO:Start creating table users_tags
+16:13:28 INFO:Connection closed for table users_tags
+16:13:28 INFO:Start creating table start_working_time
+16:13:28 INFO:Connection closed for table start_working_time
+16:13:28 INFO:End initing Work
+16:13:28 INFO:Start set_start_working_time(...)
+16:13:28 INFO:End set_start_working_time(...)
+16:13:28 INFO:End create_work_time(...)
+16:13:29 INFO:Bot: tapakahokot test bot [@TapakahoBot]
+16:13:30 WARNING:Updates were skipped successfully.
+16:13:30 INFO:Start initing all schedules
+16:13:30 INFO:End initing all schedules
+16:13:30 INFO:Start running schedules cycle (while True)
+16:13:30 INFO:Start polling.
+16:13:30 INFO:Start Stop working message handler by (472914986 <=> TAPAKAHOKOT)
+16:13:30 INFO:Start get_work_time(...)
+16:13:30 INFO:End get_work_time(...)
+16:13:30 INFO:Start end_working(...)
+16:13:31 INFO:Start saving_data(...)
+16:13:31 INFO:Start adding row [472914986 tttt working 2021-07-02 16:13:11.220864 2021-07-02 16:13:30.988851]
+16:13:31 INFO:End adding row [472914986 tttt working 2021-07-02 16:13:11.220864 2021-07-02 16:13:30.988851]
+16:13:31 INFO:End saving_data(...)
+16:13:31 INFO:End end_working(...)
+16:13:31 INFO:Sended End working time: 16.13.30
+Working time: 0:00:19 for (472914986 <=> TAPAKAHOKOT)
+16:13:31 INFO:End Stop working message handler by (472914986 <=> TAPAKAHOKOT)
+16:13:37 INFO:Stop polling...
+16:13:37 WARNING:Goodbye!

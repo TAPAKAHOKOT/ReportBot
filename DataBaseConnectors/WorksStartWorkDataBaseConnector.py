@@ -9,8 +9,8 @@ class WorksStartWorkDataBaseConnector(DataBaseConnector):
     def __init__(self, set_dict: dict):
         super().__init__(set_dict)
 
-        self.table_name = "start_wowrking_time"
-        self.add_row_query = """INSERT INTO start_wowrking_time (user_id, start_time) VALUES (%s, %s)"""
+        self.table_name = "start_working_time"
+        self.add_row_query = """INSERT INTO start_working_time (user_id, start_time) VALUES (%s, %s)"""
 
         self.tagf = lambda t: "\'" + t + "\'"
 
@@ -21,9 +21,8 @@ class WorksStartWorkDataBaseConnector(DataBaseConnector):
         self.create_table(self.table_name, create_table_query)
 
 
-    def get_all_rows(self, u_id: int, status: str) -> list:
-        self.cursor.execute("SELECT %s FROM %s WHERE user_id=%s AND status=%s ORDER BY start_time" %\
-            (self.select_columns, self.table_name, u_id, self.tagf(status)))
+    def get_all_rows(self) -> list:
+        self.cursor.execute("SELECT * FROM %s" % (self.table_name))
         return self.cursor.fetchall()
     
 

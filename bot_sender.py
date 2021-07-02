@@ -20,6 +20,7 @@ async def on_startup(x):
 # ! TODO: add autosave working time into db every 2 minutes
 # ! TODO: add autotest for db classes
 # ! TODO: add comments in all new files
+# // ! TODO: add saving work statuses between reloading server
 # // ! TODO: add password crypting
 # // ~ TODO: add getters and setters, add encapsulation
 # // ~ TODO: add inheritance into db classes
@@ -421,9 +422,9 @@ start_time = time.time()
 if __name__ == "__main__":
     db = WorksStartWorkDataBaseConnector(settings.db_data)
     # ! Need to convert resume_work[1] to datetime.datetime
-    # resume_work = db.get_all_rows()  
+    resume_work = db.get_all_rows()  
 
-    # for row in resume_work:
-    #     create_work_time(row[0], row[1])
+    for row in resume_work:
+        create_work_time(settings, row[0], row[1])
     
     executor.start_polling(settings.dp, skip_updates=True, on_startup=on_startup)

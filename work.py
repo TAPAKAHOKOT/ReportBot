@@ -118,8 +118,8 @@ class Work:
         logging.info("Start set_start_working_time(...)")
         self.last_online_time = datetime.datetime.now()
         self.is_working = True 
-        self.start_time_working = t.time()
-        self.start_date_working = t.day()
+        self.start_time_working = t
+        self.start_date_working = t
         logging.info("End set_start_working_time(...)")
 
 

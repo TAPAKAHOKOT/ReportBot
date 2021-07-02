@@ -8,7 +8,7 @@ import json
 class Settings:
     def __init__(self):
         # ! <<< TESTING >>>
-        TESTING = False
+        TESTING = True
         # ! <<< TESTING >>>
 
         # database connectiong settings

@@ -17,34 +17,38 @@ keyboard = Keyboard(settings)
 async def on_startup(x):
     asyncio.create_task(send())
 
-# ! TODO: add autosave working time into json file every 2 minutes
+# ! TODO: add autosave working time into db every 2 minutes
+# ! TODO: add autotest for db classes
+# ! TODO: add comments in all new files
 # // ! TODO: add password crypting
 # // ~ TODO: add getters and setters, add encapsulation
 # // ~ TODO: add inheritance into db classes
 # // ? TODO: translate all features in english
-# ? TODO: add language chooser
+# ? TODO: add language chooser +-
+# ? TODO: add settings for users
 # // TODO: make a beautiful working time output
 # TODO: add opportunity to add working period throught telegram
 # TODO: add opportunity for editing periods
 # TODO: add opportunity for deleting periods
 # TODO: add opportunity for watching old dates
+# TODO: add opportunity for watching all available dates
 # // TODO: add weeks works hours autocounter
-# TODO: add emoji into keyboard
-# TODO: add graphics and statistics of working time bv
+# TODO: add emoji into keyboard +-
+# TODO: add graphics and statistics of working time bd
 # // TODO: add admin keyboard
 # TODO: add help command
-# TODO: make a video about the capabilities of the bot
+# TODO: make a video about the capabilities of the bot +-
 # TODO: add table in database with user settings
 # TODO: add border between studing and working tags
 # TODO: change names of db, tables, change structure of tables 
-# TODO: (ex: make ser_id the primary key)
+# // TODO: (ex: make ser_id the primary key)
 # // TODO: files rebase
 # // TODO: add user's cpecific tags
 # // TODO: add user's tag history
 # // TODO: add table in database with user statuses
 # // * TODO: improve code by adding logs
 # // * TODO: add logging for another files
-# * TODO: improve work.py file code
+# // * TODO: improve work.py file code
 # * TODO: improve all code by adding annotations
 
 # <<<<<<<<<<<<<<<<<< Start >>>>>>>>>>>>>>>>>>

@@ -22,7 +22,7 @@ callback = CallbackItems()
 async def on_startup(x):
     asyncio.create_task(send())
 
-# ! TODO: add autosave working time into db every 2 minutes
+# // ! TODO: add autosave working time into db every 2 minutes
 # ! TODO: add autotest for db classes
 # ! TODO: add comments in all new files
 # // ! TODO: add saving work statuses between reloading server
@@ -44,8 +44,8 @@ async def on_startup(x):
 # // TODO: add admin keyboard
 # TODO: add help command
 # TODO: make a video about the capabilities of the bot +-
-# TODO: add table in database with user settings
-# TODO: add border between studing and working tags
+# // TODO: add table in database with user settings
+# // TODO: add border between studing and working tags
 # TODO: change names of db, tables, change structure of tables 
 # // TODO: (ex: make ser_id the primary key)
 # // TODO: files rebase

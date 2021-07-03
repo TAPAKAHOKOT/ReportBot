@@ -1,7 +1,9 @@
 [![Bot's GitHub Banner](imgs/banner2.jpg)](https://github.com/TAPAKAHOKOT/ReportBot)
 
 Contact me: [![Telegram Badge](https://img.shields.io/badge/Telegram-Profile-0088cc)](https://t.me/TAPAKAHOKOT) [![Vk Badge](https://img.shields.io/badge/Vk-Profile-4376A6)](https://vk.com/kpabakot)
+
 Versions: [![rel-3.0 Badge](https://img.shields.io/badge/Realese-3.0-Green)](https://github.com/TAPAKAHOKOT/ReportBot) [![rel-2.0 Badge](https://img.shields.io/badge/OldBot-2.0-blue)](https://github.com/TAPAKAHOKOT/ReportBot/tree/rel-2.0)
+
 Language: [![Python 3.8.5 Badge](https://img.shields.io/badge/Python-3.8.5-blue)](https://www.python.org/downloads/release/python-385/) 
 
 

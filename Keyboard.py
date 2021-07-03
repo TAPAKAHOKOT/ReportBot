@@ -75,7 +75,7 @@ class Keyboard:
         self.keyboard_binance.add(types.KeyboardButton(text="Main"))
         logging.info("End create_keyboard_binance()")
 
-    def get_main(self, s, w, t, u_id):
+    def get_main(self, w):
         keyboard_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard_main.add(types.KeyboardButton(text="Add/delete period"), types.KeyboardButton(text="Status/Tag"))
         keyboard_main.add(types.KeyboardButton(text="Work reports"), types.KeyboardButton(text=w))

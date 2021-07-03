@@ -1,3 +1,4 @@
+<a name="table_of_contents"></a>
 [![Bot's GitHub Banner](imgs/banner2.jpg)](https://github.com/TAPAKAHOKOT/ReportBot)
 
 Contact me: [![Telegram Badge](https://img.shields.io/badge/Telegram-Profile-0088cc)](https://t.me/TAPAKAHOKOT) [![Vk Badge](https://img.shields.io/badge/Vk-Profile-4376A6)](https://vk.com/kpabakot)
@@ -11,7 +12,6 @@ Language: [![Python 3.8.5 Badge](https://img.shields.io/badge/Python-3.8.5-blue)
 
 ## With this bot you can track your worked hours. 
 
-<a name="table_of_contents"></a> 
 1. ["Status/Tag" button](#status_tag)
 2. ["Work reports" button](#work_reports)
 3. ["Start working" and "Stop working" buttons](#start_stop_working)

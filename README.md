@@ -1,8 +1,8 @@
-Contact: ![https://t.me/TAPAKAHOKOT](https://img.shields.io/badge/Telegram-Profile-0088cc) ![https://img.shields.io/badge/Vk-Profile-4376A6](https://vk.com/kpabakot)
+Contact: ![https://t.me/TAPAKAHOKOT](https://img.shields.io/badge/Telegram-Profile-0088cc) ![https://vk.com/kpabakot](https://img.shields.io/badge/Vk-Profile-4376A6)
 
-Versions: ![https://img.shields.io/badge/Realese-3.0-Green](https://github.com/TAPAKAHOKOT/ReportBot) ![https://img.shields.io/badge/OldBot-2.0-blue](https://github.com/TAPAKAHOKOT/ReportBot/tree/rel-2.0)
+Versions: ![https://github.com/TAPAKAHOKOT/ReportBot](https://img.shields.io/badge/Realese-3.0-Green) ![https://github.com/TAPAKAHOKOT/ReportBot/tree/rel-2.0](https://img.shields.io/badge/OldBot-2.0-blue)
 
-Language: ![https://img.shields.io/badge/Python-3.8.5-blue](https://www.python.org/downloads/release/python-385/)
+Language: ![https://www.python.org/downloads/release/python-385/](https://img.shields.io/badge/Python-3.8.5-blue)
 
 
 # ReportBot

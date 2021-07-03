@@ -26,6 +26,7 @@ async def on_startup(x):
 # // ? TODO: translate all features in english
 # ? TODO: add language chooser +-
 # ? TODO: add settings for users
+# TODO: add remoinder constructor
 # // TODO: make a beautiful working time output
 # // TODO: add opportunity to add working period throught telegram
 # TODO: add opportunity for editing periods

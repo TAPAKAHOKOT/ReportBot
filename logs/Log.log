@@ -1,26 +1,87 @@
-22:22:10 INFO:Init settigs in the True mode
-22:22:10 INFO:Settings are initialized
-22:22:10 INFO:Start initing Settings
-22:22:10 INFO:End initing Settings
-22:22:10 INFO:Start creating table start_working_time
-22:22:10 INFO:Connection closed for table start_working_time
-22:22:10 INFO:Bot: tapakahokot test bot [@TapakahoBot]
-22:22:11 WARNING:Updates were skipped successfully.
-22:22:11 INFO:Start initing all schedules
-22:22:11 INFO:End initing all schedules
-22:22:11 INFO:Start running schedules cycle (while True)
-22:22:11 INFO:Start polling.
-22:22:13 INFO:Running job Every 2 seconds do knopa_memery_on() (last run: [never], next run: 2021-07-03 22:22:13)
-22:22:13 INFO:Start knopa_memery_on()
-22:22:13 INFO:Sended for 472914986: 'Don't forget to comb Knopa'
-22:22:14 INFO:End knopa_memery_on()
-22:22:16 INFO:Running job Every 2 seconds do knopa_memery_on() (last run: 2021-07-03 22:22:14, next run: 2021-07-03 22:22:16)
-22:22:16 INFO:Start knopa_memery_on()
-22:22:16 INFO:Sended for 472914986: 'Don't forget to comb Knopa'
-22:22:16 INFO:End knopa_memery_on()
-22:22:18 INFO:Running job Every 2 seconds do knopa_memery_on() (last run: 2021-07-03 22:22:16, next run: 2021-07-03 22:22:18)
-22:22:18 INFO:Start knopa_memery_on()
-22:22:18 INFO:Sended for 472914986: 'Don't forget to comb Knopa'
-22:22:18 INFO:End knopa_memery_on()
-22:22:18 INFO:Stop polling...
-22:22:18 WARNING:Goodbye!
+22:47:59 INFO:Init settigs in the True mode
+22:47:59 INFO:Settings are initialized
+22:47:59 INFO:Start initing Settings
+22:47:59 INFO:End initing Settings
+22:47:59 INFO:Start creating table start_working_time
+22:48:00 INFO:Connection closed for table start_working_time
+22:48:00 INFO:Bot: tapakahokot test bot [@TapakahoBot]
+22:48:01 WARNING:Updates were skipped successfully.
+22:48:01 INFO:Start initing all schedules
+22:48:01 INFO:End initing all schedules
+22:48:01 INFO:Start running schedules cycle (while True)
+22:48:01 INFO:Start polling.
+22:48:06 INFO:Start get_work_time(...)
+22:48:06 INFO:Created Work() for 472914986
+22:48:06 INFO:Start initing Work for 472914986
+22:48:06 INFO:Start creating table works_times
+22:48:06 INFO:Connection closed for table works_times
+22:48:06 INFO:Start creating table users_work_statuses
+22:48:06 INFO:Connection closed for table users_work_statuses
+22:48:06 INFO:Start creating table users_tag_history
+22:48:06 INFO:Connection closed for table users_tag_history
+22:48:06 INFO:Start creating table users_tags
+22:48:06 INFO:Connection closed for table users_tags
+22:48:06 INFO:Start creating table start_working_time
+22:48:06 INFO:Connection closed for table start_working_time
+22:48:06 INFO:End initing Work
+22:48:06 INFO:End get_work_time(...)
+22:48:08 INFO:Start get_work_time(...)
+22:48:08 INFO:End get_work_time(...)
+22:48:13 INFO:Start get_work_time(...)
+22:48:13 INFO:End get_work_time(...)
+22:48:20 INFO:Start get_work_time(...)
+22:48:20 INFO:End get_work_time(...)
+22:48:23 INFO:Start get_work_time(...)
+22:48:23 INFO:End get_work_time(...)
+22:48:23 INFO:save_spec_data saving_data(...)
+22:48:23 INFO:start time : 2021-07-02 10:10:00
+end time: 2021-07-02 10:15:00
+22:48:23 INFO:Start adding row [472914986 well studying 2021-07-02 10:10:00 2021-07-02 10:15:00]
+22:48:23 INFO:End adding row [472914986 well studying 2021-07-02 10:10:00 2021-07-02 10:15:00]
+22:48:23 INFO:End save_spec_data(...)
+22:48:26 INFO:Start get_work_time(...)
+22:48:26 INFO:End get_work_time(...)
+22:48:27 INFO:Start get_work_time(...)
+22:48:27 INFO:End get_work_time(...)
+22:48:30 INFO:Start get_work_time(...)
+22:48:30 INFO:End get_work_time(...)
+22:48:31 INFO:Start get_work_time(...)
+22:48:31 INFO:End get_work_time(...)
+22:48:43 INFO:Start get_work_time(...)
+22:48:43 INFO:End get_work_time(...)
+22:48:44 INFO:Start get_work_time(...)
+22:48:44 INFO:End get_work_time(...)
+22:48:45 INFO:Start get_work_time(...)
+22:48:45 INFO:End get_work_time(...)
+22:48:46 INFO:Start get_work_time(...)
+22:48:46 INFO:End get_work_time(...)
+22:48:48 INFO:Start get_work_time(...)
+22:48:48 INFO:End get_work_time(...)
+22:49:13 INFO:Start Work reports message handler by (472914986 <=> TAPAKAHOKOT)
+22:49:13 INFO:End Work reports message handler by (472914986 <=> TAPAKAHOKOT)
+22:49:14 INFO:Start get_work_time(...)
+22:49:14 INFO:End get_work_time(...)
+22:49:14 INFO:Start get_finfo_day_sum(...)
+22:49:14 INFO:End get_finfo_day_sum(...)
+22:49:15 INFO:Start get_work_time(...)
+22:49:15 INFO:End get_work_time(...)
+22:49:15 INFO:Start get_finfo_day_sum(...)
+22:49:15 INFO:End get_finfo_day_sum(...)
+22:49:17 INFO:Start get_work_time(...)
+22:49:17 INFO:End get_work_time(...)
+22:49:17 INFO:Start get_finfo_day_intervals(...)
+22:49:17 INFO:End get_finfo_day_intervals(...)
+22:49:18 INFO:Start get_work_time(...)
+22:49:18 INFO:End get_work_time(...)
+22:49:18 INFO:Start get_finfo_day_intervals(...)
+22:49:18 INFO:End get_finfo_day_intervals(...)
+22:49:20 INFO:Start get_work_time(...)
+22:49:20 INFO:End get_work_time(...)
+22:49:20 INFO:Start get_finfo_day_sum(...)
+22:49:20 INFO:End get_finfo_day_sum(...)
+22:49:21 INFO:Start get_work_time(...)
+22:49:21 INFO:End get_work_time(...)
+22:49:21 INFO:Start get_finfo_day_sum(...)
+22:49:21 INFO:End get_finfo_day_sum(...)
+22:49:51 INFO:Stop polling...
+22:49:51 WARNING:Goodbye!

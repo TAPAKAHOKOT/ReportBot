@@ -35,7 +35,7 @@ class Settings:
 
         logging.info("Init settigs in the %s mode" % TESTING)
 
-        self.b_vers = "3.0.1"
+        self.b_vers = "3.0.5"
         print("Bot version " + str(self.b_vers))
 
         way = "/".join(os.getcwd().replace("\\", "/").split("/")[:-1])

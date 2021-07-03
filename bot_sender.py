@@ -29,7 +29,7 @@ async def on_startup(x):
 # TODO: add remoinder constructor
 # // TODO: make a beautiful working time output
 # // TODO: add opportunity to add working period throught telegram
-# TODO: add opportunity for editing periods
+# TODO: add opportunity for editing periods +-
 # // TODO: add opportunity for deleting periods
 # TODO: add opportunity for watching old dates
 # TODO: add opportunity for watching all available dates
@@ -250,14 +250,16 @@ async def cmd_start(message: types.Message):
 
 
 # <<<<<<<<<<<<<<<<<< Выбор отработанного периода для удаления >>>>>>>>>>>>>>>>>>
-@settings.dp.callback_query_handler(callback.add_delete_work_period.filter(status="Delete"))
+@settings.dp.callback_query_handler(callback.add_delete_work_period.filter(status="Delete"), )
 async def choose_period_to_delete(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
     res = work.get_intervels_for_deleting(call.from_user["id"])
+
+    delete_callback = InlineKeyboardMarkup(row_width=int(res[1]**0.5 if res[1] != 0 else 1))
     if (res[1] == 0):
-        await call.message.edit_text("Nothing to delete")
+        delete_callback.insert(callback.get_delete_work_btn_callback("Back"))
+        await call.message.edit_text("Nothing to delete", reply_markup=delete_callback)
     else:
-        delete_callback = InlineKeyboardMarkup(row_width=int(res[1]**0.5))
         for k in range(1, res[1] + 1):
             delete_callback.insert(callback.get_delete_work_btn_callback(k))
         delete_callback.insert(callback.get_delete_work_btn_callback("Back"))
@@ -277,9 +279,23 @@ async def save_day_date_callback(call: types.CallbackQuery, callback_data: dict)
         await call.message.edit_text("You can add or delete hours worked record")
         await call.message.edit_reply_markup(reply_markup=choose)
     else:
-        res = work.delete_interval(call.from_user["id"], int(callback_data["id"]))
+        res_d = work.delete_interval(call.from_user["id"], int(callback_data["id"]))
 
-        await call.message.edit_text("Row [{}] deleted".format(res))
+        res = work.get_intervels_for_deleting(call.from_user["id"])
+        delete_callback = InlineKeyboardMarkup(row_width=int(res[1]**0.5 if res[1] != 0 else 1))
+
+        if (res[1] == 0):
+            delete_callback.insert(callback.get_delete_work_btn_callback("Back"))
+            await call.message.edit_text("Nothing to delete", reply_markup=delete_callback)
+        else:
+            for k in range(1, res[1] + 1):
+                delete_callback.insert(callback.get_delete_work_btn_callback(k))
+            delete_callback.insert(callback.get_delete_work_btn_callback("Back"))
+            
+            await call.message.edit_text("Row [{}] deleted\n\n".format(res_d) + "SELECT NUMBER OF THE LINE TO DELETE\n\n" + res[0])
+            await call.message.edit_reply_markup(reply_markup=delete_callback)
+
+        # await call.message.edit_text("Row [{}] deleted".format(res))
 
 
 # <<<<<<<<<<<<<<<<<< Назад в меню удаления и добавления из конструктора добавления  >>>>>>>>>>>>>>>>>>
@@ -389,11 +405,14 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
                     datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()),
                     datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta)
 
+        delete_callback = InlineKeyboardMarkup(row_width=1)
+        delete_callback.insert(callback.get_delete_work_btn_callback("Back"))
+
         await call.message.edit_text("Date: {}\nTime: {}\nInterval: {}\n\nData saved".format(
             work.date_callback_constructor,
             str(work.callback_start_time_working.time())[:-3] + " - " + str(work.callback_end_time_working.time())[:-3],
             str(delta)[:-3]
-        ))
+        ), reply_markup=delete_callback)
 
 
 # <<<<<<<<<<<<<<<<<< Отслеживания кликов checkout'а  >>>>>>>>>>>>>>>>>>

@@ -223,7 +223,10 @@ class Work:
         self.last_online_time = datetime.datetime.now()
         title = "\n<<< Status: " + self.status.title() + " >>>\n"
         res = ""
-        info = self.db.get_this_week_rows(u_id, self.status)
+        if last_week:
+            info = self.db.get_last_week_rows(u_id, self.status)
+        else:
+            info = self.db.get_this_week_rows(u_id, self.status)
         s_date = None
         tag = None
         for row in info:
@@ -272,7 +275,7 @@ class Work:
         
         alltimesum = datetime.timedelta()
         for key, val in arr.items():
-            res += str(key.strftime(self.dateformat)) + "\n" + "-"*10 + "\n"
+            res += str(key.strftime(self.dateformat)) + "\n" + "-"*18 + "\n"
 
             timesum = datetime.timedelta()
             tagtimesum = None

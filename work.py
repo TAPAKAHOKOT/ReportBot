@@ -205,7 +205,7 @@ class Work:
                 if s_date is not None: res += "\n"
                 s_date = row[2]
                 tag = None
-                res += str(s_date.strftime(self.dateformat)) + "\n" + "-"*10 + "\n"
+                res += str(s_date.strftime(self.dateformat)) + "\n" + "-"*18 + "\n"
                 
             if tag is None or tag != row[1]: 
                 tag = row[1]
@@ -231,7 +231,7 @@ class Work:
                 if s_date is not None: res += "\n"
                 s_date = row[2]
                 tag = None
-                res += str(s_date.strftime(self.dateformat)) + "\n" + "-"*10 + "\n"
+                res += str(s_date.strftime(self.dateformat)) + "\n" + "-"*18 + "\n"
                 
             if tag is None or tag != row[1]: 
                 tag = row[1]

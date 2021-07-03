@@ -3,7 +3,6 @@ from re import S
 from aiogram.types.inline_keyboard import InlineKeyboardMarkup
 from Keyboard import Keyboard
 
-from update_weather import *
 from functions_tg import *
 
 from CallbackItems import CallbackItems
@@ -13,7 +12,6 @@ from aiogram.dispatcher.filters import Text
 from DataBaseConnectors.WorksStartWorkDataBaseConnector import WorksStartWorkDataBaseConnector
 
 import time
-import sys
 from datetime import datetime
 
 keyboard = Keyboard(settings)
@@ -257,7 +255,7 @@ async def cmd_start(message: types.Message):
 # <<<<<<<<<<<<<<<<<< Выбор отработанного периода для удаления >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.add_delete_work_period.filter(status="Delete"))
 async def choose_period_to_delete(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.message.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"])
     res = work.get_intervels_for_deleting(call.from_user["id"])
     if (res[1] == 0):
         await call.message.edit_text("Nothing to delete")
@@ -410,201 +408,6 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
 async def cmd_start(message: types.Message):
     work = get_work_time(settings, message.from_user["id"])
     await message.answer(work.get_finfo_day_sum(message.from_user["id"], month=True))
-
-
-# <<<<<<<<<<<<<<<<<< Кулькулятор >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='кулькулятор', ignore_case=True))
-async def cmd_start(message: types.Message):
-    if message.from_user["id"] == settings.my_id:
-        await message.answer("Enter expression in python ")
-        settings.calculate_readline = True
-    else:
-        await message.answer("Error 403: access is denied")
-
-# <<<<<<<<<<<<<<<<<< living time >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='living time', ignore_case=True))
-async def cmd_start(message: types.Message):
-    if message.from_user["id"] == settings.my_id:
-        cur_time = time.time()
-
-        res_str = ""
-        res = int(cur_time - start_time)
-
-        symb = [" d    ", " : ", " : ", ""]
-        for i, k in enumerate([24*3600, 3600, 60, 1]):
-            res_str += str(res // k)
-            res_str += symb[i]
-            res -= (res // k) * k
-        
-        await message.answer(res_str)
-    else:
-        await message.answer("Error 403: access is denied")
-
-# <<<<<<<<<<<<<<<<<< binance info >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='binance info', ignore_case=True))
-async def cmd_start(message: types.Message):
-    if message.from_user["id"] == settings.my_id:
-        prices = settings.client.get_all_tickers()
-
-        
-        line = "No any matches"
-        for inf in prices:
-            if inf['symbol'] == settings.settings_info["Binance Currency"]:
-                line = settings.settings_info["Binance Currency"] + " last cost is " + str(inf['price'])
-                break
-
-        await message.answer(line)
-    else:
-        await message.answer("Error 403: access is denied")
-
-# <<<<<<<<<<<<<<<<<< Погода >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='погода', ignore_case=True))
-async def cmd_start(message: types.Message):
-    if message.from_user["id"] == settings.my_id:
-        await message.answer("Please wait...")
-
-        try:
-            res = update_img(settings.settings_info["City"])
-            weather_update_time = datetime.today().strftime("%d.%m   %H:%M:%S")
-
-            with open("data/weather.png", "rb") as file:
-                data = file.read()
-                if data != None:
-                    await settings.bot.send_photo(message.chat.id, data)
-                else:
-                    await message.answer("Image load error")
-        except:
-            await message.answer("Image error")
-    else:
-        await message.answer("Error 403: access is denied")
-
-
-# <<<<<<<<<<<<<<<<<< binary callback >>>>>>>>>>>>>>>>>>
-@settings.dp.callback_query_handler(text_contains="Bin")
-async def process_callback_button1(callback_query: types.CallbackQuery):
-    work = get_work_time(settings, callback_query.from_user["id"])
-    w = "Start working" if not work.get_is_working() else "Stop working"
-
-    data = callback_query.data.split(":")[1]
-    
-    settings.change_settings = False
-
-    if data != 'Main':
-        
-        settings.settings_info[settings.changing_settings] = data
-
-        settings.settings_info_line = update_info_line()
-
-        await settings.bot.answer_callback_query(callback_query.id)
-        await settings.bot.send_message(callback_query.from_user.id, settings.settings_info_line, reply_markup=keyboard.get_main(w))
-
-        write_into_file()
-    else:
-        await settings.bot.send_message(callback_query.from_user.id, "Back to main", reply_markup=keyboard.get_main(w))
-
-
-# <<<<<<<<<<<<<<<<<< submain >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(commands=["admin"])
-async def cmd_start(message: types.Message):
-    logging.info("Start submain message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
-    if message.from_user["id"] == settings.my_id:
-        logging.info("Sended %s for (%s <=> %s)" % ("Openning submain keyboard", message.from_user["id"], message.from_user["username"]))
-        await message.answer("Openning submain keyboard", reply_markup=keyboard.get_submain())
-    else:
-        logging.info("Sended %s for (%s <=> %s)" % ("Error 403: access is denied", message.from_user["id"], message.from_user["username"]))
-        await message.answer("Error 403: access is denied")
-    logging.info("End submain message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
-
-
-# <<<<<<<<<<<<<<<<<< Настройки >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='настройки', ignore_case=True))
-async def cmd_start(message: types.Message):
-    if message.from_user["id"] == settings.my_id:
-        await message.answer(settings.settings_info_line.replace(": ", "   >>>   "), reply_markup=keyboard.get_settings())
-    else:
-        await message.answer("Error 403: access is denied")
-
-# <<<<<<<<<<<<<<<<<< Отправить >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='отправить', ignore_case=True))
-async def cmd_start(message: types.Message):
-    if message.from_user["id"] == settings.my_id:
-        await message.answer("Start loading message")
-        feadback = send_otchet()
-
-        if feadback != "None":
-            await message.answer(feadback)
-            await message.answer("Check your settings:\n     " + settings.settings_info_line.replace(": ", "   >>>   ").replace("\n", "\n     "))
-        else:
-            await message.answer("Message Send")
-            settings.settings_info["File Send"] = "1"
-            settings.settings_info_line = update_info_line()
-    else:
-        await message.answer("Error 403: access is denied")
-
-
-# <<<<<<<<<<<<<<<<<< Another >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler()
-async def echo(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
-    w = "Start working" if not work.get_is_working() else "Stop working"
-
-    canonical_command = message.text
-    command = canonical_command.lower()
-    
-    if settings.change_settings and message.from_user["id"] == settings.my_id:
-        settings.change_settings = False
-        if command != "main":
-            settings.settings_info[settings.changing_settings] = command
-
-            if (settings.changing_settings == "City"):
-                if command.title() not in settings.cities_history:
-                    if command.title() != "Main":
-                        settings.cities_history = [command.title(), *settings.cities_history[:-1]]
-                else:
-                    settings.cities_history.remove(command.title())
-                    settings.cities_history = [command.title(), *settings.cities_history]
-                keyboard.create_keyboard_cities()
-            elif (settings.changing_settings == "Binance Currency"):
-                settings.settings_info[settings.changing_settings] = command.upper()
-                if command.upper() not in settings.binance_val_list:
-                    if command.title() != "Main":
-                        settings.binance_val_list = [command.upper(), *settings.binance_val_list[:-1]]
-                else:
-                    settings.binance_val_list.remove(command.upper())
-                    settings.binance_val_list = [command.upper(), *settings.binance_val_list]
-                keyboard.create_keyboard_binance()
-
-            settings.settings_info_line = update_info_line()
-            await message.answer(settings.settings_info_line, reply_markup=keyboard.get_main(w))
-            write_into_file()
-        else:
-            await message.answer("Back to main", reply_markup=keyboard.get_main(w))
-
-    elif settings.calculate_readline:
-        settings.calculate_readline = False
-        try:
-            output = eval(canonical_command)
-        except:
-            output = "Code error"
-        await message.answer("Result:   '" + str(output) + "'")
-
-    elif message.text in settings.settings_info.keys():
-        settings.change_settings = True 
-
-        settings.changing_settings = canonical_command
-        changing_settings = settings.changing_settings
-
-        if changing_settings == "City":
-            await message.answer("Changing <<" + changing_settings + ">> setting", reply_markup=keyboard.get_cities())
-        elif changing_settings == "Binance Currency":
-            await message.answer("Changing <<" + changing_settings + ">> setting", reply_markup=keyboard.get_binance())
-        elif changing_settings in ["File Send", "Sending Activate"]:
-            buttons = types.InlineKeyboardMarkup()
-            buttons.add(types.InlineKeyboardButton('1', callback_data = 'Bin:1'), types.InlineKeyboardButton('0', callback_data = 'Bin:0'))
-            buttons.add(types.InlineKeyboardButton('Main', callback_data = 'Bin:Main'))
-            await message.answer("Changing <<" + changing_settings + ">> setting", reply_markup=buttons)
-        else:
-            await message.answer("Changing <<" + changing_settings + ">> setting")
 
 
 start_time = time.time()

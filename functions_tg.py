@@ -1,5 +1,6 @@
 from Settings import Settings 
 
+from aiogram.types.inline_keyboard import InlineKeyboardMarkup
 import aioschedule as schedule
 import asyncio
 from Work import Work
@@ -29,17 +30,22 @@ def create_work_time(settings: Settings, u_id, st_time: datetime.datetime):
 
 async def send():
     global settings
+    callback = settings.callback
+
+    reminder = InlineKeyboardMarkup(row_width=1)
+    reminder.insert(callback.checkout_btn_callback["reminder"])
+
     async def knopa_memery_on():
         logging.info("Start knopa_memery_on()")
         logging.info("Sended for %s: 'Don't forget to comb Knopa'" % settings.my_id)
-        await settings.bot.send_message(settings.my_id, "Don't forget to comb Knopa")
+        await settings.bot.send_message(settings.my_id, "Don't forget to comb Knopa", reply_markup=reminder)
         logging.info("End knopa_memery_on()")
     
     
     async def mom_memery_on():
         logging.info("Start mom_memery_on()")
         logging.info("Sended for %s: 'Не забудь взвеситься'" % settings.mom_id)
-        await settings.bot.send_message(settings.mom_id, "Не забудь взвеситься")
+        await settings.bot.send_message(settings.mom_id, "Не забудь взвеситься", reply_markup=reminder)
         logging.info("End mom_memery_on()")
 
     

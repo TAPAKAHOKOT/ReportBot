@@ -3,8 +3,6 @@ from Keyboard import Keyboard
 
 from functions_tg import *
 
-from CallbackItems import CallbackItems
-
 from aiogram import executor, types
 from aiogram.dispatcher.filters import Text
 from DataBaseConnectors.WorksStartWorkDataBaseConnector import WorksStartWorkDataBaseConnector
@@ -13,7 +11,7 @@ import time
 from datetime import datetime
 
 keyboard = Keyboard(settings)
-callback = CallbackItems()
+callback = settings.callback
 
 async def on_startup(x):
     asyncio.create_task(send())
@@ -395,6 +393,12 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
             str(work.callback_start_time_working.time())[:-3] + " - " + str(work.callback_end_time_working.time())[:-3],
             str(delta)[:-3]
         ))
+
+
+# <<<<<<<<<<<<<<<<<< Отслеживания кликов checkout'а  >>>>>>>>>>>>>>>>>>
+@settings.dp.callback_query_handler(callback.checkout_callback.filter(status="reminder"))
+async def check_checkout(call: types.CallbackQuery, callback_data: dict):
+    await call.message.edit_text(call.message.text + "\n\nDone ✅")
 
 
 # <<<<<<<<<<<<<<<<<< This month worked time >>>>>>>>>>>>>>>>>>

@@ -1,6 +1,7 @@
 import logging
 from binance.client import Client
 from aiogram import Bot, Dispatcher
+from CallbackItems import CallbackItems
 import os 
 import json
 
@@ -34,7 +35,7 @@ class Settings:
 
         logging.info("Init settigs in the %s mode" % TESTING)
 
-        self.b_vers = 3.0
+        self.b_vers = "3.0.1"
         print("Bot version " + str(self.b_vers))
 
         way = "/".join(os.getcwd().replace("\\", "/").split("/")[:-1])
@@ -58,5 +59,7 @@ class Settings:
         self.dp = Dispatcher(self.bot)
 
         self.work_time_dict = {}
+
+        self.callback = CallbackItems()
 
         logging.info("Settings are initialized")

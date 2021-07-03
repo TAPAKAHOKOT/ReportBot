@@ -1,53 +1,26 @@
-14:40:27 INFO:Init settigs in the True mode
-14:40:30 INFO:Settings are initialized
-14:40:30 INFO:Start initing Settings
-14:40:30 INFO:End initing Settings
-14:40:30 INFO:Start creating table start_working_time
-14:40:30 INFO:Connection closed for table start_working_time
-14:40:30 INFO:Bot: tapakahokot test bot [@TapakahoBot]
-14:40:30 WARNING:Updates were skipped successfully.
-14:40:30 INFO:Start initing all schedules
-14:40:30 INFO:End initing all schedules
-14:40:30 INFO:Start running schedules cycle (while True)
-14:40:30 INFO:Start polling.
-14:40:30 INFO:Start get_work_time(...)
-14:40:30 INFO:Created Work() for 472914986
-14:40:30 INFO:Start initing Work for 472914986
-14:40:30 INFO:Start creating table works_times
-14:40:30 INFO:Connection closed for table works_times
-14:40:30 INFO:Start creating table users_work_statuses
-14:40:30 INFO:Connection closed for table users_work_statuses
-14:40:30 INFO:Start creating table users_tag_history
-14:40:30 INFO:Connection closed for table users_tag_history
-14:40:30 INFO:Start creating table users_tags
-14:40:30 INFO:Connection closed for table users_tags
-14:40:31 INFO:Start creating table start_working_time
-14:40:31 INFO:Connection closed for table start_working_time
-14:40:31 INFO:End initing Work
-14:40:31 INFO:End get_work_time(...)
-14:40:32 INFO:Start get_work_time(...)
-14:40:32 INFO:End get_work_time(...)
-14:40:54 INFO:Start get_work_time(...)
-14:40:54 INFO:End get_work_time(...)
-14:40:54 INFO:Start adding row [472914986 amasing 2021-07-03 14:40:54.343719]
-14:40:54 INFO:End adding row [472914986 amasing 2021-07-03 14:40:54.343719]
-14:40:54 INFO:Start adding row [472914986 #amasing 2021-07-03 14:40:54.351691]
-14:40:54 INFO:End adding row [472914986 #amasing 2021-07-03 14:40:54.351691]
-14:40:56 INFO:Start get_work_time(...)
-14:40:56 INFO:End get_work_time(...)
-14:40:58 INFO:Start get_work_time(...)
-14:40:58 INFO:End get_work_time(...)
-14:41:08 INFO:Start get_work_time(...)
-14:41:08 INFO:End get_work_time(...)
-14:41:08 INFO:Start adding row [472914986 well 2021-07-03 14:41:08.194998]
-14:41:08 INFO:End adding row [472914986 well 2021-07-03 14:41:08.194998]
-14:41:08 INFO:Start adding row [472914986 #well 2021-07-03 14:41:08.198730]
-14:41:08 INFO:End adding row [472914986 #well 2021-07-03 14:41:08.198730]
-14:41:09 INFO:Start get_work_time(...)
-14:41:09 INFO:End get_work_time(...)
-14:41:11 INFO:Start get_work_time(...)
-14:41:11 INFO:End get_work_time(...)
-14:41:21 INFO:Start get_work_time(...)
-14:41:21 INFO:End get_work_time(...)
-14:41:25 INFO:Stop polling...
-14:41:25 WARNING:Goodbye!
+22:22:10 INFO:Init settigs in the True mode
+22:22:10 INFO:Settings are initialized
+22:22:10 INFO:Start initing Settings
+22:22:10 INFO:End initing Settings
+22:22:10 INFO:Start creating table start_working_time
+22:22:10 INFO:Connection closed for table start_working_time
+22:22:10 INFO:Bot: tapakahokot test bot [@TapakahoBot]
+22:22:11 WARNING:Updates were skipped successfully.
+22:22:11 INFO:Start initing all schedules
+22:22:11 INFO:End initing all schedules
+22:22:11 INFO:Start running schedules cycle (while True)
+22:22:11 INFO:Start polling.
+22:22:13 INFO:Running job Every 2 seconds do knopa_memery_on() (last run: [never], next run: 2021-07-03 22:22:13)
+22:22:13 INFO:Start knopa_memery_on()
+22:22:13 INFO:Sended for 472914986: 'Don't forget to comb Knopa'
+22:22:14 INFO:End knopa_memery_on()
+22:22:16 INFO:Running job Every 2 seconds do knopa_memery_on() (last run: 2021-07-03 22:22:14, next run: 2021-07-03 22:22:16)
+22:22:16 INFO:Start knopa_memery_on()
+22:22:16 INFO:Sended for 472914986: 'Don't forget to comb Knopa'
+22:22:16 INFO:End knopa_memery_on()
+22:22:18 INFO:Running job Every 2 seconds do knopa_memery_on() (last run: 2021-07-03 22:22:16, next run: 2021-07-03 22:22:18)
+22:22:18 INFO:Start knopa_memery_on()
+22:22:18 INFO:Sended for 472914986: 'Don't forget to comb Knopa'
+22:22:18 INFO:End knopa_memery_on()
+22:22:18 INFO:Stop polling...
+22:22:18 WARNING:Goodbye!

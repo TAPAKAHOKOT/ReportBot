@@ -1,6 +1,5 @@
 import logging
 from binance.client import Client
-import codecs
 from aiogram import Bot, Dispatcher
 import os 
 import json

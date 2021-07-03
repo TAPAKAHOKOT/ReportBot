@@ -20,7 +20,7 @@ Language: [![Python 3.8.5 Badge](https://img.shields.io/badge/Python-3.8.5-blue)
     2. ["Add" inline button](#add)
 
 <a name="status_tag"></a> 
-#### "Status/Tag" button
+## "Status/Tag" button
 
 All work periods can be divided into '***Working***' and '***Studying***' _statuses_,
 at the same time, each work period has its own _tag_
@@ -33,7 +33,7 @@ You can choose previously used tags or create your own by _writing # and tag nam
 
 
 <a name="work_reports"></a> 
-#### "Work reports" button
+## "Work reports" button
 
 At any convenient moment, you can get a _report_ on the hours worked for the _current_ or _last_ week
 
@@ -46,7 +46,7 @@ and _standard_ - here all worked periods are summarized by tags, days and weeks
 
 
 <a name="start_stop_working"></a> 
-#### "Start working" and "Stop working" buttons
+## "Start working" and "Stop working" buttons
 
 You can run working timer by clicking '***Start working***' button, after that
 you will get a message mith start working time, and instead of the '***Start working***', the '***Stop working***' will appear
@@ -57,7 +57,7 @@ you will get a message mith start working time, and instead of the '***Start wor
 
 
 <a name="add_delete_period"></a> 
-#### "Add/delete period" button
+## "Add/delete period" button
 
 After clicking '***Add/delete period***' you will get message with inline buttons from the bot
 
@@ -65,7 +65,7 @@ After clicking '***Add/delete period***' you will get message with inline button
 
 
 <a name="delete"></a> 
-###### "Delete" inline button
+### "Delete" inline button
 
 Using it you can delete any work period. After the bot will send you a list of numbered periods,
 to delete, select the desired number under the message
@@ -76,7 +76,7 @@ to delete, select the desired number under the message
 
 
 <a name="add"></a> 
-###### "Add" inline button
+### "Add" inline button
 
 Using it you can add any work period of the current month, up to the current time. 
 After the bot will send you a date constructor with instructions

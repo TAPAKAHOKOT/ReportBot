@@ -1,98 +1,47 @@
-13:47:13 INFO:Init settigs in the True mode
-13:47:13 INFO:Settings are initialized
-13:47:13 INFO:Start initing Settings
-13:47:13 INFO:End initing Settings
-13:47:13 INFO:Start creating table start_working_time
-13:47:13 INFO:Connection closed for table start_working_time
-13:47:13 INFO:Bot: tapakahokot test bot [@TapakahoBot]
-13:47:15 WARNING:Updates were skipped successfully.
-13:47:15 INFO:Start initing all schedules
-13:47:15 INFO:End initing all schedules
-13:47:15 INFO:Start running schedules cycle (while True)
-13:47:15 INFO:Start polling.
-13:47:21 INFO:Start get_work_time(...)
-13:47:21 INFO:Created Work() for 472914986
-13:47:21 INFO:Start initing Work for 472914986
-13:47:21 INFO:Start creating table works_times
-13:47:21 INFO:Connection closed for table works_times
-13:47:22 INFO:Start creating table users_work_statuses
-13:47:22 INFO:Connection closed for table users_work_statuses
-13:47:22 INFO:Start creating table users_tag_history
-13:47:22 INFO:Connection closed for table users_tag_history
-13:47:22 INFO:Start creating table users_tags
-13:47:22 INFO:Connection closed for table users_tags
-13:47:22 INFO:Start creating table start_working_time
-13:47:22 INFO:Connection closed for table start_working_time
-13:47:22 INFO:End initing Work
-13:47:22 INFO:End get_work_time(...)
-13:47:26 INFO:Start get_work_time(...)
-13:47:26 INFO:End get_work_time(...)
-13:47:29 INFO:Start get_work_time(...)
-13:47:29 INFO:End get_work_time(...)
-13:47:33 INFO:Start get_work_time(...)
-13:47:33 INFO:End get_work_time(...)
-13:47:35 INFO:Start get_work_time(...)
-13:47:35 INFO:End get_work_time(...)
-13:47:35 INFO:save_spec_data saving_data(...)
-13:47:35 INFO:start time : 2021-07-03 13:10:00
-end time: 2021-07-04 00:10:00
-13:47:35 INFO:Start adding row [472914986 loling working 2021-07-03 13:10:00 2021-07-04 00:10:00]
-13:47:35 INFO:End adding row [472914986 loling working 2021-07-03 13:10:00 2021-07-04 00:10:00]
-13:47:35 INFO:End save_spec_data(...)
-13:47:37 INFO:Start Work reports message handler by (472914986 <=> TAPAKAHOKOT)
-13:47:37 INFO:End Work reports message handler by (472914986 <=> TAPAKAHOKOT)
-13:47:38 INFO:Start get_work_time(...)
-13:47:38 INFO:End get_work_time(...)
-13:47:38 INFO:Start get_finfo_day_intervals(...)
-13:47:38 INFO:End get_finfo_day_intervals(...)
-13:47:55 INFO:Start get_work_time(...)
-13:47:55 INFO:End get_work_time(...)
-13:47:55 INFO:Start get_finfo_day_sum(...)
-13:47:55 INFO:End get_finfo_day_sum(...)
-13:47:55 INFO:Start get_work_time(...)
-13:47:55 INFO:End get_work_time(...)
-13:47:55 INFO:Start get_finfo_day_intervals(...)
-13:47:55 INFO:End get_finfo_day_intervals(...)
-13:47:57 INFO:Start get_work_time(...)
-13:47:57 INFO:End get_work_time(...)
-13:47:57 INFO:Start get_finfo_day_intervals(...)
-13:47:57 INFO:End get_finfo_day_intervals(...)
-13:48:06 INFO:Start get_work_time(...)
-13:48:06 INFO:End get_work_time(...)
-13:48:08 INFO:Start get_work_time(...)
-13:48:08 INFO:End get_work_time(...)
-13:48:12 INFO:Start get_work_time(...)
-13:48:12 INFO:End get_work_time(...)
-13:48:13 INFO:Start Start working message handler by (472914986 <=> TAPAKAHOKOT)
-13:48:13 INFO:Start get_work_time(...)
-13:48:13 INFO:End get_work_time(...)
-13:48:13 INFO:Start start_working(...)
-13:48:13 INFO:Start adding row [472914986 2021-07-03 13:48:13.242783]
-13:48:13 INFO:End adding row [472914986 2021-07-03 13:48:13.242783]
-13:48:13 INFO:End start_working(...)
-13:48:13 INFO:Sended Start working time: 13.48.13 #loling for (472914986 <=> TAPAKAHOKOT)
-13:48:13 INFO:End Start working message handler by (472914986 <=> TAPAKAHOKOT)
-13:48:13 INFO:Start Stop working message handler by (472914986 <=> TAPAKAHOKOT)
-13:48:13 INFO:Start get_work_time(...)
-13:48:13 INFO:End get_work_time(...)
-13:48:13 INFO:Start end_working(...)
-13:48:13 INFO:Start saving_data(...)
-13:48:13 INFO:Start adding row [472914986 loling working 2021-07-03 13:48:13.242783 2021-07-03 13:48:13.927861]
-13:48:13 INFO:End adding row [472914986 loling working 2021-07-03 13:48:13.242783 2021-07-03 13:48:13.927861]
-13:48:13 INFO:End saving_data(...)
-13:48:13 INFO:End end_working(...)
-13:48:13 INFO:Sended End working time: 13.48.13
-Working time: 0:00:00 for (472914986 <=> TAPAKAHOKOT)
-13:48:14 INFO:End Stop working message handler by (472914986 <=> TAPAKAHOKOT)
-13:48:16 INFO:Start get_work_time(...)
-13:48:16 INFO:End get_work_time(...)
-13:48:17 INFO:Start get_work_time(...)
-13:48:17 INFO:End get_work_time(...)
-13:48:18 INFO:Start get_work_time(...)
-13:48:18 INFO:End get_work_time(...)
-13:48:20 INFO:Start get_work_time(...)
-13:48:20 INFO:End get_work_time(...)
-13:48:20 INFO:Start adding row [472914986 testing 2021-07-03 13:48:20.205902]
-13:48:20 INFO:End adding row [472914986 testing 2021-07-03 13:48:20.205902]
-13:48:26 INFO:Stop polling...
-13:48:26 WARNING:Goodbye!
+14:14:28 INFO:Init settigs in the True mode
+14:14:29 INFO:Settings are initialized
+14:14:29 INFO:Start initing Settings
+14:14:29 INFO:End initing Settings
+14:14:29 INFO:Start creating table start_working_time
+14:14:29 INFO:Connection closed for table start_working_time
+14:14:29 INFO:Bot: tapakahokot test bot [@TapakahoBot]
+14:14:30 WARNING:Updates were skipped successfully.
+14:14:30 INFO:Start initing all schedules
+14:14:30 INFO:End initing all schedules
+14:14:30 INFO:Start running schedules cycle (while True)
+14:14:30 INFO:Start polling.
+14:14:39 INFO:Start get_work_time(...)
+14:14:39 INFO:Created Work() for 472914986
+14:14:39 INFO:Start initing Work for 472914986
+14:14:39 INFO:Start creating table works_times
+14:14:39 INFO:Connection closed for table works_times
+14:14:40 INFO:Start creating table users_work_statuses
+14:14:40 INFO:Connection closed for table users_work_statuses
+14:14:40 INFO:Start creating table users_tag_history
+14:14:40 INFO:Connection closed for table users_tag_history
+14:14:40 INFO:Start creating table users_tags
+14:14:40 INFO:Connection closed for table users_tags
+14:14:40 INFO:Start creating table start_working_time
+14:14:40 INFO:Connection closed for table start_working_time
+14:14:40 INFO:End initing Work
+14:14:40 INFO:End get_work_time(...)
+14:14:41 INFO:Start get_work_time(...)
+14:14:41 INFO:End get_work_time(...)
+14:14:43 INFO:Start get_work_time(...)
+14:14:43 INFO:End get_work_time(...)
+14:14:54 INFO:Start get_work_time(...)
+14:14:54 INFO:End get_work_time(...)
+14:14:55 INFO:Start get_work_time(...)
+14:14:55 INFO:End get_work_time(...)
+14:14:55 INFO:save_spec_data saving_data(...)
+14:14:55 INFO:start time : 2021-07-03 03:22:00
+end time: 2021-07-04 02:47:00
+14:14:55 INFO:Start adding row [472914986 testing working 2021-07-03 03:22:00 2021-07-04 02:47:00]
+14:14:55 INFO:End adding row [472914986 testing working 2021-07-03 03:22:00 2021-07-04 02:47:00]
+14:14:55 INFO:End save_spec_data(...)
+14:14:57 INFO:Start get_work_time(...)
+14:14:57 INFO:End get_work_time(...)
+14:15:00 INFO:Start get_work_time(...)
+14:15:00 INFO:End get_work_time(...)
+14:15:04 INFO:Stop polling...
+14:15:04 WARNING:Goodbye!

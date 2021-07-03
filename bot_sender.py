@@ -371,7 +371,10 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
         for k in range(24):
             hours.insert(callback.hours_btn_callback[k])
         
-        await call.message.edit_text("Great, now choose the end working time\nDate: {}\nTime: {}\n".format(
+        await call.message.edit_text("Great, now choose the end working time\n" +\
+                                    "\n❗❗❗If the start time of work is later than the" +\
+                                    " end of work, it will be considered that you" +
+                                    " have worked until the next day.❗❗❗\n\nDate: {}\nTime: {}\n".format(
                                                                         work.date_callback_constructor,
                                                                         work.time_callback_constructor))
         await call.message.edit_reply_markup(reply_markup=hours)

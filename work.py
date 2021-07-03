@@ -182,11 +182,34 @@ class Work:
     def delete_interval(self, u_id: int, n: int) -> str:
         self.last_online_time = datetime.datetime.now()
         info = self.db.get_this_week_rows(u_id, self.status)
-        
-        delta = str(self.get_difference_betwen(info[n - 1][2], info[n - 1][3])).split(".")[0]
-        line = self.get_day_time_formated(info[n - 1][2], info[n - 1][3]) + " => " + delta
 
-        self.db.delete_row_by_id(info[n - 1][-1])
+        size = 0
+        arr = {}
+        info = self.db.get_this_week_rows(u_id, self.status)
+        s_date = None
+        for row in info:
+            if s_date is None or s_date.date() != row[2].date():
+                s_date = row[2]
+                arr[s_date] = {}
+            if not (row[1] in arr[s_date].keys()): arr[s_date][row[1]] = []
+            delta = str(self.get_difference_betwen(row[2], row[3])).split(".")[0]
+            arr[s_date][row[1]].append([self.get_day_time_formated(row[2], row[3]) + " => " + delta, row[-1]])
+        
+        for key, val in arr.items():
+            arr[key] = {k: v for k, v in sorted(val.items(), key=lambda item: item[0])}
+
+        br = False
+        for key, val in arr.items():
+            for k, v in val.items():
+                for el in v:
+                    size += 1
+                    if size == n:
+                        self.db.delete_row_by_id(el[1])
+                        line = el[0]
+                        br = True
+                        break
+                if br: break
+            if br: break
 
         return line
 
@@ -197,54 +220,62 @@ class Work:
         title = "<<< {}DELETING{} >>>".format(" " * (s//2), " " * (s - s//2))
         title += "\n<<< Status: " + self.status.title() + " >>>\n"
         res = ""
+        arr = {}
         info = self.db.get_this_week_rows(u_id, self.status)
         s_date = None
-        tag = None
         for row in info:
             if s_date is None or s_date.date() != row[2].date():
-                if s_date is not None: res += "\n"
                 s_date = row[2]
-                tag = None
-                res += str(s_date.strftime(self.dateformat)) + "\n" + "-"*18 + "\n"
-                
-            if tag is None or tag != row[1]: 
-                tag = row[1]
-                res += " "*4 + "#" + tag + "\n"
-
+                arr[s_date] = {}
+            if not (row[1] in arr[s_date].keys()): arr[s_date][row[1]] = []
             delta = str(self.get_difference_betwen(row[2], row[3])).split(".")[0]
-            el = self.get_day_time_formated(row[2], row[3]) + " => " + delta
-            
-            size += 1
-            res += " "*4 + el + " "*6 + "(" + str(size) + ")" + "\n"
-            
+            arr[s_date][row[1]].append(self.get_day_time_formated(row[2], row[3]) + " => " + delta)
+        
+        for key, val in arr.items():
+            arr[key] = {k: v for k, v in sorted(val.items(), key=lambda item: item[0])}
+        
+        for key, val in arr.items():
+            res += str(key.strftime(self.dateformat)) + "\n" + "-"*10 + "\n"
+
+            for k, v in val.items():
+                res += " "*4 + "#" + k + "\n"
+                for el in v:
+                    size += 1
+                    res += " "*4 + el + " "*6 + "(" + str(size) + ")" + "\n"
+            res += "\n"
         return [title + res if res != "" else "No records", size]
 
     def get_finfo_day_intervals(self, u_id: int, last_week: bool = False) -> str:
+        logging.info("Start get_finfo_day_intervals(...)")
         self.last_online_time = datetime.datetime.now()
-        title = "\n<<< Status: " + self.status.title() + " >>>\n"
+        title = "<<< Status: " + self.status.title() + " >>>\n"
         res = ""
+        arr = {}
         if last_week:
             info = self.db.get_last_week_rows(u_id, self.status)
         else:
             info = self.db.get_this_week_rows(u_id, self.status)
         s_date = None
-        tag = None
         for row in info:
             if s_date is None or s_date.date() != row[2].date():
-                if s_date is not None: res += "\n"
                 s_date = row[2]
-                tag = None
-                res += str(s_date.strftime(self.dateformat)) + "\n" + "-"*18 + "\n"
-                
-            if tag is None or tag != row[1]: 
-                tag = row[1]
-                res += " "*4 + "#" + tag + "\n"
-
+                arr[s_date] = {}
+            if not (row[1] in arr[s_date].keys()): arr[s_date][row[1]] = []
             delta = str(self.get_difference_betwen(row[2], row[3])).split(".")[0]
-            el = self.get_day_time_formated(row[2], row[3]) + " => " + delta
-            
-            res += " "*4 + el + "\n"
-            
+            arr[s_date][row[1]].append(self.get_day_time_formated(row[2], row[3]) + " => " + delta)
+        
+        for key, val in arr.items():
+            arr[key] = {k: v for k, v in sorted(val.items(), key=lambda item: item[0])}
+        
+        for key, val in arr.items():
+            res += str(key.strftime(self.dateformat)) + "\n" + "-"*10 + "\n"
+
+            for k, v in val.items():
+                res += " "*4 + "#" + k + "\n"
+                for el in v:
+                    res += " "*8 + el + "\n"
+            res += "\n"
+        logging.info("End get_finfo_day_intervals(...)")
         return title + res if res != "" else "No records"
     
     def get_finfo_day_sum(self, u_id: int, last_week: bool = False, month: bool = False) -> str:
@@ -275,7 +306,7 @@ class Work:
         
         alltimesum = datetime.timedelta()
         for key, val in arr.items():
-            res += str(key.strftime(self.dateformat)) + "\n" + "-"*18 + "\n"
+            res += str(key.strftime(self.dateformat)) + "\n" + "-"*10 + "\n"
 
             timesum = datetime.timedelta()
             tagtimesum = None

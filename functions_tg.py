@@ -1,3 +1,4 @@
+from typing import Text
 from Settings import Settings 
 
 from aiogram.types.inline_keyboard import InlineKeyboardMarkup
@@ -7,8 +8,13 @@ from Work import Work
 import datetime
 
 import logging
+import sys
 
-settings = Settings()
+TESTING = sys.argv[1] if len(sys.argv) > 1 else "TEST"
+
+TESTING = not (TESTING == "REL")
+
+settings = Settings(TESTING)
 
 
 def get_work_time(settigns: Settings, u_id) -> Work:

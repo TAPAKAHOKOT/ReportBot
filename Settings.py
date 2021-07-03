@@ -5,9 +5,9 @@ from CallbackItems import CallbackItems
 import json
 
 class Settings:
-    def __init__(self):
+    def __init__(self, testing: bool):
         # ! <<< TESTING >>>
-        TESTING = True
+        TESTING = testing
         # ! <<< TESTING >>>
 
         # database connectiong settings

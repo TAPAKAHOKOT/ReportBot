@@ -1,71 +1,45 @@
-16:13:25 INFO:Init settigs in the True mode
-16:13:26 INFO:Start filling data
-16:13:26 INFO:Filling line: Send To: tapakahokot@gmail.com
-
-16:13:26 INFO:Filling line: FileName: otchet.xlsx
-
-16:13:26 INFO:Filling line: File Send: 0
-
-16:13:26 INFO:Filling line: City: Москва
-
-16:13:26 INFO:Filling line: Sending Activate: 1
-
-16:13:26 INFO:Filling line: Binance Currency: XEMBTC
-
-16:13:26 INFO:Filling line: NoIp: 13
-
-16:13:26 INFO:Filling line: None: date:1
-
-16:13:26 INFO:Filling line: -1
-
-16:13:26 INFO:Filling line: Москва, City, Клинцы, Салехард
-
-16:13:26 INFO:Filling line: -2
-
-16:13:26 INFO:Filling line: XEMBTC, BTCUSDT, NEOBTC, TRXBTC
-16:13:26 INFO:End filling data
-16:13:26 INFO:Settings are initialized
-16:13:26 INFO:Start initing Settings
-16:13:26 INFO:Start create_keyboard_cities()
-16:13:26 INFO:End create_keyboard_cities()
-16:13:26 INFO:Start create_keyboard_binance()
-16:13:26 INFO:End create_keyboard_binance()
-16:13:26 INFO:End initing Settings
-16:13:27 INFO:Start creating table start_working_time
-16:13:27 INFO:Connection closed for table start_working_time
-16:13:27 INFO:Start create_work_time(...)
-16:13:27 INFO:Start initing Work for 472914986
-16:13:27 INFO:Start creating table works_times
-16:13:27 INFO:Connection closed for table works_times
-16:13:27 INFO:Start creating table users_work_statuses
-16:13:27 INFO:Connection closed for table users_work_statuses
-16:13:27 INFO:Start creating table users_tag_history
-16:13:27 INFO:Connection closed for table users_tag_history
-16:13:27 INFO:Start creating table users_tags
-16:13:28 INFO:Connection closed for table users_tags
-16:13:28 INFO:Start creating table start_working_time
-16:13:28 INFO:Connection closed for table start_working_time
-16:13:28 INFO:End initing Work
-16:13:28 INFO:Start set_start_working_time(...)
-16:13:28 INFO:End set_start_working_time(...)
-16:13:28 INFO:End create_work_time(...)
-16:13:29 INFO:Bot: tapakahokot test bot [@TapakahoBot]
-16:13:30 WARNING:Updates were skipped successfully.
-16:13:30 INFO:Start initing all schedules
-16:13:30 INFO:End initing all schedules
-16:13:30 INFO:Start running schedules cycle (while True)
-16:13:30 INFO:Start polling.
-16:13:30 INFO:Start Stop working message handler by (472914986 <=> TAPAKAHOKOT)
-16:13:30 INFO:Start get_work_time(...)
-16:13:30 INFO:End get_work_time(...)
-16:13:30 INFO:Start end_working(...)
-16:13:31 INFO:Start saving_data(...)
-16:13:31 INFO:Start adding row [472914986 tttt working 2021-07-02 16:13:11.220864 2021-07-02 16:13:30.988851]
-16:13:31 INFO:End adding row [472914986 tttt working 2021-07-02 16:13:11.220864 2021-07-02 16:13:30.988851]
-16:13:31 INFO:End saving_data(...)
-16:13:31 INFO:End end_working(...)
-16:13:31 INFO:Sended End working time: 16.13.30
-Working time: 0:00:19 for (472914986 <=> TAPAKAHOKOT)
-16:13:31 INFO:End Stop working message handler by (472914986 <=> TAPAKAHOKOT)
-16:13:37 INFO:Stop polling...
-16:13:37 WARNING:Goodbye!
+13:10:32 INFO:Init settigs in the True mode
+13:10:33 INFO:Settings are initialized
+13:10:33 INFO:Start initing Settings
+13:10:33 INFO:End initing Settings
+13:10:33 INFO:Start creating table start_working_time
+13:10:33 INFO:Connection closed for table start_working_time
+13:10:33 INFO:Bot: tapakahokot test bot [@TapakahoBot]
+13:10:34 WARNING:Updates were skipped successfully.
+13:10:34 INFO:Start initing all schedules
+13:10:34 INFO:End initing all schedules
+13:10:34 INFO:Start running schedules cycle (while True)
+13:10:34 INFO:Start polling.
+13:10:37 INFO:Start get_work_time(...)
+13:10:37 INFO:Created Work() for 472914986
+13:10:37 INFO:Start initing Work for 472914986
+13:10:37 INFO:Start creating table works_times
+13:10:37 INFO:Connection closed for table works_times
+13:10:37 INFO:Start creating table users_work_statuses
+13:10:38 INFO:Connection closed for table users_work_statuses
+13:10:38 INFO:Start creating table users_tag_history
+13:10:38 INFO:Connection closed for table users_tag_history
+13:10:38 INFO:Start creating table users_tags
+13:10:38 INFO:Connection closed for table users_tags
+13:10:38 INFO:Start creating table start_working_time
+13:10:38 INFO:Connection closed for table start_working_time
+13:10:38 INFO:End initing Work
+13:10:38 INFO:End get_work_time(...)
+13:10:42 INFO:Start get_work_time(...)
+13:10:42 INFO:End get_work_time(...)
+13:10:43 INFO:Start get_work_time(...)
+13:10:43 INFO:End get_work_time(...)
+13:10:44 INFO:Start get_work_time(...)
+13:10:44 INFO:End get_work_time(...)
+13:10:47 INFO:Start get_work_time(...)
+13:10:47 INFO:End get_work_time(...)
+13:10:49 INFO:Start get_work_time(...)
+13:10:49 INFO:End get_work_time(...)
+13:10:51 INFO:Start get_work_time(...)
+13:10:51 INFO:End get_work_time(...)
+13:10:52 INFO:Start get_work_time(...)
+13:10:52 INFO:End get_work_time(...)
+13:10:56 INFO:Start get_work_time(...)
+13:10:56 INFO:End get_work_time(...)
+13:11:11 INFO:Stop polling...
+13:11:11 WARNING:Goodbye!

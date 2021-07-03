@@ -1,10 +1,6 @@
 {
 	"folders": [
 		{
-			"name": "Data",
-			"path": "./data"
-		},
-		{
 			"name": "Log",
 			"path": "./logs"
 		},
@@ -15,15 +11,7 @@
 		{
 			"name": "Bot",
 			"path": "./"
-		},
-		{
-			"name": "csv",
-			"path": "./csv_data"
-		},
-		{
-			"name": "Vk",
-			"path": "./vk_bot"
-		},
+		}
 	],
 	"settings": {
 		"files.exclude": {

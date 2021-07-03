@@ -64,19 +64,22 @@ class Work:
 
 
     def set_tag(self, tag: str) -> None:
+        tag_lim = 9
         self.tag = tag
         self.st_db.set_tag(self.user_id, tag)
         tags_num = self.tag_db.get_count_of_history(self.user_id)
-        if tags_num >= 10:
+        while tags_num >= tag_lim:
             self.tag_db.delete_last_tag_from_history(self.user_id)
+            tags_num = self.tag_db.get_count_of_history(self.user_id)
 
         self.tag_db.add_row(self.user_id, tag, datetime.datetime.now())
 
         tags = self.u_tag_db.get_user_tag_history(self.user_id)
         if "#" + tag not in tags:
             tags_num = self.u_tag_db.get_count_of_history(self.user_id)
-            if tags_num >= 5:
+            while tags_num >= tag_lim:
                 self.u_tag_db.delete_last_tag_from_history(self.user_id)
+                tags_num = self.u_tag_db.get_count_of_history(self.user_id)
 
             self.u_tag_db.add_row(self.user_id, "#" + tag, datetime.datetime.now())
     

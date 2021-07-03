@@ -32,6 +32,7 @@ class WorkTagsDataBaseConnector(DataBaseConnector):
                     WHERE user_id={id} AND call_time=(
                         SELECT call_time 
                         FROM {table}
+                        WHERE user_id={id}
                         ORDER BY call_time
                         LIMIT 1
                     )""".format(table=self.tabel_name, id=user_id)

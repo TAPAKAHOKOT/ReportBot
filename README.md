@@ -1,4 +1,4 @@
-Contact: ![https://t.me/TAPAKAHOKOT](https://img.shields.io/badge/Telegram-Profile-0088cc) ![https://vk.com/kpabakot](https://img.shields.io/badge/Vk-Profile-4376A6)
+Contact me: [![Telegram Badge](https://img.shields.io/badge/Telegram-Profile-0088cc)](https://t.me/TAPAKAHOKOT) ![https://vk.com/kpabakot](https://img.shields.io/badge/Vk-Profile-4376A6)
 
 Versions: ![https://github.com/TAPAKAHOKOT/ReportBot](https://img.shields.io/badge/Realese-3.0-Green) ![https://github.com/TAPAKAHOKOT/ReportBot/tree/rel-2.0](https://img.shields.io/badge/OldBot-2.0-blue)
 

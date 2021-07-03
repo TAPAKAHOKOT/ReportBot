@@ -52,6 +52,7 @@ async def on_startup(x):
 # // * TODO: improve work.py file code
 # * TODO: improve all code by adding annotations
 
+
 # <<<<<<<<<<<<<<<<<< Start >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(commands=["start"])
 async def cmd_start(message: types.Message):

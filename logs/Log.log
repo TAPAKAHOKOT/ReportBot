@@ -1,33 +1,33 @@
-23:43:39 INFO:Init settigs in the True mode
-23:43:39 INFO:Settings are initialized
-23:43:39 INFO:Start initing Settings
-23:43:39 INFO:End initing Settings
-23:43:39 INFO:Start creating table start_working_time
-23:43:39 INFO:Connection closed for table start_working_time
-23:43:39 INFO:Bot: tapakahokot test bot [@TapakahoBot]
-23:43:40 WARNING:Updates were skipped successfully.
-23:43:40 INFO:Start initing all schedules
-23:43:40 INFO:End initing all schedules
-23:43:40 INFO:Start running schedules cycle (while True)
-23:43:40 INFO:Start polling.
-23:43:42 INFO:Start get_work_time(...)
-23:43:42 INFO:Created Work() for 472914986
-23:43:42 INFO:Start initing Work for 472914986
-23:43:42 INFO:Start creating table works_times
-23:43:42 INFO:Connection closed for table works_times
-23:43:42 INFO:Start creating table users_work_statuses
-23:43:42 INFO:Connection closed for table users_work_statuses
-23:43:42 INFO:Start creating table users_tag_history
-23:43:42 INFO:Connection closed for table users_tag_history
-23:43:42 INFO:Start creating table users_tags
-23:43:42 INFO:Connection closed for table users_tags
-23:43:42 INFO:Start creating table start_working_time
-23:43:42 INFO:Connection closed for table start_working_time
-23:43:42 INFO:End initing Work
-23:43:42 INFO:End get_work_time(...)
-23:43:44 INFO:Start get_work_time(...)
-23:43:44 INFO:End get_work_time(...)
-23:43:46 INFO:Start get_work_time(...)
-23:43:46 INFO:End get_work_time(...)
-23:43:52 INFO:Stop polling...
-23:43:52 WARNING:Goodbye!
+00:26:05 INFO:Init settigs in the True mode
+00:26:06 INFO:Settings are initialized
+00:26:06 INFO:Start initing Settings
+00:26:06 INFO:End initing Settings
+00:26:06 INFO:Start creating table start_working_time
+00:26:06 INFO:Connection closed for table start_working_time
+00:26:06 INFO:Bot: tapakahokot test bot [@TapakahoBot]
+00:26:07 WARNING:Updates were skipped successfully.
+00:26:07 INFO:Start initing all schedules
+00:26:07 INFO:End initing all schedules
+00:26:07 INFO:Start running schedules cycle (while True)
+00:26:07 INFO:Start polling.
+00:26:14 INFO:Start get_work_time(...)
+00:26:14 INFO:Created Work() for 472914986
+00:26:14 INFO:Start initing Work for 472914986
+00:26:14 INFO:Start creating table works_times
+00:26:14 INFO:Connection closed for table works_times
+00:26:15 INFO:Start creating table users_work_statuses
+00:26:15 INFO:Connection closed for table users_work_statuses
+00:26:15 INFO:Start creating table users_tag_history
+00:26:15 INFO:Connection closed for table users_tag_history
+00:26:15 INFO:Start creating table users_tags
+00:26:15 INFO:Connection closed for table users_tags
+00:26:15 INFO:Start creating table start_working_time
+00:26:15 INFO:Connection closed for table start_working_time
+00:26:15 INFO:End initing Work
+00:26:15 INFO:End get_work_time(...)
+00:26:16 INFO:Start get_work_time(...)
+00:26:16 INFO:End get_work_time(...)
+00:26:17 INFO:Start get_work_time(...)
+00:26:17 INFO:End get_work_time(...)
+00:26:19 INFO:Stop polling...
+00:26:19 WARNING:Goodbye!

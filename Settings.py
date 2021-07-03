@@ -2,7 +2,6 @@ import logging
 from binance.client import Client
 from aiogram import Bot, Dispatcher
 from CallbackItems import CallbackItems
-import os 
 import json
 
 class Settings:
@@ -38,9 +37,7 @@ class Settings:
         self.b_vers = "3.0.5"
         print("Bot version " + str(self.b_vers))
 
-        way = "/".join(os.getcwd().replace("\\", "/").split("/")[:-1])
-
-        with open(way + '/botsAPi.txt') as json_file:
+        with open('botsAPi.txt') as json_file:
             data = json.load(json_file)
 
         self.api_key = data["b_api_key"]

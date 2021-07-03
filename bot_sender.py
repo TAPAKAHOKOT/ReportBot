@@ -367,12 +367,8 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
 
         today = datetime.today()
         hours = InlineKeyboardMarkup(row_width=6)
-        if (int(work.date_callback_constructor.split(".")[0]) == today.day):
-            h = today.hour + 1
-        else:
-            h = 24
 
-        for k in range(h):
+        for k in range(24):
             hours.insert(callback.hours_btn_callback[k])
         
         await call.message.edit_text("Great, now choose the end working time\nDate: {}\nTime: {}\n".format(
@@ -381,24 +377,21 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
         await call.message.edit_reply_markup(reply_markup=hours)
     else:
         work.callback_end_time_working = work.get_one_time_from(work.time_callback_constructor.replace(":", ".") + ".00")
-        if (work.callback_start_time_working < work.callback_end_time_working):
-            work.start_constructor_done = False
-            delta = work.get_difference_betwen(
-                    work.callback_start_time_working,
-                    work.callback_end_time_working
-                )
-            
-            work.save_spec_data(call.from_user["id"], 
-                        datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()),
-                        datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta)
+        work.start_constructor_done = False
+        delta = work.get_difference_betwen(
+                work.callback_start_time_working,
+                work.callback_end_time_working
+            )
+        
+        work.save_spec_data(call.from_user["id"], 
+                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()),
+                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta)
 
-            await call.message.edit_text("Date: {}\nTime: {}\nInterval: {}\n\nData saved".format(
-                work.date_callback_constructor,
-                str(work.callback_start_time_working.time())[:-3] + " - " + str(work.callback_end_time_working.time())[:-3],
-                str(delta)[:-3]
-            ))
-        else:
-            await call.message.edit_text("Data error (work start time came after work end time)")
+        await call.message.edit_text("Date: {}\nTime: {}\nInterval: {}\n\nData saved".format(
+            work.date_callback_constructor,
+            str(work.callback_start_time_working.time())[:-3] + " - " + str(work.callback_end_time_working.time())[:-3],
+            str(delta)[:-3]
+        ))
 
 
 # <<<<<<<<<<<<<<<<<< This month worked time >>>>>>>>>>>>>>>>>>

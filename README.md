@@ -35,7 +35,7 @@ Language: [![Python 3.8.5 Badge](https://img.shields.io/badge/Python-3.8.5-blue)
 
 | Example | Description |
 |---------|-------------|
-| At any convenient moment, you can get a _report_ <br>on the hours worked for the _current_ or _last_ week<br><br>There are two types of reports, with _details_ - here you will see each worked period <br>and _standard_ - here all worked periods are summarized by tags, days and weeks | <img src="imgs/reports.gif" width="200"> |
+| <img src="imgs/reports.gif" width="200"> | At any convenient moment, you can get a _report_ <br>on the hours worked for the _current_ or _last_ week<br><br>There are two types of reports, <br>with _details_ - here you will see each worked period and _standard_ - here all <br>worked periods are summarized by tags, days and weeks |
 
 <!-- ![Screenshot](imgs/reports.gif) -->
 

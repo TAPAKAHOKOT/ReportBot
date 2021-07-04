@@ -35,15 +35,17 @@ You can choose previously used tags or create your own by _writing # and tag nam
 [Back to table of contents](#table_of_contents)
 
 
-<br><a name="work_reports"></a> 
+<a name="work_reports"></a> 
 ## "Work reports" button
+
+<img align="right" src="imgs/reports.gif">
 
 At any convenient moment, you can get a _report_ on the hours worked for the _current_ or _last_ week
 
 There are two types of reports, with _details_ - here you will see each worked period 
 and _standard_ - here all worked periods are summarized by tags, days and weeks
 
-![Screenshot](imgs/reports.gif)
+<!-- ![Screenshot](imgs/reports.gif) -->
 
 [Back to table of contents](#table_of_contents)
 

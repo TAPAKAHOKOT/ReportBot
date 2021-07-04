@@ -22,15 +22,13 @@ Language: [![Python 3.8.5 Badge](https://img.shields.io/badge/Python-3.8.5-blue)
 <a name="status_tag"></a> 
 ## "Status/Tag" button
 
-<img align="right" src="imgs/status_tag.gif">
-
 All work periods can be divided into '***Working***' and '***Studying***' _statuses_,
 at the same time, each work period has its own _tag_
 
 You can choose previously used tags or create your own by _writing # and tag name to the bot_ ( _#testing_ )
 
 
-<!-- ![Screenshot](imgs/status_tag.gif) -->
+![Screenshot](imgs/status_tag.gif)
 
 [Back to table of contents](#table_of_contents)
 
@@ -38,14 +36,12 @@ You can choose previously used tags or create your own by _writing # and tag nam
 <a name="work_reports"></a> 
 ## "Work reports" button
 
-<img align="left" src="imgs/reports.gif">
-
 At any convenient moment, you can get a _report_ on the hours worked for the _current_ or _last_ week
 
 There are two types of reports, with _details_ - here you will see each worked period 
 and _standard_ - here all worked periods are summarized by tags, days and weeks
 
-<!-- ![Screenshot](imgs/reports.gif) -->
+![Screenshot](imgs/reports.gif)
 
 [Back to table of contents](#table_of_contents)
 

@@ -34,7 +34,7 @@ class Settings:
 
         logging.info("Init settigs in the %s mode" % TESTING)
 
-        self.b_vers = "3.0.5"
+        self.b_vers = "3.0.6"
         print("Bot version " + str(self.b_vers))
 
         with open('botsAPi.txt') as json_file:

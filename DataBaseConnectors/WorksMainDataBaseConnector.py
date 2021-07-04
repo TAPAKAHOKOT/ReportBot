@@ -41,7 +41,7 @@ class WorksMainDataBaseConnector(DataBaseConnector):
 
 
     def get_this_week_rows(self, u_id: int, status: str) -> list:
-        self.cursor.execute("SELECT %s FROM %s WHERE %s AND user_id=%s AND status=%s ORDER BY start_time" %\
+        self.cursor.execute("SELECT %s FROM %s WHERE %s AND user_id=%s AND status=%s ORDER BY to_char(start_time, 'YYYY-MM-DD'), tag, start_time" %\
             (self.select_columns, self.tabel_name, self.this_week_asking, u_id, self.tagf(status)))
         return self.cursor.fetchall()
 
@@ -53,7 +53,7 @@ class WorksMainDataBaseConnector(DataBaseConnector):
     
 
     def get_last_week_rows(self, u_id: int, status: str) -> list:
-        self.cursor.execute("SELECT %s FROM %s WHERE %s AND user_id=%s AND status=%s ORDER BY start_time" %\
+        self.cursor.execute("SELECT %s FROM %s WHERE %s AND user_id=%s AND status=%s ORDER BY to_char(start_time, 'YYYY-MM-DD'), tag, start_time" %\
             (self.select_columns, self.tabel_name, self.last_week_asking, u_id, self.tagf(status)))
         return self.cursor.fetchall()
 

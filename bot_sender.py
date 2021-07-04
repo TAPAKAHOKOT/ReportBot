@@ -191,8 +191,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
         set_callback.insert(callback.get_tag_btn_callback("Tag -> " + callback_data["value"]))
         set_callback.insert(callback.statuses_btn_callback[s])
     
-    await call.message.edit_text(call.message.text + mes)
-    await call.message.edit_reply_markup(set_callback)
+    await call.message.edit_text(call.message.text + mes, reply_markup=set_callback)
 
 
 # <<<<<<<<<<<<<<<<<< Изменение статуса >>>>>>>>>>>>>>>>>>
@@ -214,8 +213,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     set_callback.insert(callback.get_tag_btn_callback("Tag -> " + t))
     set_callback.insert(callback.statuses_btn_callback[s])
 
-    await call.message.edit_text(call.message.text + mes)
-    await call.message.edit_reply_markup(set_callback)
+    await call.message.edit_text(call.message.text + mes, reply_markup=set_callback)
 
 
 # <<<<<<<<<<<<<<<<<< Отчёт об отработанных часах >>>>>>>>>>>>>>>>>>
@@ -223,21 +221,23 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
 
-    if (callback_data["period"] == "this_week"):
-        await call.message.edit_text(work.get_finfo_day_sum(call.from_user["id"]))
-    elif (callback_data["period"] == "this_week_d"):
-        await call.message.edit_text(work.get_finfo_day_intervals(call.from_user["id"]))
-    elif (callback_data["period"] == "last_week"):
-        await call.message.edit_text(work.get_finfo_day_sum(call.from_user["id"], True))
-    elif (callback_data["period"] == "last_week_d"):
-        await call.message.edit_text(work.get_finfo_day_intervals(call.from_user["id"], True))
-
     choose = InlineKeyboardMarkup(row_width=2)
     choose.insert(callback.reports_btn_callback["last_week"])
     choose.insert(callback.reports_btn_callback["this_week"])
     choose.insert(callback.reports_btn_callback["last_week_d"])
     choose.insert(callback.reports_btn_callback["this_week_d"])
-    await call.message.edit_reply_markup(reply_markup=choose)
+
+    if (callback_data["period"] == "this_week"):
+        await call.message.edit_text(work.get_finfo_day_sum(call.from_user["id"]), reply_markup=choose)
+    elif (callback_data["period"] == "this_week_d"):
+        await call.message.edit_text(work.get_finfo_day_intervals(call.from_user["id"])[0], reply_markup=choose)
+    elif (callback_data["period"] == "last_week"):
+        await call.message.edit_text(work.get_finfo_day_sum(call.from_user["id"], True), reply_markup=choose)
+    elif (callback_data["period"] == "last_week_d"):
+        await call.message.edit_text(work.get_finfo_day_intervals(call.from_user["id"], last_week=True)[0], reply_markup=choose)
+
+    
+    # await call.message.edit_reply_markup(reply_markup=choose)
 
 
 # <<<<<<<<<<<<<<<<<< Меню удаления и добавления отработанных периодов >>>>>>>>>>>>>>>>>>
@@ -254,7 +254,7 @@ async def cmd_start(message: types.Message):
 @settings.dp.callback_query_handler(callback.add_delete_work_period.filter(status="Delete"), )
 async def choose_period_to_delete(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
-    res = work.get_intervels_for_deleting(call.from_user["id"])
+    res = work.get_finfo_day_intervals(call.from_user["id"], for_del=True)
 
     delete_callback = InlineKeyboardMarkup(row_width=int(res[1]**0.5 if res[1] != 0 else 1))
     if (res[1] == 0):
@@ -265,8 +265,7 @@ async def choose_period_to_delete(call: types.CallbackQuery, callback_data: dict
             delete_callback.insert(callback.get_delete_work_btn_callback(k))
         delete_callback.insert(callback.get_delete_work_btn_callback("Back"))
         
-        await call.message.edit_text("SELECT NUMBER OF THE LINE TO DELETE\n\n" + res[0])
-        await call.message.edit_reply_markup(reply_markup=delete_callback)
+        await call.message.edit_text("SELECT NUMBER OF THE LINE TO DELETE\n\n" + res[0], reply_markup=delete_callback)
 
 
 # <<<<<<<<<<<<<<<<<< Удаление отработанного периода  >>>>>>>>>>>>>>>>>>
@@ -277,12 +276,11 @@ async def save_day_date_callback(call: types.CallbackQuery, callback_data: dict)
         choose = InlineKeyboardMarkup(row_width=1)
         choose.insert(callback.add_delete_period_btn_callback["Add"])
         choose.insert(callback.add_delete_period_btn_callback["Delete"])
-        await call.message.edit_text("You can add or delete hours worked record")
-        await call.message.edit_reply_markup(reply_markup=choose)
+        await call.message.edit_text("You can add or delete hours worked record", reply_markup=choose)
     else:
         res_d = work.delete_interval(call.from_user["id"], int(callback_data["id"]))
 
-        res = work.get_intervels_for_deleting(call.from_user["id"])
+        res = work.get_finfo_day_intervals(call.from_user["id"], for_del=True)
         delete_callback = InlineKeyboardMarkup(row_width=int(res[1]**0.5 if res[1] != 0 else 1))
 
         if (res[1] == 0):
@@ -293,8 +291,7 @@ async def save_day_date_callback(call: types.CallbackQuery, callback_data: dict)
                 delete_callback.insert(callback.get_delete_work_btn_callback(k))
             delete_callback.insert(callback.get_delete_work_btn_callback("Back"))
             
-            await call.message.edit_text("Row [{}] deleted\n\n".format(res_d) + "SELECT NUMBER OF THE LINE TO DELETE\n\n" + res[0])
-            await call.message.edit_reply_markup(reply_markup=delete_callback)
+            await call.message.edit_text("Row [{}] deleted\n\n".format(res_d) + "SELECT NUMBER OF THE LINE TO DELETE\n\n" + res[0], reply_markup=delete_callback)
 
         # await call.message.edit_text("Row [{}] deleted".format(res))
 
@@ -305,8 +302,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     choose = InlineKeyboardMarkup(row_width=1)
     choose.insert(callback.add_delete_period_btn_callback["Add"])
     choose.insert(callback.add_delete_period_btn_callback["Delete"])
-    await call.message.edit_text("You can add or delete hours worked record")
-    await call.message.edit_reply_markup(reply_markup=choose)
+    await call.message.edit_text("You can add or delete hours worked record", reply_markup=choose)
 
 
 # <<<<<<<<<<<<<<<<<< Добавление отработанного периода >>>>>>>>>>>>>>>>>>
@@ -319,8 +315,8 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
         days.insert(callback.days_btn_callback[k])
     days.insert(callback.date_back_callback)
 
-    await call.message.answer("Choose the start working time using the constructor")
-    await call.message.answer("This is a date and time constructor, pick the day you want", reply_markup=days)
+    await call.message.edit_text("Choose the start working time using the constructor\nThis is a date and time constructor, pick the day you want", 
+                                    reply_markup=days)
 
 
 # <<<<<<<<<<<<<<<<<< Добавление дня в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
@@ -340,8 +336,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     for k in range(h):
         hours.insert(callback.hours_btn_callback[k])
     
-    await call.message.edit_text("Date: {}\nNow choose the hour you want".format(work.date_callback_constructor))
-    await call.message.edit_reply_markup(reply_markup=hours)
+    await call.message.edit_text("Date: {}\nNow choose the hour you want".format(work.date_callback_constructor), reply_markup=hours)
 
 
 # <<<<<<<<<<<<<<<<<< Добавление часов в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
@@ -364,9 +359,8 @@ async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict
     
     await call.message.edit_text(mes + "{}.\nNow choose the right minute".format(
                                                                         work.time_callback_constructor
-                                                                    ))
-
-    await call.message.edit_reply_markup(reply_markup=mins)
+                                                                    ), 
+                                                            reply_markup=mins)
 
 
 # <<<<<<<<<<<<<<<<<< Добавление минут в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
@@ -392,8 +386,8 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
                                     " end of work, it will be considered that you" +
                                     " have worked until the next day.❗❗❗\n\nDate: {}\nTime: {}\n".format(
                                                                         work.date_callback_constructor,
-                                                                        work.time_callback_constructor))
-        await call.message.edit_reply_markup(reply_markup=hours)
+                                                                        work.time_callback_constructor),
+                                        reply_markup=hours)
     else:
         work.callback_end_time_working = work.get_one_time_from(work.time_callback_constructor.replace(":", ".") + ".00")
         work.start_constructor_done = False

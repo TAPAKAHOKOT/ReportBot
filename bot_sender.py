@@ -36,6 +36,7 @@ async def on_startup(x):
 # TODO: add opportunity for watching old dates
 # TODO: add opportunity for watching all available dates
 # // TODO: add weeks works hours autocounter
+# TODO: add stickers
 # // TODO: add emoji into keyboard +-
 # TODO: add graphics and statistics of working time bd
 # // TODO: add admin keyboard

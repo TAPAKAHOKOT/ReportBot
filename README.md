@@ -47,9 +47,7 @@ Language: [![Python 3.8.5 Badge](https://img.shields.io/badge/Python-3.8.5-blue)
 
 | Example | Description |
 |---------|-------------|
-| <img src="imgs/start_stop.gif" width="200"> |
-You can run working timer by clicking '***Start working***' button, after that
-you will get a message mith start working time, and instead of the '***Start working***', the '***Stop working***' will appear |
+| <img src="imgs/start_stop.gif" width="200"> | You can run working timer by clicking '***Start working***' button, after that<br>you will get a message mith start working time, and instead of the <br>'***Start working***', the '***Stop working***' will appear |
 
 <!-- ![Screenshot](imgs/start_stop.gif) -->
 

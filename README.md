@@ -25,10 +25,10 @@ Language: [![Python 3.8.5 Badge](https://img.shields.io/badge/Python-3.8.5-blue)
 <div>
 <img src="imgs/status_tag.gif" align="left" width="20%" height="20%">
 
-All work periods can be divided into '***Working***' and '***Studying***' _statuses_,
+All work periods can be divided into '***Working***' and '***Studying***' _statuses_,<br>
 at the same time, each work period has its own _tag_
 
-You can choose previously used tags or create your own by _writing # and tag name to the bot_ ( _#testing_ )
+You can choose previously used tags or create your own <br>by _writing # and tag name to the bot_ ( _#testing_ )
 </div>
 <!-- ![Screenshot](imgs/status_tag.gif) -->
 

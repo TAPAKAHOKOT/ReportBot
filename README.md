@@ -38,7 +38,7 @@ You can choose previously used tags or create your own by _writing # and tag nam
 <a name="work_reports"></a> 
 ## "Work reports" button
 
-<img align="right" src="imgs/reports.gif">
+<img align="left" src="imgs/reports.gif">
 
 At any convenient moment, you can get a _report_ on the hours worked for the _current_ or _last_ week
 

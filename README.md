@@ -1,7 +1,7 @@
 [![Bot's GitHub Banner](imgs/banner2.jpg)](https://github.com/TAPAKAHOKOT/ReportBot)
 [![Created Badge](https://badges.pufler.dev/created/TAPAKAHOKOT/ReportBot)](https://github.com/TAPAKAHOKOT/ReportBot) [![Updated Badge](https://badges.pufler.dev/updated/TAPAKAHOKOT/ReportBot)](https://github.com/TAPAKAHOKOT/ReportBot) [![Visits Badge](https://badges.pufler.dev/visits/TAPAKAHOKOT/ReportBot)](https://github.com/TAPAKAHOKOT/ReportBot)
 
-Contact me: [![Telegram Badge](https://img.shields.io/badge/%20-Profile-0088cc?logo=telegram)](https://t.me/TAPAKAHOKOT) [![Vk Badge](https://img.shields.io/badge/%20-Profile-0088cc?logo=vk&logoColor=white)](https://vk.com/kpabakot)
+Contact me: [![Telegram Badge](https://img.shields.io/badge/%20-Tg-0088cc?logo=telegram)](https://t.me/TAPAKAHOKOT) [![Vk Badge](https://img.shields.io/badge/%20-Vk-ffffff?logo=vk&logoColor=0088cc)](https://vk.com/kpabakot)
 
 Versions: [![rel-3.0 Badge](https://img.shields.io/badge/Realese-3.0-Green)](https://github.com/TAPAKAHOKOT/ReportBot) [![rel-2.0 Badge](https://img.shields.io/badge/Old%20bot-2.0-bd0000)](https://github.com/TAPAKAHOKOT/ReportBot/tree/rel-2.0)
 

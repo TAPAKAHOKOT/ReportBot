@@ -65,10 +65,11 @@ After clicking '***Add/delete period***' you will get message with inline button
 <a name="delete"></a> 
 ### "Delete" inline button
 
-Using it you can delete any work period. After the bot will send you a list of numbered periods,
-to delete, select the desired number under the message
+| Example | Description |
+|---------|-------------|
+| <img src="imgs/delete.gif" width="200"> | Using it you can delete any work period. After the bot will send you a list <br>of numbered periods, to delete, select the desired number under the message
 
-![Screenshot](imgs/delete.gif)
+<!-- ![Screenshot](imgs/delete.gif) -->
 
 [Back to table of contents](#table_of_contents)
 
@@ -76,9 +77,10 @@ to delete, select the desired number under the message
 <a name="add"></a> 
 ### "Add" inline button
 
-Using it you can add any work period of the current month, up to the current time. 
-After the bot will send you a date constructor with instructions
+| Example | Description |
+|---------|-------------|
+| <img src="imgs/add.gif" width="200"> | Using it you can add any work period of the current month, up to the current time.<br>After the bot will send you a date constructor with instructions
 
-![Screenshot](imgs/add.gif)
+<!-- ![Screenshot](imgs/add.gif) -->
 
 [Back to table of contents](#table_of_contents)

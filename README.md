@@ -45,10 +45,13 @@ Language: [![Python 3.8.5 Badge](https://img.shields.io/badge/Python-3.8.5-blue)
 <a name="start_stop_working"></a> 
 ## "Start working" and "Stop working" buttons
 
+| Example | Description |
+|---------|-------------|
+| <img src="imgs/start_stop.gif" width="200"> |
 You can run working timer by clicking '***Start working***' button, after that
-you will get a message mith start working time, and instead of the '***Start working***', the '***Stop working***' will appear
+you will get a message mith start working time, and instead of the '***Start working***', the '***Stop working***' will appear |
 
-![Screenshot](imgs/start_stop.gif)
+<!-- ![Screenshot](imgs/start_stop.gif) -->
 
 [Back to table of contents](#table_of_contents)
 

@@ -27,7 +27,8 @@ at the same time, each work period has its own _tag_
 
 You can choose previously used tags or create your own by _writing # and tag name to the bot_ ( _#testing_ )
 
-![Screenshot](imgs/status_tag.gif){:style="float: right;margin-right: 7px;margin-top: 7px;"}
+<img align="right" src="imgs/status_tag.gif">
+<!-- ![Screenshot](imgs/status_tag.gif) -->
 
 [Back to table of contents](#table_of_contents)
 

@@ -23,7 +23,9 @@ Language: [![Python 3.8.5 Badge](https://img.shields.io/badge/Python-3.8.5-blue)
 ## "Status/Tag" button
 
 <div>
-<img src="imgs/status_tag.gif" align="left" width="20%" height="20%">
+<div style="float: right">
+![Screenshot](imgs/status_tag.gif)
+</div>
 
 All work periods can be divided into '***Working***' and '***Studying***' _statuses_,
 at the same time, each work period has its own _tag_

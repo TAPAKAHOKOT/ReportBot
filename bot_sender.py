@@ -91,6 +91,14 @@ async def cmd_start(message: types.Message):
     logging.info("End main message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
 
 
+# <<<<<<<<<<<<<<<<<< stat >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(Text(equals='stat', ignore_case=True))
+async def get_stat(message: types.Message):
+    work = get_work_time(settings, message.from_user["id"])
+    if settings.my_id == message.from_user["id"]:
+        await message.answer("There are {} works".format(len(settings.work_time_dict.keys())))
+
+
 # <<<<<<<<<<<<<<<<<< Work reports >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='work reports', ignore_case=True))
 async def cmd_start(message: types.Message):
@@ -422,6 +430,13 @@ async def check_checkout(call: types.CallbackQuery, callback_data: dict):
 async def cmd_start(message: types.Message):
     work = get_work_time(settings, message.from_user["id"])
     await message.answer(work.get_finfo_day_sum(message.from_user["id"], month=True))
+
+
+# <<<<<<<<<<<<<<<<<< don't understand >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler()
+async def get_stat(message: types.Message):
+    work = get_work_time(settings, message.from_user["id"])
+    await message.answer("Sorry, i don't understand, type /start")
 
 
 start_time = time.time()

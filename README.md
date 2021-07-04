@@ -35,7 +35,7 @@ You can choose previously used tags or create your own by _writing # and tag nam
 [Back to table of contents](#table_of_contents)
 
 
-<a name="work_reports"></a> 
+<br><a name="work_reports"></a> 
 ## "Work reports" button
 
 At any convenient moment, you can get a _report_ on the hours worked for the _current_ or _last_ week

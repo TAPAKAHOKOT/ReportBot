@@ -62,7 +62,7 @@ async def send():
         logging.info("Start mom_memery_on()")
         logging.info("Sended for %s: 'Не забудь взвеситься'" % settings.mom_id)
         await settings.bot.send_message(settings.mom_id, "Не забудь взвеситься", reply_markup=reminder)
-        await settings.bot.send_message(settings.my_id, "😏")
+        await settings.bot.send_message(settings.mom_id, "😏")
         logging.info("End mom_memery_on()")
 
     

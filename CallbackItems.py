@@ -2,6 +2,14 @@ from aiogram.types.inline_keyboard import InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
 class CallbackItems:
     def __init__(self):
+        self.checkout_nums_callback = CallbackData("checkout", "status", "val", "btns_num")
+        self.get_checkout_push_up_btn_callback = lambda v: InlineKeyboardButton(
+                                                                text="25",
+                                                                callback_data=self.checkout_nums_callback.new(
+                                                                    status="reminder_push_up",
+                                                                    val=25,
+                                                                    btns_num=v
+                                                                ))
         self.checkout_callback = CallbackData("checkout", "status", "action")
         self.checkout_btn_callback = {
             "reminder": InlineKeyboardButton(
@@ -9,7 +17,7 @@ class CallbackItems:
                 callback_data=self.checkout_callback.new(
                     status="reminder",
                     action="done"
-                )),
+                ))
         }
 
 

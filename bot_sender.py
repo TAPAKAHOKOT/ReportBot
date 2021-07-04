@@ -420,6 +420,23 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
         ), reply_markup=delete_callback)
 
 
+# <<<<<<<<<<<<<<<<<< Отслеживания кликов нумерованного checkout'а  >>>>>>>>>>>>>>>>>>
+@settings.dp.callback_query_handler(callback.checkout_nums_callback.filter(status="reminder_push_up"))
+async def check_checkout(call: types.CallbackQuery, callback_data: dict):
+    mes, num = call.message.text.split(": ")
+    num = int(num.split(" ")[0]) + int(callback_data["val"])
+
+    v = int(callback_data["btns_num"]) - 1
+
+    if v > 0:
+        reminder_push_up = InlineKeyboardMarkup(row_width=4)
+        for k in range(v): reminder_push_up.insert(callback.get_checkout_push_up_btn_callback(v))
+
+        await call.message.edit_text(mes + ": " + str(num) + " done", reply_markup=reminder_push_up)
+    else:
+        await call.message.edit_text(mes + ": " + str(num) + " done ✅")
+
+
 # <<<<<<<<<<<<<<<<<< Отслеживания кликов checkout'а  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.checkout_callback.filter(status="reminder"))
 async def check_checkout(call: types.CallbackQuery, callback_data: dict):

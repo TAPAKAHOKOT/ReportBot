@@ -1,4 +1,5 @@
 [![Bot's GitHub Banner](imgs/banner2.jpg)](https://github.com/TAPAKAHOKOT/ReportBot)
+[![Updated Badge](https://badges.pufler.dev/updated/TAPAKAHOKOT/ReportBot)](https://github.com/TAPAKAHOKOT/ReportBot)
 
 Contact me: [![Telegram Badge](https://img.shields.io/badge/Telegram-Profile-0088cc)](https://t.me/TAPAKAHOKOT) [![Vk Badge](https://img.shields.io/badge/Vk-Profile-4376A6)](https://vk.com/kpabakot)
 

@@ -47,22 +47,25 @@ async def send():
     async def knopa_memery_on():
         logging.info("Start knopa_memery_on()")
         logging.info("Sended for %s: 'Don't forget to comb Knopa'" % settings.my_id)
-        await settings.bot.send_message(settings.my_id, "Don't forget to comb Knopa", reply_markup=reminder)
+        mes = await settings.bot.send_message(settings.my_id, "Don't forget to comb Knopa", reply_markup=reminder)
         await settings.bot.send_message(settings.my_id, "😼")
+        await settings.bot.pin_chat_message(settings.my_id, mes.message_id)
         logging.info("End knopa_memery_on()")
     
     async def push_ups_memery_on():
         logging.info("Start push_ups_memery_on()")
         logging.info("Sended for %s: 'Do not forget to push up'" % settings.my_id)
-        await settings.bot.send_message(settings.my_id, "Don't forget to push up: 0 done", reply_markup=reminder_push_up)
+        mes = await settings.bot.send_message(settings.my_id, "Don't forget to push up: 0 done", reply_markup=reminder_push_up)
         await settings.bot.send_message(settings.my_id, "💪")
+        await settings.bot.pin_chat_message(settings.my_id, mes.message_id)
         logging.info("End push_ups_memery_on()")
     
     async def mom_memery_on():
         logging.info("Start mom_memery_on()")
         logging.info("Sended for %s: 'Не забудь взвеситься'" % settings.mom_id)
-        await settings.bot.send_message(settings.mom_id, "Не забудь взвеситься", reply_markup=reminder)
+        mes = await settings.bot.send_message(settings.mom_id, "Не забудь взвеситься", reply_markup=reminder)
         await settings.bot.send_message(settings.mom_id, "😏")
+        await settings.bot.pin_chat_message(settings.mom_id, mes.message_id)
         logging.info("End mom_memery_on()")
 
     

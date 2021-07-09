@@ -1,11 +1,12 @@
 import datetime
-from Settings import Settings
-from DataBaseConnectors.WorksMainDataBaseConnector import WorksMainDataBaseConnector
-from DataBaseConnectors.WorkStatusesDataBaseConnector import WorkStatusesDataBaseConnector
-from DataBaseConnectors.WorkTagHistoryDataBaseConnector import WorkTagHistoryDataBaseConnector
-from DataBaseConnectors.WorksStartWorkDataBaseConnector import WorksStartWorkDataBaseConnector
-from DataBaseConnectors.WorkTagsDataBaseConnector import WorkTagsDataBaseConnector
 import logging
+from Settings import Settings
+
+from DataBaseConnectors.BackupDBC import BackupDBC
+from DataBaseConnectors.CustomerDBC import CustomerDBC
+from DataBaseConnectors.StateStorageDBC import StateStorageDBC
+from DataBaseConnectors.TagDBC import TagDBC
+from DataBaseConnectors.TermDBC import TermDBC
 
 class Work:
     def __init__(self, settings:Settings, u_id: int) -> None:
@@ -28,11 +29,11 @@ class Work:
         self.tag = "testing"
         self.status = "studying"
 
-        self.db = WorksMainDataBaseConnector(self.setttings.db_data)
-        self.st_db = WorkStatusesDataBaseConnector(self.setttings.db_data)
-        self.tag_db = WorkTagHistoryDataBaseConnector(self.setttings.db_data)
-        self.u_tag_db = WorkTagsDataBaseConnector(self.setttings.db_data)
-        self.start_db = WorksStartWorkDataBaseConnector(self.setttings.db_data)
+        self.backup_db = BackupDBC(self.setttings.db_data)
+        self.customer_db = CustomerDBC(self.setttings.db_data)
+        self.statestorage_db = StateStorageDBC(self.setttings.db_data)
+        self.tag_db = TagDBC(self.setttings.db_data)
+        self.term_db = TermDBC(self.setttings.db_data)
 
         self.start_constructor_done = False
         self.date_callback_constructor = ""
@@ -51,6 +52,7 @@ class Work:
 
         logging.info("End initing Work")
 
+
     def get_is_working(self) -> bool:
         return self.is_working
     
@@ -66,37 +68,32 @@ class Work:
     def set_tag(self, tag: str) -> None:
         tag_lim = 9
         self.tag = tag
-        self.st_db.set_tag(self.user_id, tag)
-        tags_num = self.tag_db.get_count_of_history(self.user_id)
+        self.statestorage_db.set_tag(self.user_id, tag)
+        tags_num = self.tag_db.get_count(self.user_id)
         while tags_num >= tag_lim:
-            self.tag_db.delete_last_tag_from_history(self.user_id)
-            tags_num = self.tag_db.get_count_of_history(self.user_id)
+            self.tag_db.delete_last_tag(self.user_id)
+            tags_num = self.tag_db.get_count(self.user_id)
 
         self.tag_db.add_row(self.user_id, tag, datetime.datetime.now())
-
-        tags = self.u_tag_db.get_user_tag_history(self.user_id)
-        if "#" + tag not in tags:
-            tags_num = self.u_tag_db.get_count_of_history(self.user_id)
-            while tags_num >= tag_lim:
-                self.u_tag_db.delete_last_tag_from_history(self.user_id)
-                tags_num = self.u_tag_db.get_count_of_history(self.user_id)
-
-            self.u_tag_db.add_row(self.user_id, "#" + tag, datetime.datetime.now())
     
+
     def set_status(self, status: str) -> None:
         self.status = status
-        self.st_db.set_status(self.user_id, status)
+        self.statestorage_db.set_status(self.user_id, status)
+
 
     def saving_data(self, u_id: int) -> None:
         logging.info("Start saving_data(...)")
-        self.db.add_row(u_id, self.tag, self.status, self.start_time_working, self.end_time_working)
+        self.term_db.add_row(u_id, self.tag, self.status, self.start_time_working, self.end_time_working)
         logging.info("End saving_data(...)")
     
+
     def save_spec_data(self, u_id: int, s: datetime.datetime, e: datetime.datetime) -> None:
         logging.info("save_spec_data saving_data(...)")
         logging.info("start time : {}\nend time: {}".format(s, e))
-        self.db.add_row(u_id, self.tag, self.status, s, e)
+        self.term_db.add_row(u_id, self.tag, self.status, s, e)
         logging.info("End save_spec_data(...)")
+
 
     def start_working(self) -> str:
         logging.info("Start start_working(...)")
@@ -108,7 +105,7 @@ class Work:
         self.start_time_working = self.get_current_time()
         self.start_date_working = self.get_current_day()
 
-        self.start_db.add_row(self.user_id, self.start_time_working)
+        self.backup_db.add_row(self.user_id, self.start_time_working)
 
         logging.info("End start_working(...)")
         return "Start working time: " + self.start_time_working.strftime(self.timeformat).replace(".", ":") + " #" + self.tag
@@ -124,7 +121,7 @@ class Work:
         self.end_time_working = self.get_current_time()
         self.end_date_working = self.get_current_day()
 
-        self.start_db.delete_row(self.user_id)
+        self.backup_db.delete_last(self.user_id)
 
         self.saving_data(u_id)
         logging.info("End end_working(...)")
@@ -142,8 +139,11 @@ class Work:
 
     def get_current_day(self) -> datetime.datetime:
         return datetime.datetime.today()
+
+
     def get_current_time(self) -> datetime.datetime:
         return datetime.datetime.now()
+
 
     def get_time_from(self, line: str) -> datetime.datetime:
         start, end = line.split("-")
@@ -153,25 +153,31 @@ class Work:
 
         return [start, end]
     
+
     def get_one_time_from(self, line: str) -> datetime.datetime:
         return datetime.datetime.strptime(line, self.timeformat)
     
+
     def get_day_from(self, line: str) -> datetime.datetime:
         return datetime.datetime.strptime(line, self.dateformat)
     
+
     def get_difference_betwen(self, s_time, e_time) -> datetime.timedelta:
         return e_time - s_time if e_time > s_time \
             else e_time - s_time + datetime.timedelta(1)
 
+
     def get_difference(self) -> datetime.timedelta:
         return self.end_time_working - self.start_time_working
     
+
     def get_day_time_formated(self, s_time: datetime.datetime = None, e_time: datetime.datetime = None) -> str:
         self.last_online_time = datetime.datetime.now()
         if not s_time: s_time = self.start_time_working
         if not e_time: e_time = self.end_time_working
         return s_time.strftime(self.timeformat) + " - " + e_time.strftime(self.timeformat)
     
+
     def get_current_working_info(self) -> str:
         self.last_online_time = datetime.datetime.now()
         if not self.is_working:
@@ -179,11 +185,12 @@ class Work:
         delta = str(self.get_difference_betwen(self.start_time_working, self.get_current_time())).split(".")[0]
         return "Start working time: {}\nTime delta: {}".format(self.start_time_working.strftime(self.timeformat), delta)
     
+
     def delete_interval(self, u_id: int, n: int) -> str:
         self.last_online_time = datetime.datetime.now()
-        rows = self.db.get_this_week_rows(u_id, self.status)
+        rows = self.term_db.periods(u_id, "this_week", self.status)
         
-        self.db.delete_row_by_id(rows[n - 1][-1])
+        self.term_db.delete_row_by_id(rows[n - 1][-1])
 
         delta = str(self.get_difference_betwen(rows[n - 1][2], rows[n - 1][3])).split(".")[0]
         line = self.get_day_time_formated(rows[n - 1][2], rows[n - 1][3]) + " => " + delta
@@ -205,8 +212,8 @@ class Work:
         size, res = 0, ""
         s_date, s_tag = None, None
 
-        rows = self.db.get_last_week_rows(u_id, self.status) if last_week\
-            else self.db.get_this_week_rows(u_id, self.status)
+        rows = self.term_db.get_period_rows(u_id, "last_week", self.status) if last_week\
+            else self.term_db.get_period_rows(u_id, "this_week", self.status)
         
         for row in rows:
             if s_date is None or s_date.date() != row[2].date():
@@ -240,9 +247,9 @@ class Work:
         daytimesum = datetime.timedelta()
         tagtimesum = datetime.timedelta()
 
-        rows = self.db.get_last_week_rows(u_id, self.status) if last_week\
-            else self.db.get_this_week_rows(u_id, self.status)
-        if month: rows = self.db.get_this_month_rows(u_id, self.status)
+        rows = self.term_db.get_period_rows(u_id, "last_week", self.status) if last_week\
+            else self.term_db.get_period_rows(u_id, "this_week", self.status)
+        if month: rows = self.term_db.get_period_rows(u_id, "this_month", self.status)
         
         for row in rows:
             delta = self.get_difference_betwen(row[2], row[3])
@@ -278,8 +285,3 @@ class Work:
             res += "WEEK SUM >> " + str(alltimesum).split(".")[0] + "\n"
 
         return title + res if res != "" else "No records"
-
-
-# w = Work("csv_data/data.csv")
-# print(w.get_finfo_day_intervals(472914986))
-# print(w.get_finfo_day_sum(472914986))

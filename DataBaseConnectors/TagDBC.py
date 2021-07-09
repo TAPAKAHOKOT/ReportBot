@@ -1,7 +1,7 @@
 from DataBaseConnectors.DataBaseConnector import DataBaseConnector
 import logging
 
-class WorkTagsDataBaseConnector(DataBaseConnector):
+class TagDBC(DataBaseConnector):
     def __init__(self, set_dict: dict):
         super().__init__(set_dict)
 

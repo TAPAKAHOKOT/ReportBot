@@ -1,14 +1,13 @@
-from aiogram.types.inline_keyboard import InlineKeyboardMarkup
+import time
+from datetime import datetime
 from Keyboard import Keyboard
 
 from functions_tg import *
+from DataBaseConnectors.BackupDBC import BackupDBC
 
+from aiogram.types.inline_keyboard import InlineKeyboardMarkup
 from aiogram import executor, types
 from aiogram.dispatcher.filters import Text
-from DataBaseConnectors.WorksStartWorkDataBaseConnector import WorksStartWorkDataBaseConnector
-
-import time
-from datetime import datetime
 
 keyboard = Keyboard(settings)
 callback = settings.callback
@@ -450,7 +449,7 @@ async def get_stat(message: types.Message):
 
 start_time = time.time()
 if __name__ == "__main__":
-    db = WorksStartWorkDataBaseConnector(settings.db_data)
+    db = BackupDBC(settings.db_data)
     # ! Need to convert resume_work[1] to datetime.datetime
     resume_work = db.get_all_rows()  
 

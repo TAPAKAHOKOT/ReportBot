@@ -12,3 +12,7 @@ class BackupDBC(DataBaseConnector):
                                 start_time TIMESTAMP WITHOUT TIME ZONE,
                                 FOREIGN KEY (customer_id) REFERENCES customer (customer_id));"""
         self.create_table(self.table_name, create_table_query)
+    
+
+    def delete_last(self, customer_id: int):
+        self.cursor.execute(f"DELETE FROM {self.tabel_name} WHERE customer_id={customer_id}")

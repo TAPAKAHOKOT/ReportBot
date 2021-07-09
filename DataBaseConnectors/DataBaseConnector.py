@@ -46,7 +46,6 @@ class DataBaseConnector:
     def create_table(self, name, query):
         logging.info("Start creating table %s" % name)
         try:
-            
             connection = psycopg2.connect(user=self.user,
                                         password=self.password,
                                         host=self.host,

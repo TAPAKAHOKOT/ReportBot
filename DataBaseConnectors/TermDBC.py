@@ -35,19 +35,3 @@ class TermDBC(DataBaseConnector):
 
     def delete_row_by_id(self, id: int):
         self.cursor.execute(f"DELETE FROM {self.tabel_name} WHERE term_id={id}")
-
-
-# db = DataBaseConnector()
-
-# db.add_row(472914986, "testing", "studying",
-# 	datetime.datetime(2021, 5, 8, 13, 33, 0, 0), 
-# 	datetime.datetime(2021, 5, 8, 13, 43, 0, 0))
-# db.add_row(472914986, "testing", "studying",
-# 	datetime.datetime(2021, 5, 3, 13, 33, 0, 0), 
-# 	datetime.datetime(2021, 5, 3, 13, 43, 0, 0))
-# db.test_delete_table()
-# db.test_clear_table()
-
-# for k in db.get_this_week_rows(1234): print(k)
-# print("TAG")
-# for k in db.get_this_week_rows_by_tag("testing", 4444): print(k)

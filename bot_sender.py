@@ -29,6 +29,8 @@ async def on_startup(x):
 # TODO: add 'hide' callback button (with saving hidden data in db)
 # TODO: add remainder constructor
 # TODO: delete extra databases and functional
+# TODO: add opportunity to remove part from work interval
+# TODO: add foreign keys in db's
 # // TODO: make a beautiful working time output
 # // TODO: add opportunity to add working period throught telegram
 # TODO: add opportunity for editing periods +-

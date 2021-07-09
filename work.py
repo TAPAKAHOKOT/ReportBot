@@ -43,12 +43,12 @@ class Work:
         self.callback_start_time_working: datetime.datetime = None
         self.callback_end_time_working: datetime.datetime = None
 
-        u_data = self.st_db.get_user_status(self.user_id)
+        u_data = self.statestorage_db.get_user_state(self.user_id)
         if u_data:
             self.tag = u_data[0][0]
             self.status = u_data[0][1]
         else:
-            self.st_db.add_row(self.user_id, self.tag, self.status)
+            self.statestorage_db.add_row(self.user_id, self.tag, self.status)
 
         logging.info("End initing Work")
 
@@ -67,14 +67,17 @@ class Work:
 
     def set_tag(self, tag: str) -> None:
         tag_lim = 9
+        all_tags = self.tag_db.get_tags(self.user_id)
         self.tag = tag
         self.statestorage_db.set_tag(self.user_id, tag)
-        tags_num = self.tag_db.get_count(self.user_id)
-        while tags_num >= tag_lim:
-            self.tag_db.delete_last_tag(self.user_id)
-            tags_num = self.tag_db.get_count(self.user_id)
 
-        self.tag_db.add_row(self.user_id, tag, datetime.datetime.now())
+        if tag not in all_tags:
+            tags_num = self.tag_db.get_count(self.user_id)
+            while tags_num >= tag_lim:
+                self.tag_db.delete_last_tag(self.user_id)
+                tags_num = self.tag_db.get_count(self.user_id)
+
+            self.tag_db.add_row(self.user_id, tag)
     
 
     def set_status(self, status: str) -> None:
@@ -108,7 +111,7 @@ class Work:
         self.backup_db.add_row(self.user_id, self.start_time_working)
 
         logging.info("End start_working(...)")
-        return "Start working time: " + self.start_time_working.strftime(self.timeformat).replace(".", ":") + " #" + self.tag
+        return "Start working time: " + self.start_time_working.strftime(self.timeformat).replace(".", ":") + " " + self.tag
         
     
     def end_working(self, u_id: int) -> str:
@@ -188,12 +191,12 @@ class Work:
 
     def delete_interval(self, u_id: int, n: int) -> str:
         self.last_online_time = datetime.datetime.now()
-        rows = self.term_db.periods(u_id, "this_week", self.status)
+        rows = self.term_db.get_all_periods_rows(u_id, "this_week", self.status)
         
         self.term_db.delete_row_by_id(rows[n - 1][-1])
 
-        delta = str(self.get_difference_betwen(rows[n - 1][2], rows[n - 1][3])).split(".")[0]
-        line = self.get_day_time_formated(rows[n - 1][2], rows[n - 1][3]) + " => " + delta
+        delta = str(self.get_difference_betwen(rows[n - 1][1], rows[n - 1][2])).split(".")[0]
+        line = self.get_day_time_formated(rows[n - 1][1], rows[n - 1][2]) + " => " + delta
 
         return line
 
@@ -206,30 +209,29 @@ class Work:
         if for_del:
             s = len("Status: " + self.status.title()) - 8
             title += "<<< {}DELETING{} >>>".format(" " * (s//2), " " * (s - s//2))
-
         title += "\n<<< Status: " + self.status.title() + " >>>\n"
 
         size, res = 0, ""
         s_date, s_tag = None, None
 
-        rows = self.term_db.get_period_rows(u_id, "last_week", self.status) if last_week\
-            else self.term_db.get_period_rows(u_id, "this_week", self.status)
+        rows = self.term_db.get_all_periods_rows(u_id, "last_week", self.status) if last_week\
+            else self.term_db.get_all_periods_rows(u_id, "this_week", self.status)
         
         for row in rows:
-            if s_date is None or s_date.date() != row[2].date():
+            if s_date is None or s_date.date() != row[1].date():
                 if s_date is not None: res += "\n"
-                s_date = row[2]
+                s_date = row[1]
                 s_tag = None
                 res += str(s_date.strftime(self.dateformat)) + "\n" + "-"*18 + "\n"
 
-            if s_tag is None or s_tag != row[1]: 
-                s_tag = row[1]
-                res += " "*4 + "#" + s_tag + "\n"
+            if s_tag is None or s_tag != row[0]: 
+                s_tag = row[0]
+                res += " "*4 + s_tag + "\n"
 
             size += 1
             del_part = " "*6 + "(" + str(size) + ")"
-            delta = str(self.get_difference_betwen(row[2], row[3])).split(".")[0]
-            line = self.get_day_time_formated(row[2], row[3]) + " => " + delta
+            delta = str(self.get_difference_betwen(row[1], row[2])).split(".")[0]
+            line = self.get_day_time_formated(row[1], row[2]) + " => " + delta
             res += " "*6 + line + (del_part if for_del else "") + "\n"
 
         return [title + res if res != "" else "No records", size]
@@ -239,47 +241,31 @@ class Work:
         self.last_online_time = datetime.datetime.now()
 
         title = "\n<<< Status: " + self.status.title() + " >>>\n"
-
         res = ""
-        s_date, s_tag = None, None
-
-        alltimesum = datetime.timedelta()
-        daytimesum = datetime.timedelta()
-        tagtimesum = datetime.timedelta()
 
         rows = self.term_db.get_period_rows(u_id, "last_week", self.status) if last_week\
             else self.term_db.get_period_rows(u_id, "this_week", self.status)
         if month: rows = self.term_db.get_period_rows(u_id, "this_month", self.status)
-        
+
+        c_date = None
+        daytimesum = datetime.timedelta()
+        alltimesum = datetime.timedelta()
         for row in rows:
-            delta = self.get_difference_betwen(row[2], row[3])
-            alltimesum += delta
-
-            if s_date is None or s_date.date() != row[2].date():
-                if s_date is not None: 
-                    res += " "*8 + "TAG SUM >> " + str(tagtimesum).split(".")[0] + "\n"
-                    res += " "*4 + "DAY SUM >> " + str(daytimesum).split(".")[0] + "\n"
-                    res += "\n"
-
-                s_date = row[2]
-                s_tag = None
-                daytimesum = datetime.timedelta()
-                tagtimesum = datetime.timedelta()
-                res += str(s_date.strftime(self.dateformat)) + "\n" + "-"*18 + "\n"
+            date, tag, time_sum = row
+            if c_date is None or c_date != date:
+                if c_date is not None:
+                    res += " "*4 + "DAY SUM >> " + str(daytimesum).split(".")[0] + "\n\n"
+                    daytimesum = datetime.timedelta()
+                c_date = date
+                res += str(c_date.strftime(self.dateformat)) + "\n" + "-"*18 + "\n"
             
-            daytimesum += delta
-
-            if s_tag is None or s_tag != row[1]: 
-                if s_tag is not None:
-                    res += " "*8 + "TAG SUM >> " + str(tagtimesum).split(".")[0] + "\n"
-                tagtimesum = datetime.timedelta()
-                s_tag = row[1]
-                res += " "*4 + "#" + s_tag + "\n"
-                
+            res += " "*4 + tag + "\n"
+            res += " "*8 + "TAG SUM >> " + str(time_sum).split(".")[0] + "\n"
             
-            tagtimesum += delta
+            daytimesum += time_sum
+            alltimesum += time_sum
+
         if rows:
-            res += " "*8 + "TAG SUM >> " + str(tagtimesum).split(".")[0] + "\n"
             res += " "*4 + "DAY SUM >> " + str(daytimesum).split(".")[0] + "\n"
             res += "\n"
             res += "WEEK SUM >> " + str(alltimesum).split(".")[0] + "\n"

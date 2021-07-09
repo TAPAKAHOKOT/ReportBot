@@ -30,6 +30,7 @@ async def on_startup(x):
 # TODO: delete extra databases and functional
 # TODO: add opportunity to remove part from work interval
 # TODO: add foreign keys in db's
+# TODO: add UTC choice
 # // TODO: make a beautiful working time output
 # // TODO: add opportunity to add working period throught telegram
 # TODO: add opportunity for editing periods +-
@@ -148,15 +149,15 @@ async def cmd_start(message: types.Message):
     work = get_work_time(settings, message.from_user["id"])
     w = "Start working" if not work.get_is_working() else "Stop working"
 
-    work.set_tag(message.text[1:])
-    await message.answer("Tag changed to: #" + work.get_tag(), reply_markup=keyboard.get_main(w))
+    work.set_tag(message.text)
+    await message.answer("Tag changed to: " + work.get_tag(), reply_markup=keyboard.get_main(w))
 
 
 # <<<<<<<<<<<<<<<<<< Меню изменения статуса или тэга >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals="Status/Tag", ignore_case=True))
 async def cmd_start(message: types.Message):
     work = get_work_time(settings, message.from_user["id"])
-    s, t = work.get_status(), "#" + work.get_tag()
+    s, t = work.get_status(), work.get_tag()
 
     set_callback = InlineKeyboardMarkup(row_width=2)
     set_callback.insert(callback.get_tag_btn_callback("Tag -> " + t))
@@ -169,10 +170,10 @@ async def cmd_start(message: types.Message):
 @settings.dp.callback_query_handler(callback.work_settings_callback.filter(parameter="tag"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
-    s, t = work.get_status(), "#" + work.get_tag()
+    s, t = work.get_status(), work.get_tag()
     if ("Tag -> " in callback_data["value"]):
         mes = "\n\nChoose a tag or write your tag in chat\n(# + tag name)"
-        tags = work.u_tag_db.get_user_tag_history(work.user_id)
+        tags = work.tag_db.get_tags(work.user_id)
 
         set_callback = InlineKeyboardMarkup(row_width=3)
         for tag in tags:
@@ -185,7 +186,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
         set_callback.insert(callback.statuses_btn_callback[s])
     else:
         mes = "\nTag changed to " + callback_data["value"]
-        work.set_tag(callback_data["value"][1:])
+        work.set_tag(callback_data["value"])
 
         set_callback = InlineKeyboardMarkup(row_width=2)
         set_callback.insert(callback.get_tag_btn_callback("Tag -> " + callback_data["value"]))
@@ -198,7 +199,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 @settings.dp.callback_query_handler(callback.work_settings_callback.filter(parameter="status"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
-    s, t = work.get_status(), "#" + work.get_tag()
+    s, t = work.get_status(), work.get_tag()
 
     if (callback_data["value"] == "working"):
         work.set_status("studying")
@@ -309,7 +310,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 tr_val = lambda v: str(v) if len(str(v)) == 2 else "0" + str(v)
 @settings.dp.callback_query_handler(callback.add_delete_work_period.filter(status="Add"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
-    today = datetime.today()
+    today = datetime.datetime.today()
     days = InlineKeyboardMarkup(row_width=5)
     for k in range(1, today.day + 1):
         days.insert(callback.days_btn_callback[k])
@@ -324,7 +325,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])
 
-    today = datetime.today()
+    today = datetime.datetime.today()
     work.date_callback_constructor = "{2}.{1}.{0}".format(today.year, tr_val(today.month), tr_val(callback_data.get("val")))
     
     hours = InlineKeyboardMarkup(row_width=6)
@@ -375,7 +376,7 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
         work.callback_start_time_working = work.get_one_time_from(work.time_callback_constructor.replace(":", ".") + ".00")
         work.start_constructor_done = True
 
-        today = datetime.today()
+        today = datetime.datetime.today()
         hours = InlineKeyboardMarkup(row_width=6)
 
         for k in range(24):
@@ -397,8 +398,8 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
             )
         
         work.save_spec_data(call.from_user["id"], 
-                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()),
-                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta)
+                    datetime.datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()),
+                    datetime.datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta)
 
         delete_callback = InlineKeyboardMarkup(row_width=1)
         delete_callback.insert(callback.get_delete_work_btn_callback("Back"))

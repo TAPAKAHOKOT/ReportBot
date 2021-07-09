@@ -15,7 +15,7 @@ class Settings:
         self.db_password = "4608"
         self.db_host="127.0.0.1"
         self.db_port="5432"
-        self.db_name = "my_test_py_database"
+        self.db_name = "report_bot"
         self.db_data = {"usr": self.db_user,
                         "pwd": self.db_password,
                         "host": self.db_host,

@@ -12,7 +12,8 @@ class TermDBC(DataBaseConnector):
             "last_week": """start_time BETWEEN date_trunc('week', CURRENT_TIMESTAMP - interval '1 week') AND date_trunc('week', CURRENT_TIMESTAMP)""",
             "this_month": """start_time BETWEEN date_trunc('month', CURRENT_TIMESTAMP) AND date_trunc('month', CURRENT_TIMESTAMP + interval '1 month')"""
         }
-        self.select_columns = """DATE(start_time) date, tag, SUM(end_time - start_time), term_id"""
+        self.select_columns_short = """DATE(start_time) date, name_tag, SUM(end_time - start_time)"""
+        self.select_columns_full = """name_tag, start_time, end_time, term_id"""
         create_table_query = """CREATE TABLE IF NOT EXISTS term(
                                 term_id SERIAL PRIMARY KEY,
                                 customer_id INT NOT NULL,
@@ -23,12 +24,21 @@ class TermDBC(DataBaseConnector):
         self.create_table(self.tabel_name, create_table_query)
     
 
-    def get_period_rows(self, period: str, status: str):
-        query = f"""SELECT {self.select_columns}
+    def get_period_rows(self, customer_id: int, period: str, status: str):
+        query = f"""SELECT {self.select_columns_short}
                     FROM term
-                    WHERE {self.periods[period]} AND status = '{status}'
-                    GROUP BY date, tag
-                    ORDER BY date, tag;"""
+                    WHERE {self.periods[period]} AND name_status='{status}' AND customer_id={customer_id}
+                    GROUP BY date, name_tag
+                    ORDER BY date, name_tag;"""
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
+
+    def get_all_periods_rows(self, customer_id: int, period: str, status: str) -> list:
+        query = f"""SELECT {self.select_columns_full}
+                    FROM term
+                    WHERE {self.periods[period]} AND name_status='{status}' AND customer_id={customer_id}
+                    ORDER BY DATE(start_time), name_tag;"""
         self.cursor.execute(query)
         return self.cursor.fetchall()
     

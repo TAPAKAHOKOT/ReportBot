@@ -15,13 +15,13 @@ class StateStorageDBC(DataBaseConnector):
     
 
     def get_user_state(self, customer_id: int) -> list:
-        self.cursor.execute(f"SELECT name_tag, name_status FROM {self.tabel_name} WHERE user_id={customer_id}")
+        self.cursor.execute(f"SELECT name_tag, name_status FROM {self.tabel_name} WHERE customer_id={customer_id}")
         return self.cursor.fetchall()
     
 
     def set_tag(self, customer_id: int, tag: str):
-        self.cursor.execute(f"UPDATE {self.tabel_name} SET tag='{tag}'' WHERE user_id={customer_id}")
+        self.cursor.execute(f"UPDATE {self.tabel_name} SET name_tag='{tag}' WHERE customer_id={customer_id}")
     
     
     def set_status(self, customer_id: int, status: str):
-        self.cursor.execute(f"UPDATE {self.tabel_name} SET status='{status}'' WHERE user_id={customer_id}")
+        self.cursor.execute(f"UPDATE {self.tabel_name} SET name_status='{status}' WHERE customer_id={customer_id}")

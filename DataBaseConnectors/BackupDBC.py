@@ -15,4 +15,4 @@ class BackupDBC(DataBaseConnector):
     
 
     def delete_last(self, customer_id: int):
-        self.cursor.execute(f"DELETE FROM {self.tabel_name} WHERE customer_id={customer_id}")
+        self.cursor.execute(f"DELETE FROM {self.table_name} WHERE customer_id={customer_id}")

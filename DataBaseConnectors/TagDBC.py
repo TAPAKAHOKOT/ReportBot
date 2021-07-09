@@ -6,7 +6,7 @@ class TagDBC(DataBaseConnector):
         super().__init__(set_dict)
 
         self.tabel_name = "tag"
-        self.add_row_query = """INSERT INTO tag(name_tag, customer_id) VALUES (%s, %s)"""
+        self.add_row_query = """INSERT INTO tag(customer_id, name_tag) VALUES (%s, %s)"""
         create_table_query = """CREATE TABLE IF NOT EXISTS tag(
                                 tag_id SERIAL PRIMARY KEY,
                                 name_tag VARCHAR(128),
@@ -22,7 +22,7 @@ class TagDBC(DataBaseConnector):
 
     def delete_last_tag(self, customer_id: int):
         query = """DELETE FROM {table}
-                    WHERE user_id={id} AND tag_id=(
+                    WHERE customer_id={id} AND tag_id=(
                         SELECT tag_id 
                         FROM {table}
                         WHERE customer_id={id}

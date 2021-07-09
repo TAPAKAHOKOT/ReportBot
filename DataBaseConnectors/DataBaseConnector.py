@@ -6,6 +6,7 @@ import logging
 class DataBaseConnector:
     def __init__(self, set_dict: dict):
         self.add_row_query = ""
+        self.table_name = ""
 
         self.user = set_dict["usr"]
         self.password = set_dict["pwd"]
@@ -73,7 +74,11 @@ class DataBaseConnector:
 
         logging.info("End adding row [%s]" % " ".join([str(k) for k in args]))
     
-    def test_clear_table(self):
+    def get_all_rows(self) -> list:
+        self.cursor.execute("SELECT * FROM %s" % self.table_name)
+        return self.cursor.fetchall()
+    
+    def clear_table(self):
         self.cursor.execute("DELETE FROM %s" % self.tabel_name)
     
     def close_connection(self):

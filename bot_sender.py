@@ -153,17 +153,6 @@ async def cmd_start(message: types.Message):
     await message.answer("Tag changed to: #" + work.get_tag(), reply_markup=keyboard.get_main(w))
 
 
-# <<<<<<<<<<<<<<<<<< История тэгов >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals="история тэгов", ignore_case=True))
-async def cmd_start(message: types.Message):
-    id = message.from_user["id"]
-    work = get_work_time(settings, id)
-    history = work.tag_db.get_user_tag_history(id)
-    if not history:
-        history = "None"
-    await message.answer(history)
-
-
 # <<<<<<<<<<<<<<<<<< Меню изменения статуса или тэга >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals="Status/Tag", ignore_case=True))
 async def cmd_start(message: types.Message):

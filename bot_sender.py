@@ -29,10 +29,10 @@ async def on_startup(x):
 # ? TODO: add settings for users
 # TODO: add 'hide' callback button (with saving hidden data in db)
 # TODO: add remainder constructor
-# TODO: delete extra databases and functional
+# // TODO: delete extra databases and functional
 # TODO: add opportunity to remove part from work interval
-# TODO: add foreign keys in db's
-# TODO: add UTC choice
+# // TODO: add foreign keys in db's
+# // TODO: add UTC choice
 # // TODO: make a beautiful working time output
 # // TODO: add opportunity to add working period throught telegram
 # TODO: add opportunity for editing periods +-
@@ -201,7 +201,7 @@ async def cmd_start(message: types.Message):
 # <<<<<<<<<<<<<<<<<< Изменение тэга >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.work_settings_callback.filter(parameter="tag"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
     s, t = work.get_status(), work.get_tag()
     if ("Tag -> " in callback_data["value"]):
         mes = "\n\nChoose a tag or write your tag in chat\n(# + tag name)"
@@ -230,7 +230,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 # <<<<<<<<<<<<<<<<<< Изменение статуса >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.work_settings_callback.filter(parameter="status"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
     s, t = work.get_status(), work.get_tag()
 
     if (callback_data["value"] == "working"):
@@ -252,7 +252,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 # <<<<<<<<<<<<<<<<<< Отчёт об отработанных часах >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.work_reports_callback.filter(status="period_report"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
 
     choose = InlineKeyboardMarkup(row_width=2)
     choose.insert(callback.reports_btn_callback["last_week"])
@@ -307,7 +307,7 @@ async def back_utc_callback(call: types.CallbackQuery, callback_data: dict):
 # <<<<<<<<<<<<<<<<<< Установка UTC пользователя  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.location_callback.filter(status="set"))
 async def utc_callback(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
     utc = callback_data["UTC"]
     utc = utc.replace(".", ":") + ":0" if "." in utc else utc + ":0:0"
     work.customer_db.set_time_zone(call.from_user["id"], utc)
@@ -332,7 +332,7 @@ async def cmd_start(message: types.Message):
 # <<<<<<<<<<<<<<<<<< Выбор отработанного периода для удаления >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.add_delete_work_period.filter(status="Delete"), )
 async def choose_period_to_delete(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
     res = work.get_finfo_day_intervals(call.from_user["id"], for_del=True)
 
     delete_callback = InlineKeyboardMarkup(row_width=int(res[1]**0.5 if res[1] != 0 else 1))
@@ -350,7 +350,7 @@ async def choose_period_to_delete(call: types.CallbackQuery, callback_data: dict
 # <<<<<<<<<<<<<<<<<< Удаление отработанного периода  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.delete_work_time_callback.filter(deleting="y"))
 async def save_day_date_callback(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
     if (callback_data["id"] == "Back"):
         choose = InlineKeyboardMarkup(row_width=1)
         choose.insert(callback.add_delete_period_btn_callback["Add"])
@@ -401,7 +401,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 # <<<<<<<<<<<<<<<<<< Добавление дня в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="day"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
 
     today = datetime.datetime.today()
     work.date_callback_constructor = "{2}.{1}.{0}".format(today.year, tr_val(today.month), tr_val(callback_data.get("val")))
@@ -421,7 +421,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 # <<<<<<<<<<<<<<<<<< Добавление часов в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="hour"))
 async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
     if work.start_constructor_done:
         mes = "Date: {}\mTime: {} - ".format(
             work.date_callback_constructor,
@@ -445,7 +445,7 @@ async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict
 # <<<<<<<<<<<<<<<<<< Добавление минут в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="min"))
 async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
 
     work.time_callback_constructor += ":{}".format(tr_val(callback_data.get("val")))
 

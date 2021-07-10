@@ -6,7 +6,6 @@ from Keyboard import Keyboard
 
 from functions_tg import *
 from DataBaseConnectors.BackupDBC import BackupDBC
-from DataBaseConnectors.CustomerDBC import CustomerDBC
 
 from aiogram.types.inline_keyboard import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram import executor, types
@@ -63,14 +62,11 @@ async def on_startup(x):
 # <<<<<<<<<<<<<<<<<< Start >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(commands=["start"])
 async def cmd_start(message: types.Message):
-    cust_db = CustomerDBC(settings.db_data)
-    customer = cust_db.get_customer(message.from_user["id"])
-    work = get_work_time(settings, message.from_user["id"])
+    work, customer = get_work_time(settings, message.from_user["id"], message.from_user["username"])
     w = "Start working" if not work.get_is_working() else "Stop working"
     await message.answer("Running main keyboard", reply_markup=keyboard.get_main(w))
 
     if not customer:
-        cust_db.add_row(message.from_user["id"], message.from_user["username"])
         utc_choice = InlineKeyboardMarkup(row_width=3)
         for utc in settings.all_locations:
             utc_b = InlineKeyboardButton(
@@ -104,7 +100,7 @@ async def cmd_settings(message: types.Message):
 # <<<<<<<<<<<<<<<<<< Help >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(commands=["help"])
 async def cmd_start(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     w = "Start working" if not work.get_is_working() else "Stop working"
 
     mes = "👋Hi there, using this bot you can count your working or studying time🕑\n"
@@ -122,7 +118,7 @@ async def cmd_start(message: types.Message):
 async def cmd_start(message: types.Message):
     logging.info("Start main message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
 
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
 
     w = "Start working" if not work.get_is_working() else "Stop working"
     logging.info("Sended %s for (%s <=> %s)" % ("Openning main keyboard", message.from_user["id"], message.from_user["username"]))
@@ -133,7 +129,7 @@ async def cmd_start(message: types.Message):
 # <<<<<<<<<<<<<<<<<< stat >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='stat', ignore_case=True))
 async def get_stat(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     if settings.my_id == message.from_user["id"]:
         await message.answer("There are {} works".format(len(settings.work_time_dict.keys())))
 
@@ -157,7 +153,7 @@ async def cmd_start(message: types.Message):
 @settings.dp.message_handler(Text(equals='start working', ignore_case=True))
 async def cmd_start(message: types.Message):
     logging.info("Start Start working message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     w = "Stop working"
 
     mes = work.start_working()
@@ -170,7 +166,7 @@ async def cmd_start(message: types.Message):
 @settings.dp.message_handler(Text(equals='stop working', ignore_case=True))
 async def cmd_start(message: types.Message):
     logging.info("Start Stop working message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     w = "Start working"
 
     mes = work.end_working(message.from_user["id"])
@@ -182,7 +178,7 @@ async def cmd_start(message: types.Message):
 # <<<<<<<<<<<<<<<<<< #Tags >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(startswith='#', ignore_case=True))
 async def cmd_start(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     w = "Start working" if not work.get_is_working() else "Stop working"
 
     work.set_tag(message.text)
@@ -192,7 +188,7 @@ async def cmd_start(message: types.Message):
 # <<<<<<<<<<<<<<<<<< Меню изменения статуса или тэга >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals="Status/Tag", ignore_case=True))
 async def cmd_start(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     s, t = work.get_status(), work.get_tag()
 
     set_callback = InlineKeyboardMarkup(row_width=2)
@@ -519,14 +515,14 @@ async def check_checkout(call: types.CallbackQuery, callback_data: dict):
 # <<<<<<<<<<<<<<<<<< This month worked time >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='month', ignore_case=True))
 async def cmd_start(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     await message.answer(work.get_finfo_day_sum(message.from_user["id"], month=True))
 
 
 # <<<<<<<<<<<<<<<<<< don't understand >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler()
 async def get_stat(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     await message.answer("Sorry, i don't understand, type /start")
 
 

@@ -6,6 +6,7 @@ from Keyboard import Keyboard
 
 from functions_tg import *
 from DataBaseConnectors.BackupDBC import BackupDBC
+from DataBaseConnectors.CustomerDBC import CustomerDBC
 
 from aiogram.types.inline_keyboard import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram import executor, types
@@ -62,20 +63,33 @@ async def on_startup(x):
 # <<<<<<<<<<<<<<<<<< Start >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(commands=["start"])
 async def cmd_start(message: types.Message):
+    cust_db = CustomerDBC(settings.db_data)
+    customer = cust_db.get_customer(message.from_user["id"])
     work = get_work_time(settings, message.from_user["id"])
     w = "Start working" if not work.get_is_working() else "Stop working"
     await message.answer("Running main keyboard", reply_markup=keyboard.get_main(w))
 
-    utc_choice = InlineKeyboardMarkup(row_width=5)
-    for utc in settings.all_locations:
-        utc_b = InlineKeyboardButton(
-                text="UTC" + utc,
+    if not customer:
+        cust_db.add_row(message.from_user["id"], message.from_user["username"])
+        utc_choice = InlineKeyboardMarkup(row_width=3)
+        for utc in settings.all_locations:
+            utc_b = InlineKeyboardButton(
+                    text="UTC" + utc,
+                    callback_data=callback.location_callback.new(
+                        status="set",
+                        UTC=utc.replace(":", ".")
+                    ))
+            utc_choice.insert(utc_b)
+        utc_choice.insert(
+            InlineKeyboardButton(
+                text="Back",
                 callback_data=callback.location_callback.new(
-                    status="set",
-                    UTC=utc.replace(":", ".")
-                ))
-        utc_choice.insert(utc_b)
-    await message.answer("Configure your UTC settings or all the time will be displayed by UTC+3", reply_markup=utc_choice)
+                        status="back",
+                        UTC="None"
+                    )
+            )
+        )
+        await message.answer("Configure your UTC settings or all the time will be displayed by UTC+3", reply_markup=utc_choice)
 
 
 # <<<<<<<<<<<<<<<<<< Settings >>>>>>>>>>>>>>>>>>
@@ -261,6 +275,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     # await call.message.edit_reply_markup(reply_markup=choose)
 
 
+# <<<<<<<<<<<<<<<<<< Меню выбора нужного UTC  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.settings_callback.filter(status="utc"))
 async def utc_settings_callback(call: types.CallbackQuery, callback_data: dict):
     utc_choice = InlineKeyboardMarkup(row_width=3)
@@ -284,6 +299,7 @@ async def utc_settings_callback(call: types.CallbackQuery, callback_data: dict):
     await call.message.edit_text("Configure your UTC settings or all the time will be displayed by UTC+3", reply_markup=utc_choice)
 
 
+# <<<<<<<<<<<<<<<<<< Возврат к настройкам пользователя  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.location_callback.filter(status="back"))
 async def back_utc_callback(call: types.CallbackQuery, callback_data: dict):
     settings_choice = InlineKeyboardMarkup(row_width=1)
@@ -292,6 +308,7 @@ async def back_utc_callback(call: types.CallbackQuery, callback_data: dict):
     await call.message.edit_text("Select the setting you want", reply_markup=settings_choice)
 
 
+# <<<<<<<<<<<<<<<<<< Установка UTC пользователя  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.location_callback.filter(status="set"))
 async def utc_callback(call: types.CallbackQuery, callback_data: dict):
     work = get_work_time(settings, call.from_user["id"])

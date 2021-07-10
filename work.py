@@ -143,7 +143,7 @@ class Work:
 
 
     def get_current_day(self) -> datetime.datetime:
-        return (datetime.datetime.today() - datetime.timedelta(hours=3)).date
+        return (datetime.datetime.today() - datetime.timedelta(hours=3)).day
 
 
     def get_current_time(self) -> datetime.datetime:

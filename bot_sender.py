@@ -461,10 +461,10 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
                 work.callback_start_time_working,
                 work.callback_end_time_working
             )
-        
+        h, m, s = map(int, str(work.customer_db.get_time_zone(work.user_id)).split(":"))
         work.save_spec_data(call.from_user["id"], 
-                    datetime.datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()),
-                    datetime.datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta)
+                    datetime.datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) - datetime.timedelta(hours=h, minutes=m),
+                    datetime.datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta - datetime.timedelta(hours=h, minutes=m))
 
         delete_callback = InlineKeyboardMarkup(row_width=1)
         delete_callback.insert(callback.get_delete_work_btn_callback("Back"))

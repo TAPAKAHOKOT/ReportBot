@@ -6,6 +6,7 @@ from Keyboard import Keyboard
 
 from functions_tg import *
 from DataBaseConnectors.BackupDBC import BackupDBC
+from DataBaseConnectors.CustomerDBC import CustomerDBC
 
 from aiogram.types.inline_keyboard import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram import executor, types
@@ -96,8 +97,10 @@ async def cmd_start(message: types.Message):
 @settings.dp.message_handler(commands=["settings"])
 async def cmd_settings(message: types.Message):
     settings_choice = InlineKeyboardMarkup(row_width=1)
-    for el in callback.settings_btns_callback:
-        settings_choice.insert(el)
+    t = str(CustomerDBC(settings.db_data).get_time_zone_str(message.from_user["id"]))
+    h, m = map(int, t.split(":"))
+    t = (str(h) if h < 0 else "+" + str(h)) + (":"+str(abs(m)) if m != 0 else "")
+    settings_choice.insert(callback.get_settings_utc_btn_callback(t))
     await message.answer("Select the setting you want", reply_markup=settings_choice)
 
 
@@ -303,8 +306,10 @@ async def utc_settings_callback(call: types.CallbackQuery, callback_data: dict):
 @settings.dp.callback_query_handler(callback.location_callback.filter(status="back"))
 async def back_utc_callback(call: types.CallbackQuery, callback_data: dict):
     settings_choice = InlineKeyboardMarkup(row_width=1)
-    for el in callback.settings_btns_callback:
-        settings_choice.insert(el)
+    t = str(CustomerDBC(settings.db_data).get_time_zone_str(call.from_user["id"]))
+    h, m = map(int, t.split(":"))
+    t = (str(h) if h < 0 else "+" + str(h)) + (":"+str(abs(m)) if m != 0 else "")
+    settings_choice.insert(callback.get_settings_utc_btn_callback(t))
     await call.message.edit_text("Select the setting you want", reply_markup=settings_choice)
 
 
@@ -317,9 +322,10 @@ async def utc_callback(call: types.CallbackQuery, callback_data: dict):
     work.customer_db.set_time_zone(call.from_user["id"], utc)
 
     settings_choice = InlineKeyboardMarkup(row_width=1)
-    for el in callback.settings_btns_callback:
-        settings_choice.insert(el)
-
+    t = str(CustomerDBC(settings.db_data).get_time_zone_str(call.from_user["id"]))
+    h, m = map(int, t.split(":"))
+    t = (str(h) if h < 0 else "+" + str(h)) + (":"+str(abs(m)) if m != 0 else "")
+    settings_choice.insert(callback.get_settings_utc_btn_callback(t))
     await call.message.edit_text("UTC changed to UTC{}\n\nSelect the setting you want".format(callback_data["UTC"]), reply_markup=settings_choice)    
 
 

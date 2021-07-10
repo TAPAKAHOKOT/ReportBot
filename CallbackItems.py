@@ -3,6 +3,12 @@ from aiogram.utils.callback_data import CallbackData
 class CallbackItems:
     def __init__(self):
         self.settings_callback = CallbackData("settings", "status")
+        self.get_settings_utc_btn_callback = lambda s: InlineKeyboardButton(
+                                                            text="Set UTC (UTC%s)" % s,
+                                                            callback_data=self.settings_callback.new(
+                                                                status="utc"
+                                                            )
+                                                        )
         self.settings_btns_callback = [
             InlineKeyboardButton(
                 text="Set UTC",

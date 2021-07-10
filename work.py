@@ -15,7 +15,7 @@ class Work:
         self.setttings = settings
         self.user_id = u_id
 
-        self.last_online_time = datetime.datetime.now()
+        self.last_online_time = datetime.datetime.now() - datetime.timedelta(hours=3)
 
         self.timeformat = "%H.%M.%S"
         self.dateformat = "%d.%m.%Y"
@@ -100,7 +100,7 @@ class Work:
 
     def start_working(self) -> str:
         logging.info("Start start_working(...)")
-        self.last_online_time = datetime.datetime.now()
+        self.last_online_time = datetime.datetime.now() - datetime.timedelta(hours=3)
         if self.is_working:
             logging.info("End start_working(...)")
             return "You are already working from {} {}".format(self.start_date_working, self.start_time_working)
@@ -111,12 +111,13 @@ class Work:
         self.backup_db.add_row(self.user_id, self.start_time_working)
 
         logging.info("End start_working(...)")
-        return "Start working time: " + self.start_time_working.strftime(self.timeformat).replace(".", ":") + " " + self.tag
+        h, m, s = map(int, str(self.customer_db.get_time_zone(self.user_id)).split(":"))
+        return "Start working time: " + (self.start_time_working + datetime.timedelta(hours=h, minutes=m)).strftime(self.timeformat).replace(".", ":") + " " + self.tag
         
     
     def end_working(self, u_id: int) -> str:
         logging.info("Start end_working(...)")
-        self.last_online_time = datetime.datetime.now()
+        self.last_online_time = datetime.datetime.now() - datetime.timedelta(hours=3)
         if not self.is_working:
             logging.info("End end_working(...)")
             return "You aren't working now"
@@ -128,12 +129,13 @@ class Work:
 
         self.saving_data(u_id)
         logging.info("End end_working(...)")
-        return "End working time: {}\nWorking time: {}".format(self.end_time_working.strftime(self.timeformat).replace(".", ":"), str(self.get_difference()).split(".")[0])
+        h, m, s = map(int, str(self.customer_db.get_time_zone(self.user_id)).split(":"))
+        return "End working time: {}\nWorking time: {}".format((self.end_time_working + datetime.timedelta(hours=h, minutes=m)).strftime(self.timeformat).replace(".", ":"), str(self.get_difference()).split(".")[0])
 
 
     def set_start_working_time(self, t: datetime.datetime):
         logging.info("Start set_start_working_time(...)")
-        self.last_online_time = datetime.datetime.now()
+        self.last_online_time = datetime.datetime.now() - datetime.timedelta(hours=3)
         self.is_working = True 
         self.start_time_working = t
         self.start_date_working = t
@@ -141,11 +143,11 @@ class Work:
 
 
     def get_current_day(self) -> datetime.datetime:
-        return datetime.datetime.today()
+        return (datetime.datetime.today() - datetime.timedelta(hours=3)).date
 
 
     def get_current_time(self) -> datetime.datetime:
-        return datetime.datetime.now()
+        return datetime.datetime.now() - datetime.timedelta(hours=3)
 
 
     def get_time_from(self, line: str) -> datetime.datetime:
@@ -175,14 +177,14 @@ class Work:
     
 
     def get_day_time_formated(self, s_time: datetime.datetime = None, e_time: datetime.datetime = None) -> str:
-        self.last_online_time = datetime.datetime.now()
+        self.last_online_time = datetime.datetime.now() - datetime.timedelta(hours=3)
         if not s_time: s_time = self.start_time_working
         if not e_time: e_time = self.end_time_working
         return s_time.strftime(self.timeformat) + " - " + e_time.strftime(self.timeformat)
     
 
     def get_current_working_info(self) -> str:
-        self.last_online_time = datetime.datetime.now()
+        self.last_online_time = datetime.datetime.now() - datetime.timedelta(hours=3)
         if not self.is_working:
             return "You aren't working now"
         delta = str(self.get_difference_betwen(self.start_time_working, self.get_current_time())).split(".")[0]
@@ -190,7 +192,7 @@ class Work:
     
 
     def delete_interval(self, u_id: int, n: int) -> str:
-        self.last_online_time = datetime.datetime.now()
+        self.last_online_time = datetime.datetime.now() - datetime.timedelta(hours=3)
         rows = self.term_db.get_all_periods_rows(u_id, "this_week", self.status)
         
         self.term_db.delete_row_by_id(rows[n - 1][-1])
@@ -203,7 +205,7 @@ class Work:
 
     def get_finfo_day_intervals(self, u_id: int, last_week: bool = False, for_del: bool = False) -> list:
         logging.info("Start get_finfo_day_intervals(...)")
-        self.last_online_time = datetime.datetime.now()
+        self.last_online_time = datetime.datetime.now() - datetime.timedelta(hours=3)
 
         title = ""
         if for_del:
@@ -238,7 +240,7 @@ class Work:
     
     def get_finfo_day_sum(self, u_id: int, last_week: bool = False, month: bool = False) -> str:
         logging.info("Start get_finfo_day_sum(...)")
-        self.last_online_time = datetime.datetime.now()
+        self.last_online_time = datetime.datetime.now() - datetime.timedelta(hours=3)
 
         title = "\n<<< Status: " + self.status.title() + " >>>\n"
         res = ""

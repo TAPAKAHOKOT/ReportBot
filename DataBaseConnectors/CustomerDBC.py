@@ -14,5 +14,9 @@ class CustomerDBC(DataBaseConnector):
         self.create_table(self.tabel_name, create_table_query)
     
 
-    def add_time_zone(self, customer_id: int, interval: str):
+    def set_time_zone(self, customer_id: int, interval: str):
         self.cursor.execute("UPDATE customer SET time_zone = '%s' WHERE customer_id = %s" % (interval, customer_id))
+    
+    def get_time_zone(self, customer_id: int):
+        self.cursor.execute("SELECT time_zone FROM customer WHERE customer_id=%s" % customer_id)
+        return self.cursor.fetchall()[0][0]

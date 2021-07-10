@@ -1,5 +1,7 @@
 import time
 from datetime import datetime
+
+from aiogram.types import message
 from Keyboard import Keyboard
 
 from functions_tg import *
@@ -69,11 +71,20 @@ async def cmd_start(message: types.Message):
         utc_b = InlineKeyboardButton(
                 text="UTC" + utc,
                 callback_data=callback.location_callback.new(
+                    status="set",
                     UTC=utc.replace(":", ".")
                 ))
         utc_choice.insert(utc_b)
-
     await message.answer("Configure your UTC settings or all the time will be displayed by UTC+3", reply_markup=utc_choice)
+
+
+# <<<<<<<<<<<<<<<<<< Settings >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(commands=["settings"])
+async def cmd_settings(message: types.Message):
+    settings_choice = InlineKeyboardMarkup(row_width=1)
+    for el in callback.settings_btns_callback:
+        settings_choice.insert(el)
+    await message.answer("Select the setting you want", reply_markup=settings_choice)
 
 
 # <<<<<<<<<<<<<<<<<< Help >>>>>>>>>>>>>>>>>>
@@ -247,9 +258,52 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
         await call.message.edit_text(work.get_finfo_day_sum(call.from_user["id"], True), reply_markup=choose)
     elif (callback_data["period"] == "last_week_d"):
         await call.message.edit_text(work.get_finfo_day_intervals(call.from_user["id"], last_week=True)[0], reply_markup=choose)
-
-    
     # await call.message.edit_reply_markup(reply_markup=choose)
+
+
+@settings.dp.callback_query_handler(callback.settings_callback.filter(status="utc"))
+async def utc_settings_callback(call: types.CallbackQuery, callback_data: dict):
+    utc_choice = InlineKeyboardMarkup(row_width=3)
+    for utc in settings.all_locations:
+        utc_b = InlineKeyboardButton(
+                text="UTC" + utc,
+                callback_data=callback.location_callback.new(
+                    status="set",
+                    UTC=utc.replace(":", ".")
+                ))
+        utc_choice.insert(utc_b)
+    utc_choice.insert(
+        InlineKeyboardButton(
+            text="Back",
+            callback_data=callback.location_callback.new(
+                    status="back",
+                    UTC="None"
+                )
+        )
+    )
+    await call.message.edit_text("Configure your UTC settings or all the time will be displayed by UTC+3", reply_markup=utc_choice)
+
+
+@settings.dp.callback_query_handler(callback.location_callback.filter(status="back"))
+async def back_utc_callback(call: types.CallbackQuery, callback_data: dict):
+    settings_choice = InlineKeyboardMarkup(row_width=1)
+    for el in callback.settings_btns_callback:
+        settings_choice.insert(el)
+    await call.message.edit_text("Select the setting you want", reply_markup=settings_choice)
+
+
+@settings.dp.callback_query_handler(callback.location_callback.filter(status="set"))
+async def utc_callback(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"])
+    utc = callback_data["UTC"]
+    utc = utc.replace(".", ":") + ":0" if "." in utc else utc + ":0:0"
+    work.customer_db.set_time_zone(call.from_user["id"], utc)
+
+    settings_choice = InlineKeyboardMarkup(row_width=1)
+    for el in callback.settings_btns_callback:
+        settings_choice.insert(el)
+
+    await call.message.edit_text("UTC changed to UTC{}\n\nSelect the setting you want".format(callback_data["UTC"]), reply_markup=settings_choice)    
 
 
 # <<<<<<<<<<<<<<<<<< Меню удаления и добавления отработанных периодов >>>>>>>>>>>>>>>>>>

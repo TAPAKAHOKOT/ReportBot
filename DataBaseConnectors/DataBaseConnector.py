@@ -100,7 +100,7 @@ class DataBaseConnector:
                 );
 
                 INSERT INTO term(customer_id, name_tag, name_status, start_time, end_time)
-                    SELECT user_id, tag, status, start_time, end_time
+                    SELECT user_id, tag, status, start_time - interval '3 hours', end_time - interval '3 hours'
                     FROM works_times
                     WHERE (user_id, tag, status, start_time, end_time) NOT IN (
                         SELECT term_id, name_tag, name_status, start_time, end_time FROM term);
@@ -128,7 +128,7 @@ class DataBaseConnector:
                 );
 
                 INSERT INTO backup(customer_id, start_time)
-                    SELECT user_id, start_time
+                    SELECT user_id, start_time - interval '3 hours'
                     FROM start_working_time
                     WHERE user_id NOT IN (SELECT customer_id FROM backup);"""
 

@@ -27,6 +27,9 @@ def get_work_time(settigns: Settings, u_id, u_un) -> Work:
 
     if not customer:
         cust_db.add_row(u_id, u_un)
+    else:
+        if not cust_db.get_name_customer(u_id):
+            cust_db.set_name_customer(u_id, u_un)
 
     if not u_id in settings.work_time_dict.keys():
         logging.info("Created Work() for %s" % u_id)

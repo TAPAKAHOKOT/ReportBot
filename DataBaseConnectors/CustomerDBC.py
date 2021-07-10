@@ -14,9 +14,18 @@ class CustomerDBC(DataBaseConnector):
         self.create_table(self.tabel_name, create_table_query)
     
 
-    def get_customer(self, customer_id) -> list:
+    def get_customer(self, customer_id: int) -> list:
         self.cursor.execute("SELECT customer_id FROM customer WHERE customer_id=%s" % customer_id)
         return self.cursor.fetchall()
+    
+
+    def get_name_customer(self, customer_id: int):
+        self.cursor.execute("SELECT name_customer FROM customer WHERE customer_id=%s" % customer_id)
+    
+
+    def set_name_customer(self, customer_id: int, name_customer: str):
+        self.cursor.execute("UPDATE customer SET name_customer='%s' WHERE customer_id=%s" % (name_customer, customer_id))
+
 
     def set_time_zone(self, customer_id: int, interval: str):
         self.cursor.execute("UPDATE customer SET time_zone = '%s' WHERE customer_id = %s" % (interval, customer_id))

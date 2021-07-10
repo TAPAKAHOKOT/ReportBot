@@ -59,4 +59,7 @@ class Settings:
 
         self.callback = CallbackItems()
 
+        self.all_locations = ["-10", "-8", "-7", "-6", "-5", "-4", "-3:30", "+0", 
+                                "+1", "+2", "+3", "+8", "+9:30", "+10"]
+
         logging.info("Settings are initialized")

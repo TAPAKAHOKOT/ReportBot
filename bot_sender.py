@@ -5,7 +5,7 @@ from Keyboard import Keyboard
 from functions_tg import *
 from DataBaseConnectors.BackupDBC import BackupDBC
 
-from aiogram.types.inline_keyboard import InlineKeyboardMarkup
+from aiogram.types.inline_keyboard import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram import executor, types
 from aiogram.dispatcher.filters import Text
 
@@ -63,6 +63,17 @@ async def cmd_start(message: types.Message):
     work = get_work_time(settings, message.from_user["id"])
     w = "Start working" if not work.get_is_working() else "Stop working"
     await message.answer("Running main keyboard", reply_markup=keyboard.get_main(w))
+
+    utc_choice = InlineKeyboardMarkup(row_width=5)
+    for utc in settings.all_locations:
+        utc_b = InlineKeyboardButton(
+                text="UTC" + utc,
+                callback_data=callback.location_callback.new(
+                    UTC=utc.replace(":", ".")
+                ))
+        utc_choice.insert(utc_b)
+
+    await message.answer("Configure your UTC settings or all the time will be displayed by UTC+3", reply_markup=utc_choice)
 
 
 # <<<<<<<<<<<<<<<<<< Help >>>>>>>>>>>>>>>>>>

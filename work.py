@@ -51,6 +51,14 @@ class Work:
             self.statestorage_db.add_row(self.user_id, self.tag, self.status)
 
         logging.info("End initing Work")
+    
+    
+    def close_connection(self):
+        self.backup_db.close_connection()
+        self.customer_db.close_connection()
+        self.statestorage_db.close_connection()
+        self.tag_db.close_connection()
+        self.term_db.close_connection()
 
 
     def get_is_working(self) -> bool:

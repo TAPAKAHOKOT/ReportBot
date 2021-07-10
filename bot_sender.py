@@ -17,6 +17,10 @@ callback = settings.callback
 async def on_startup(x):
     asyncio.create_task(send())
 
+async def on_shutdown(x):
+    for key in list(settings.work_time_dict):
+        settings.work_time_dict[key].close_connection()
+
 # // ! TODO: add autosave working time into db every 2 minutes
 # ! TODO: add autotest for db classes
 # ! TODO: add comments in all new files
@@ -535,4 +539,4 @@ if __name__ == "__main__":
     for row in resume_work:
         create_work_time(settings, row[0], row[1])
     
-    executor.start_polling(settings.dp, skip_updates=True, on_startup=on_startup)
+    executor.start_polling(settings.dp, skip_updates=True, on_startup=on_startup, on_shutdown=on_shutdown)

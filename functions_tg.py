@@ -87,6 +87,7 @@ async def send():
             val = settings.work_time_dict[key]
             t = datetime.datetime.now() - val.last_online_time
             if t > datetime.timedelta(days=5):
+                settings.work_time_dict[key].close_connection()
                 del settings.work_time_dict[key]
 
     logging.info("Start initing all schedules")

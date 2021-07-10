@@ -22,7 +22,7 @@ async def on_shutdown(x):
         settings.work_time_dict[key].close_connection()
 
 # // ! TODO: add autosave working time into db every 2 minutes
-# ! TODO: add autotest for db classes
+# ! TODO: add autotests for db classes
 # ! TODO: add comments in all new files
 # // ! TODO: add saving work statuses between reloading server
 # // ! TODO: add password crypting
@@ -30,9 +30,9 @@ async def on_shutdown(x):
 # // ~ TODO: add inheritance into db classes
 # // ? TODO: translate all features in english
 # ? TODO: add language chooser +-
-# ? TODO: add settings for users
+# // ? TODO: add settings for users
 # TODO: add 'hide' callback button (with saving hidden data in db)
-# TODO: add remainder constructor
+# TODO: add remainder constructor +-
 # // TODO: delete extra databases and functional
 # TODO: add opportunity to remove part from work interval
 # // TODO: add foreign keys in db's
@@ -52,7 +52,7 @@ async def on_shutdown(x):
 # TODO: make a video about the capabilities of the bot +-
 # // TODO: add table in database with user settings
 # // TODO: add border between studing and working tags
-# TODO: change names of db, tables, change structure of tables 
+# // TODO: change names of db, tables, change structure of tables 
 # // TODO: (ex: make ser_id the primary key)
 # // TODO: files rebase
 # // TODO: add user's cpecific tags

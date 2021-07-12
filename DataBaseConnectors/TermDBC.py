@@ -13,7 +13,7 @@ class TermDBC(DataBaseConnector):
             "this_month": """start_time BETWEEN date_trunc('month', CURRENT_TIMESTAMP) AND date_trunc('month', CURRENT_TIMESTAMP + interval '1 month')"""
         }
         self.select_columns_short = """DATE(start_time) date, name_tag, SUM(end_time - start_time)"""
-        self.select_columns_full = """name_tag, start_time + time_zone, end_time + time_zone, term_id"""
+        self.select_columns_full = """name_tag, (start_time + time_zone) st, (end_time + time_zone) et, term_id"""
         create_table_query = """CREATE TABLE IF NOT EXISTS term(
                                 term_id SERIAL PRIMARY KEY,
                                 customer_id INT NOT NULL,
@@ -38,7 +38,7 @@ class TermDBC(DataBaseConnector):
         query = f"""SELECT {self.select_columns_full}
                     FROM term t, customer c
                     WHERE {self.periods[period]} AND name_status='{status}' AND t.customer_id={customer_id} AND  t.customer_id = c.customer_id
-                    ORDER BY DATE(start_time), name_tag;"""
+                    ORDER BY DATE(start_time), name_tag, st;"""
         self.cursor.execute(query)
         return self.cursor.fetchall()
     

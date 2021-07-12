@@ -26,7 +26,7 @@ class Work:
         self.end_date_working = None
         self.start_time_working = None
 
-        self.tag = "testing"
+        self.tag = "#testing"
         self.status = "studying"
 
         self.backup_db = BackupDBC(self.setttings.db_data)

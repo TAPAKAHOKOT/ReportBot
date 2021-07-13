@@ -12,7 +12,7 @@ class TermDBC(DataBaseConnector):
             "last_week": """start_time BETWEEN date_trunc('week', CURRENT_TIMESTAMP - interval '1 week') AND date_trunc('week', CURRENT_TIMESTAMP)""",
             "this_month": """start_time BETWEEN date_trunc('month', CURRENT_TIMESTAMP) AND date_trunc('month', CURRENT_TIMESTAMP + interval '1 month')"""
         }
-        self.select_columns_short = """DATE(start_time) date, name_tag, SUM(end_time - start_time)"""
+        self.select_columns_short = """DATE(start_time + time_zone) date, name_tag, SUM(end_time - start_time)"""
         self.select_columns_full = """name_tag, (start_time + time_zone) st, (end_time + time_zone) et, term_id"""
         create_table_query = """CREATE TABLE IF NOT EXISTS term(
                                 term_id SERIAL PRIMARY KEY,
@@ -26,7 +26,7 @@ class TermDBC(DataBaseConnector):
 
     def get_period_rows(self, customer_id: int, period: str, status: str):
         query = f"""SELECT {self.select_columns_short}
-                    FROM term
+                    FROM term JOIN customer USING(customer_id)
                     WHERE {self.periods[period]} AND name_status='{status}' AND customer_id={customer_id}
                     GROUP BY date, name_tag
                     ORDER BY date, name_tag;"""

@@ -1,5 +1,5 @@
 [![Bot's GitHub Banner](imgs/banner2.jpg)](https://github.com/TAPAKAHOKOT/ReportBot)
-[![Commit activity Badge](https://img.shields.io/github/commit-activity/w/TAPAKAHOKOT/Reportbot)](https://github.com/TAPAKAHOKOT/ReportBot) [![Updated Badge](https://img.shields.io/github/last-commit/TAPAKAHOKOT/ReportBot)](https://github.com/TAPAKAHOKOT/ReportBot) [![Visits Badge](https://badges.pufler.dev/visits/TAPAKAHOKOT/ReportBot)](https://github.com/TAPAKAHOKOT/ReportBot) [![Now visits Badge](https://img.shields.io/github/watchers/TAPAKAHOKOT/ReportBot?style=social)](https://github.com/TAPAKAHOKOT/ReportBot)
+[![Updated Badge](https://img.shields.io/github/last-commit/TAPAKAHOKOT/ReportBot)](https://github.com/TAPAKAHOKOT/ReportBot) [![Visits Badge](https://badges.pufler.dev/visits/TAPAKAHOKOT/ReportBot)](https://github.com/TAPAKAHOKOT/ReportBot) [![Now visits Badge](https://img.shields.io/github/watchers/TAPAKAHOKOT/ReportBot?style=social)](https://github.com/TAPAKAHOKOT/ReportBot)
 
 Contact me: [![Telegram Badge](https://img.shields.io/badge/%20-Tg-0088cc?logo=telegram)](https://t.me/TAPAKAHOKOT) [![Vk Badge](https://img.shields.io/badge/%20-Vk-ffffff?logo=vk&logoColor=0088cc)](https://vk.com/kpabakot)
 

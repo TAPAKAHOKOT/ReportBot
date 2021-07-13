@@ -6,6 +6,7 @@ import logging
 class DataBaseConnector:
     def __init__(self, set_dict: dict):
         self.add_row_query = ""
+        self.table_name = ""
 
         self.user = set_dict["usr"]
         self.password = set_dict["pwd"]
@@ -45,7 +46,6 @@ class DataBaseConnector:
     def create_table(self, name, query):
         logging.info("Start creating table %s" % name)
         try:
-            
             connection = psycopg2.connect(user=self.user,
                                         password=self.password,
                                         host=self.host,
@@ -64,7 +64,8 @@ class DataBaseConnector:
                 cursor.close()
                 connection.close()
                 logging.info("Connection closed for table %s" % name)
-    
+
+
     def add_row(self, *args):
         logging.info("Start adding row [%s]" % " ".join([str(k) for k in args]))
         
@@ -73,9 +74,16 @@ class DataBaseConnector:
 
         logging.info("End adding row [%s]" % " ".join([str(k) for k in args]))
     
-    def test_clear_table(self):
+
+    def get_all_rows(self) -> list:
+        self.cursor.execute("SELECT * FROM %s" % self.table_name)
+        return self.cursor.fetchall()
+    
+
+    def clear_table(self):
         self.cursor.execute("DELETE FROM %s" % self.tabel_name)
     
+
     def close_connection(self):
         if self.connection:
             self.cursor.close()

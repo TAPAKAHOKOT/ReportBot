@@ -1,14 +1,16 @@
-from aiogram.types.inline_keyboard import InlineKeyboardMarkup
+import time
+from datetime import datetime
+
+from aiogram.types import message
 from Keyboard import Keyboard
 
 from functions_tg import *
+from DataBaseConnectors.BackupDBC import BackupDBC
+from DataBaseConnectors.CustomerDBC import CustomerDBC
 
+from aiogram.types.inline_keyboard import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram import executor, types
 from aiogram.dispatcher.filters import Text
-from DataBaseConnectors.WorksStartWorkDataBaseConnector import WorksStartWorkDataBaseConnector
-
-import time
-from datetime import datetime
 
 keyboard = Keyboard(settings)
 callback = settings.callback
@@ -16,8 +18,12 @@ callback = settings.callback
 async def on_startup(x):
     asyncio.create_task(send())
 
+async def on_shutdown(x):
+    for key in list(settings.work_time_dict):
+        settings.work_time_dict[key].close_connection()
+
 # // ! TODO: add autosave working time into db every 2 minutes
-# ! TODO: add autotest for db classes
+# ! TODO: add autotests for db classes
 # ! TODO: add comments in all new files
 # // ! TODO: add saving work statuses between reloading server
 # // ! TODO: add password crypting
@@ -25,12 +31,13 @@ async def on_startup(x):
 # // ~ TODO: add inheritance into db classes
 # // ? TODO: translate all features in english
 # ? TODO: add language chooser +-
-# ? TODO: add settings for users
+# // ? TODO: add settings for users
 # TODO: add 'hide' callback button (with saving hidden data in db)
-# TODO: add remainder constructor
-# TODO: delete extra databases and functional
+# TODO: add remainder constructor +-
+# // TODO: delete extra databases and functional
 # TODO: add opportunity to remove part from work interval
-# TODO: add foreign keys in db's
+# // TODO: add foreign keys in db's
+# // TODO: add UTC choice
 # // TODO: make a beautiful working time output
 # // TODO: add opportunity to add working period throught telegram
 # TODO: add opportunity for editing periods +-
@@ -46,7 +53,7 @@ async def on_startup(x):
 # TODO: make a video about the capabilities of the bot +-
 # // TODO: add table in database with user settings
 # // TODO: add border between studing and working tags
-# TODO: change names of db, tables, change structure of tables 
+# // TODO: change names of db, tables, change structure of tables 
 # // TODO: (ex: make ser_id the primary key)
 # // TODO: files rebase
 # // TODO: add user's cpecific tags
@@ -60,15 +67,47 @@ async def on_startup(x):
 # <<<<<<<<<<<<<<<<<< Start >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(commands=["start"])
 async def cmd_start(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
+    work, customer = get_work_time(settings, message.from_user["id"], message.from_user["username"])
     w = "Start working" if not work.get_is_working() else "Stop working"
     await message.answer("Running main keyboard", reply_markup=keyboard.get_main(w))
+
+    if not customer:
+        utc_choice = InlineKeyboardMarkup(row_width=3)
+        for utc in settings.all_locations:
+            utc_b = InlineKeyboardButton(
+                    text="UTC" + utc,
+                    callback_data=callback.location_callback.new(
+                        status="set",
+                        UTC=utc.replace(":", ".")
+                    ))
+            utc_choice.insert(utc_b)
+        utc_choice.insert(
+            InlineKeyboardButton(
+                text="Back",
+                callback_data=callback.location_callback.new(
+                        status="back",
+                        UTC="None"
+                    )
+            )
+        )
+        await message.answer("Configure your UTC settings or all the time will be displayed by UTC+3", reply_markup=utc_choice)
+
+
+# <<<<<<<<<<<<<<<<<< Settings >>>>>>>>>>>>>>>>>>
+@settings.dp.message_handler(commands=["settings"])
+async def cmd_settings(message: types.Message):
+    settings_choice = InlineKeyboardMarkup(row_width=1)
+    t = str(CustomerDBC(settings.db_data).get_time_zone_str(message.from_user["id"]))
+    h, m = map(int, t.split(":"))
+    t = (str(h) if h < 0 else "+" + str(h)) + (":"+str(abs(m)) if m != 0 else "")
+    settings_choice.insert(callback.get_settings_utc_btn_callback(t))
+    await message.answer("Select the setting you want", reply_markup=settings_choice)
 
 
 # <<<<<<<<<<<<<<<<<< Help >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(commands=["help"])
 async def cmd_start(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     w = "Start working" if not work.get_is_working() else "Stop working"
 
     mes = "👋Hi there, using this bot you can count your working or studying time🕑\n"
@@ -86,7 +125,7 @@ async def cmd_start(message: types.Message):
 async def cmd_start(message: types.Message):
     logging.info("Start main message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
 
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
 
     w = "Start working" if not work.get_is_working() else "Stop working"
     logging.info("Sended %s for (%s <=> %s)" % ("Openning main keyboard", message.from_user["id"], message.from_user["username"]))
@@ -97,7 +136,7 @@ async def cmd_start(message: types.Message):
 # <<<<<<<<<<<<<<<<<< stat >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='stat', ignore_case=True))
 async def get_stat(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     if settings.my_id == message.from_user["id"]:
         await message.answer("There are {} works".format(len(settings.work_time_dict.keys())))
 
@@ -121,7 +160,7 @@ async def cmd_start(message: types.Message):
 @settings.dp.message_handler(Text(equals='start working', ignore_case=True))
 async def cmd_start(message: types.Message):
     logging.info("Start Start working message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     w = "Stop working"
 
     mes = work.start_working()
@@ -134,7 +173,7 @@ async def cmd_start(message: types.Message):
 @settings.dp.message_handler(Text(equals='stop working', ignore_case=True))
 async def cmd_start(message: types.Message):
     logging.info("Start Stop working message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     w = "Start working"
 
     mes = work.end_working(message.from_user["id"])
@@ -146,29 +185,18 @@ async def cmd_start(message: types.Message):
 # <<<<<<<<<<<<<<<<<< #Tags >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(startswith='#', ignore_case=True))
 async def cmd_start(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     w = "Start working" if not work.get_is_working() else "Stop working"
 
-    work.set_tag(message.text[1:])
-    await message.answer("Tag changed to: #" + work.get_tag(), reply_markup=keyboard.get_main(w))
-
-
-# <<<<<<<<<<<<<<<<<< История тэгов >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals="история тэгов", ignore_case=True))
-async def cmd_start(message: types.Message):
-    id = message.from_user["id"]
-    work = get_work_time(settings, id)
-    history = work.tag_db.get_user_tag_history(id)
-    if not history:
-        history = "None"
-    await message.answer(history)
+    work.set_tag(message.text)
+    await message.answer("Tag changed to: " + work.get_tag(), reply_markup=keyboard.get_main(w))
 
 
 # <<<<<<<<<<<<<<<<<< Меню изменения статуса или тэга >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals="Status/Tag", ignore_case=True))
 async def cmd_start(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
-    s, t = work.get_status(), "#" + work.get_tag()
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
+    s, t = work.get_status(), work.get_tag()
 
     set_callback = InlineKeyboardMarkup(row_width=2)
     set_callback.insert(callback.get_tag_btn_callback("Tag -> " + t))
@@ -180,11 +208,11 @@ async def cmd_start(message: types.Message):
 # <<<<<<<<<<<<<<<<<< Изменение тэга >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.work_settings_callback.filter(parameter="tag"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
-    s, t = work.get_status(), "#" + work.get_tag()
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
+    s, t = work.get_status(), work.get_tag()
     if ("Tag -> " in callback_data["value"]):
         mes = "\n\nChoose a tag or write your tag in chat\n(# + tag name)"
-        tags = work.u_tag_db.get_user_tag_history(work.user_id)
+        tags = work.tag_db.get_tags(work.user_id)
 
         set_callback = InlineKeyboardMarkup(row_width=3)
         for tag in tags:
@@ -197,7 +225,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
         set_callback.insert(callback.statuses_btn_callback[s])
     else:
         mes = "\nTag changed to " + callback_data["value"]
-        work.set_tag(callback_data["value"][1:])
+        work.set_tag(callback_data["value"])
 
         set_callback = InlineKeyboardMarkup(row_width=2)
         set_callback.insert(callback.get_tag_btn_callback("Tag -> " + callback_data["value"]))
@@ -209,8 +237,8 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 # <<<<<<<<<<<<<<<<<< Изменение статуса >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.work_settings_callback.filter(parameter="status"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
-    s, t = work.get_status(), "#" + work.get_tag()
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
+    s, t = work.get_status(), work.get_tag()
 
     if (callback_data["value"] == "working"):
         work.set_status("studying")
@@ -231,7 +259,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 # <<<<<<<<<<<<<<<<<< Отчёт об отработанных часах >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.work_reports_callback.filter(status="period_report"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
 
     choose = InlineKeyboardMarkup(row_width=2)
     choose.insert(callback.reports_btn_callback["last_week"])
@@ -247,9 +275,58 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
         await call.message.edit_text(work.get_finfo_day_sum(call.from_user["id"], True), reply_markup=choose)
     elif (callback_data["period"] == "last_week_d"):
         await call.message.edit_text(work.get_finfo_day_intervals(call.from_user["id"], last_week=True)[0], reply_markup=choose)
-
-    
     # await call.message.edit_reply_markup(reply_markup=choose)
+
+
+# <<<<<<<<<<<<<<<<<< Меню выбора нужного UTC  >>>>>>>>>>>>>>>>>>
+@settings.dp.callback_query_handler(callback.settings_callback.filter(status="utc"))
+async def utc_settings_callback(call: types.CallbackQuery, callback_data: dict):
+    utc_choice = InlineKeyboardMarkup(row_width=3)
+    for utc in settings.all_locations:
+        utc_b = InlineKeyboardButton(
+                text="UTC" + utc,
+                callback_data=callback.location_callback.new(
+                    status="set",
+                    UTC=utc.replace(":", ".")
+                ))
+        utc_choice.insert(utc_b)
+    utc_choice.insert(
+        InlineKeyboardButton(
+            text="Back",
+            callback_data=callback.location_callback.new(
+                    status="back",
+                    UTC="None"
+                )
+        )
+    )
+    await call.message.edit_text("Configure your UTC settings or all the time will be displayed by UTC+3", reply_markup=utc_choice)
+
+
+# <<<<<<<<<<<<<<<<<< Возврат к настройкам пользователя  >>>>>>>>>>>>>>>>>>
+@settings.dp.callback_query_handler(callback.location_callback.filter(status="back"))
+async def back_utc_callback(call: types.CallbackQuery, callback_data: dict):
+    settings_choice = InlineKeyboardMarkup(row_width=1)
+    t = str(CustomerDBC(settings.db_data).get_time_zone_str(call.from_user["id"]))
+    h, m = map(int, t.split(":"))
+    t = (str(h) if h < 0 else "+" + str(h)) + (":"+str(abs(m)) if m != 0 else "")
+    settings_choice.insert(callback.get_settings_utc_btn_callback(t))
+    await call.message.edit_text("Select the setting you want", reply_markup=settings_choice)
+
+
+# <<<<<<<<<<<<<<<<<< Установка UTC пользователя  >>>>>>>>>>>>>>>>>>
+@settings.dp.callback_query_handler(callback.location_callback.filter(status="set"))
+async def utc_callback(call: types.CallbackQuery, callback_data: dict):
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
+    utc = callback_data["UTC"]
+    utc = utc.replace(".", ":") + ":0" if "." in utc else utc + ":0:0"
+    work.customer_db.set_time_zone(call.from_user["id"], utc)
+
+    settings_choice = InlineKeyboardMarkup(row_width=1)
+    t = str(CustomerDBC(settings.db_data).get_time_zone_str(call.from_user["id"]))
+    h, m = map(int, t.split(":"))
+    t = (str(h) if h < 0 else "+" + str(h)) + (":"+str(abs(m)) if m != 0 else "")
+    settings_choice.insert(callback.get_settings_utc_btn_callback(t))
+    await call.message.edit_text("UTC changed to UTC{}\n\nSelect the setting you want".format(callback_data["UTC"]), reply_markup=settings_choice)    
 
 
 # <<<<<<<<<<<<<<<<<< Меню удаления и добавления отработанных периодов >>>>>>>>>>>>>>>>>>
@@ -265,7 +342,7 @@ async def cmd_start(message: types.Message):
 # <<<<<<<<<<<<<<<<<< Выбор отработанного периода для удаления >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.add_delete_work_period.filter(status="Delete"), )
 async def choose_period_to_delete(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
     res = work.get_finfo_day_intervals(call.from_user["id"], for_del=True)
 
     delete_callback = InlineKeyboardMarkup(row_width=int(res[1]**0.5 if res[1] != 0 else 1))
@@ -283,7 +360,7 @@ async def choose_period_to_delete(call: types.CallbackQuery, callback_data: dict
 # <<<<<<<<<<<<<<<<<< Удаление отработанного периода  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.delete_work_time_callback.filter(deleting="y"))
 async def save_day_date_callback(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
     if (callback_data["id"] == "Back"):
         choose = InlineKeyboardMarkup(row_width=1)
         choose.insert(callback.add_delete_period_btn_callback["Add"])
@@ -321,7 +398,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 tr_val = lambda v: str(v) if len(str(v)) == 2 else "0" + str(v)
 @settings.dp.callback_query_handler(callback.add_delete_work_period.filter(status="Add"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
-    today = datetime.today()
+    today = datetime.datetime.today()
     days = InlineKeyboardMarkup(row_width=5)
     for k in range(1, today.day + 1):
         days.insert(callback.days_btn_callback[k])
@@ -334,9 +411,9 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 # <<<<<<<<<<<<<<<<<< Добавление дня в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="day"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
 
-    today = datetime.today()
+    today = datetime.datetime.today()
     work.date_callback_constructor = "{2}.{1}.{0}".format(today.year, tr_val(today.month), tr_val(callback_data.get("val")))
     
     hours = InlineKeyboardMarkup(row_width=6)
@@ -354,7 +431,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 # <<<<<<<<<<<<<<<<<< Добавление часов в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="hour"))
 async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
     if work.start_constructor_done:
         mes = "Date: {}\mTime: {} - ".format(
             work.date_callback_constructor,
@@ -378,7 +455,7 @@ async def save_hour_date_callback(call: types.CallbackQuery, callback_data: dict
 # <<<<<<<<<<<<<<<<<< Добавление минут в конструкторе добавления отработанного периода  >>>>>>>>>>>>>>>>>>
 @settings.dp.callback_query_handler(callback.date_callback.filter(time_unit="min"))
 async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict):
-    work = get_work_time(settings, call.from_user["id"])
+    work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
 
     work.time_callback_constructor += ":{}".format(tr_val(callback_data.get("val")))
 
@@ -387,7 +464,7 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
         work.callback_start_time_working = work.get_one_time_from(work.time_callback_constructor.replace(":", ".") + ".00")
         work.start_constructor_done = True
 
-        today = datetime.today()
+        today = datetime.datetime.today()
         hours = InlineKeyboardMarkup(row_width=6)
 
         for k in range(24):
@@ -407,10 +484,10 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
                 work.callback_start_time_working,
                 work.callback_end_time_working
             )
-        
+        h, m, s = map(int, str(work.customer_db.get_time_zone(work.user_id)).split(":"))
         work.save_spec_data(call.from_user["id"], 
-                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()),
-                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta)
+                    datetime.datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) - datetime.timedelta(hours=h, minutes=m),
+                    datetime.datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta - datetime.timedelta(hours=h, minutes=m))
 
         delete_callback = InlineKeyboardMarkup(row_width=1)
         delete_callback.insert(callback.get_delete_work_btn_callback("Back"))
@@ -448,24 +525,24 @@ async def check_checkout(call: types.CallbackQuery, callback_data: dict):
 # <<<<<<<<<<<<<<<<<< This month worked time >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='month', ignore_case=True))
 async def cmd_start(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     await message.answer(work.get_finfo_day_sum(message.from_user["id"], month=True))
 
 
 # <<<<<<<<<<<<<<<<<< don't understand >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler()
 async def get_stat(message: types.Message):
-    work = get_work_time(settings, message.from_user["id"])
+    work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
     await message.answer("Sorry, i don't understand, type /start")
 
 
 start_time = time.time()
 if __name__ == "__main__":
-    db = WorksStartWorkDataBaseConnector(settings.db_data)
+    db = BackupDBC(settings.db_data)
     # ! Need to convert resume_work[1] to datetime.datetime
     resume_work = db.get_all_rows()  
 
     for row in resume_work:
         create_work_time(settings, row[0], row[1])
     
-    executor.start_polling(settings.dp, skip_updates=True, on_startup=on_startup)
+    executor.start_polling(settings.dp, skip_updates=True, on_startup=on_startup, on_shutdown=on_shutdown)

@@ -2,6 +2,24 @@ from aiogram.types.inline_keyboard import InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
 class CallbackItems:
     def __init__(self):
+        self.settings_callback = CallbackData("settings", "status")
+        self.get_settings_utc_btn_callback = lambda s: InlineKeyboardButton(
+                                                            text="Set UTC (UTC%s)" % s,
+                                                            callback_data=self.settings_callback.new(
+                                                                status="utc"
+                                                            )
+                                                        )
+        self.settings_btns_callback = [
+            InlineKeyboardButton(
+                text="Set UTC",
+                callback_data=self.settings_callback.new(
+                    status="utc"
+                )
+            )
+        ]
+
+        self.location_callback = CallbackData("location", "status", "UTC")
+
         self.checkout_nums_callback = CallbackData("checkout", "status", "val", "btns_num")
         self.get_checkout_push_up_btn_callback = lambda v: InlineKeyboardButton(
                                                                 text="25",

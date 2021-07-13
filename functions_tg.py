@@ -7,6 +7,8 @@ import asyncio
 from Work import Work
 import datetime
 
+from DataBaseConnectors.CustomerDBC import CustomerDBC
+
 import logging
 import sys
 
@@ -17,13 +19,23 @@ TESTING = not (TESTING == "REL")
 settings = Settings(TESTING)
 
 
-def get_work_time(settigns: Settings, u_id) -> Work:
+def get_work_time(settigns: Settings, u_id, u_un) -> Work:
     logging.info("Start get_work_time(...)")
+
+    cust_db = CustomerDBC(settings.db_data)
+    customer = cust_db.get_customer(u_id)
+
+    if not customer:
+        cust_db.add_row(u_id, u_un)
+    else:
+        if not cust_db.get_name_customer(u_id):
+            cust_db.set_name_customer(u_id, u_un)
+
     if not u_id in settings.work_time_dict.keys():
         logging.info("Created Work() for %s" % u_id)
         settings.work_time_dict[u_id] = Work(settings, u_id)
     logging.info("End get_work_time(...)")
-    return settings.work_time_dict[u_id]
+    return [settings.work_time_dict[u_id], customer]
 
 
 def create_work_time(settings: Settings, u_id, st_time: datetime.datetime):
@@ -75,6 +87,7 @@ async def send():
             val = settings.work_time_dict[key]
             t = datetime.datetime.now() - val.last_online_time
             if t > datetime.timedelta(days=5):
+                settings.work_time_dict[key].close_connection()
                 del settings.work_time_dict[key]
 
     logging.info("Start initing all schedules")

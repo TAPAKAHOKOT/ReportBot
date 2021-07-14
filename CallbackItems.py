@@ -2,6 +2,24 @@ from aiogram.types.inline_keyboard import InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
 class CallbackItems:
     def __init__(self):
+        self.editing_callback = CallbackData("edit_on", "edit_val", "editing")
+        self.get_editing_btns_callback = lambda v: [
+            InlineKeyboardButton(
+                text=val,
+                callback_data=self.editing_callback.new(
+                    edit_val=val + "," + v,
+                    editing="y"
+                )) for val in ["+20 min", "+1 min", "-1 min", "-20 min", "+60 min", "+5 min", "-5 min", "-60 min"]
+        ]
+
+        self.edit_work_time_callback = CallbackData("edit_work_time", "id", "editing")
+        self.get_edit_work_btn_callback = lambda val: InlineKeyboardButton(
+                                                    text=val,
+                                                    callback_data=self.edit_work_time_callback.new(
+                                                        id=val,
+                                                        editing="y"
+                                                    ))
+
         self.settings_callback = CallbackData("settings", "status")
         self.get_settings_utc_btn_callback = lambda s: InlineKeyboardButton(
                                                             text="Set UTC (UTC%s)" % s,
@@ -50,6 +68,11 @@ class CallbackItems:
                 text="Delete",
                 callback_data=self.add_delete_work_period.new(
                     status="Delete"
+                )),
+            "Edit": InlineKeyboardButton(
+                text="Edit",
+                callback_data=self.add_delete_work_period.new(
+                    status="Edit"
                 ))
         }
 

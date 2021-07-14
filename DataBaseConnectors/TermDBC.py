@@ -45,3 +45,7 @@ class TermDBC(DataBaseConnector):
 
     def delete_row_by_id(self, id: int):
         self.cursor.execute(f"DELETE FROM {self.tabel_name} WHERE term_id={id}")
+    
+
+    def edit_row_by_id(self, id: int, edit_val: str):
+        self.cursor.execute(f"UPDATE {self.tabel_name} SET end_time=end_time + interval '{edit_val}' WHERE term_id={id}")

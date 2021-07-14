@@ -199,6 +199,30 @@ class Work:
         return "Start working time: {}\nTime delta: {}".format(self.start_time_working.strftime(self.timeformat), delta)
     
 
+    def get_edit_interval(self, u_id: int, n: int) -> str:
+        self.last_online_time = datetime.datetime.now() - datetime.timedelta(hours=3)
+        rows = self.term_db.get_all_periods_rows(u_id, "this_week", self.status)
+
+        delta = str(self.get_difference_betwen(rows[n - 1][1], rows[n - 1][2])).split(".")[0]
+        line = self.get_day_time_formated(rows[n - 1][1], rows[n - 1][2]) + " => " + delta
+
+        return line
+    
+
+    def edit_interval(self, u_id: int, n: int, edit_val: str):
+        self.last_online_time = datetime.datetime.now() - datetime.timedelta(hours=3)
+        rows = self.term_db.get_all_periods_rows(u_id, "this_week", self.status)
+        
+        self.term_db.edit_row_by_id(rows[n - 1][-1], edit_val)
+
+        rows = self.term_db.get_all_periods_rows(u_id, "this_week", self.status)
+        
+        delta = str(self.get_difference_betwen(rows[n - 1][1], rows[n - 1][2])).split(".")[0]
+        line = self.get_day_time_formated(rows[n - 1][1], rows[n - 1][2]) + " => " + delta
+
+        return line
+
+
     def delete_interval(self, u_id: int, n: int) -> str:
         self.last_online_time = datetime.datetime.now() - datetime.timedelta(hours=3)
         rows = self.term_db.get_all_periods_rows(u_id, "this_week", self.status)

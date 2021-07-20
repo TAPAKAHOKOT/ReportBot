@@ -73,7 +73,8 @@ class Work:
         return self.tag
 
 
-    def set_tag(self, tag: str) -> None:
+    def set_tag(self, tag: str):
+        cur_time = datetime.datetime.now() - datetime.timedelta(hours=3)
         tag_lim = 9
         all_tags = self.tag_db.get_tags(self.user_id)
         self.tag = tag
@@ -85,7 +86,9 @@ class Work:
                 self.tag_db.delete_last_tag(self.user_id)
                 tags_num = self.tag_db.get_count(self.user_id)
 
-            self.tag_db.add_row(self.user_id, tag)
+            self.tag_db.add_row(self.user_id, tag, cur_time)
+        else:
+            self.tag_db.update_time(self.user_id, tag, cur_time)
     
 
     def set_status(self, status: str) -> None:

@@ -1,4 +1,5 @@
 from DataBaseConnectors.DataBaseConnector import DataBaseConnector
+from datetime import datetime
 import logging
 
 class TagDBC(DataBaseConnector):
@@ -6,7 +7,7 @@ class TagDBC(DataBaseConnector):
         super().__init__(set_dict)
 
         self.tabel_name = "tag"
-        self.add_row_query = """INSERT INTO tag(customer_id, name_tag) VALUES (%s, %s)"""
+        self.add_row_query = """INSERT INTO tag(customer_id, name_tag, update_time) VALUES (%s, %s, %s)"""
         create_table_query = """CREATE TABLE IF NOT EXISTS tag(
                                 tag_id SERIAL PRIMARY KEY,
                                 name_tag VARCHAR(128),
@@ -16,7 +17,7 @@ class TagDBC(DataBaseConnector):
     
 
     def get_tags(self, customer_id: int) -> list:
-        self.cursor.execute(f"SELECT name_tag, customer_id FROM {self.tabel_name} WHERE customer_id={customer_id} ORDER BY tag_id DESC")
+        self.cursor.execute(f"SELECT name_tag, customer_id FROM {self.tabel_name} WHERE customer_id={customer_id} ORDER BY update_time DESC NULLS LAST, tag_id DESC")
         return [el[0] for el in self.cursor.fetchall()]
     
 
@@ -36,3 +37,7 @@ class TagDBC(DataBaseConnector):
         query = f"SELECT COUNT(tag_id) FROM {self.tabel_name} WHERE customer_id={customer_id}"
         self.cursor.execute(query)
         return self.cursor.fetchall()[0][0]
+    
+
+    def update_time(self, customer_id: int, name_tag: str, u_time: datetime):
+        self.cursor.execute(f"UPDATE {self.tabel_name} SET update_time='{u_time}' WHERE name_tag='{name_tag}' AND customer_id={customer_id}")

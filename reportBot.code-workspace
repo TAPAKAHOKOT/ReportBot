@@ -9,6 +9,10 @@
 			"path": "./DataBaseConnectors"
 		},
 		{
+			"name": "Keywords",
+			"path": "./Keywords"
+		},
+		{
 			"name": "Bot",
 			"path": "./"
 		}
@@ -25,6 +29,7 @@
 			"vk_bot": true,
 			"logs": true,
 			"DataBaseConnectors": true,
+			"Keywords": true,
 			"data": true
 		},
 		"sqltools.connections": [

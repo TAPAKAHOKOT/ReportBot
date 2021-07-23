@@ -106,14 +106,6 @@ async def cmd_start(message: types.Message):
     logging.info("End main message handler by (%s <=> %s)" % (message.from_user["id"], message.from_user["username"]))
 
 
-# <<<<<<<<<<<<<<<<<< stat >>>>>>>>>>>>>>>>>>
-@settings.dp.message_handler(Text(equals='stat', ignore_case=True))
-async def get_stat(message: types.Message):
-    work: Work = get_work_time(settings, message.from_user["id"], message.from_user["username"])[0]
-    if settings.my_id == message.from_user["id"]:
-        await message.answer("There are {} works".format(len(settings.work_time_dict.keys())))
-
-
 # <<<<<<<<<<<<<<<<<< Work reports >>>>>>>>>>>>>>>>>>
 @settings.dp.message_handler(Text(equals='work reports', ignore_case=True))
 async def cmd_start(message: types.Message):

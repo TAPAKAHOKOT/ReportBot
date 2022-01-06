@@ -1,6 +1,5 @@
-import psycopg2
-from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from psycopg2 import connect, Error
 import logging
 
 class DataBaseConnector:
@@ -14,11 +13,13 @@ class DataBaseConnector:
         self.port = set_dict["port"]
         self.db_name = set_dict["name"]
 
-        self.connection = psycopg2.connect(user=self.user,
-                                        password=self.password,
-                                        host=self.host,
-                                        port=self.port,
-                                        database=self.db_name)
+        self.connection = connect(
+            user=self.user,
+            password=self.password,
+            host=self.host,
+            port=self.port,
+            database=self.db_name
+        )
         self.connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         self.cursor = self.connection.cursor()
 
@@ -26,10 +27,12 @@ class DataBaseConnector:
     def create_db(self, name):
         logging.info("Start creating database %s" % name)
         try:
-            connection = psycopg2.connect(user=self.user,
-                                        password=self.password,
-                                        host=self.host,
-                                        port=self.port)
+            connection = connect(
+                user=self.user,
+                password=self.password,
+                host=self.host,
+                port=self.port
+            )
             connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
             cursor = connection.cursor()
@@ -46,11 +49,13 @@ class DataBaseConnector:
     def create_table(self, name, query):
         logging.info("Start creating table %s" % name)
         try:
-            connection = psycopg2.connect(user=self.user,
-                                        password=self.password,
-                                        host=self.host,
-                                        port=self.port,
-                                        database=self.db_name)
+            connection = connect(
+                user=self.user,
+                password=self.password,
+                host=self.host,
+                port=self.port,
+                database=self.db_name
+            )
             connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
             cursor = connection.cursor()

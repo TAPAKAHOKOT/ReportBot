@@ -1,5 +1,6 @@
 from aiogram.types.inline_keyboard import InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
+
 class CallbackItems:
     def __init__(self):
         self.editing_callback = CallbackData("edit_on", "edit_val", "editing")

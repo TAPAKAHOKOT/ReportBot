@@ -1,5 +1,4 @@
 from DataBaseConnectors.DataBaseConnector import DataBaseConnector
-import logging
 
 class BackupDBC(DataBaseConnector):
     def __init__(self, set_dict: dict):

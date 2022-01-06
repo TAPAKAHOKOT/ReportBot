@@ -1,6 +1,5 @@
 from DataBaseConnectors.DataBaseConnector import DataBaseConnector
 from datetime import datetime
-import logging
 
 class TagDBC(DataBaseConnector):
     def __init__(self, set_dict: dict):

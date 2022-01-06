@@ -1,19 +1,22 @@
-from typing import Text
-from Settings import Settings 
-
-from aiogram.types.inline_keyboard import InlineKeyboardMarkup
-import aioschedule as schedule
-import asyncio
-from work import Work
-import datetime
-
-from DataBaseConnectors.CustomerDBC import CustomerDBC
-
 import logging
 
-settings = Settings()
+from Settings import Settings
+from Work import Work
+from DataBaseConnectors.CustomerDBC import CustomerDBC
 
-def get_work_time(settigns: Settings, u_id, u_un) -> Work:
+from asyncio import sleep as asleep
+from aiogram.types.inline_keyboard import InlineKeyboardMarkup
+from aioschedule import (
+    every as schedule_every, 
+    run_pending as schedule_run_pending
+)
+from datetime import (
+    datetime,
+    timedelta
+)
+
+
+def get_work_time(settings: Settings, u_id, u_un) -> Work:
     logging.info("Start get_work_time(...)")
 
     cust_db = CustomerDBC(settings.db_data)
@@ -31,7 +34,7 @@ def get_work_time(settigns: Settings, u_id, u_un) -> Work:
     return [settings.work_time_dict[u_id], customer]
 
 
-def create_work_time(settings: Settings, u_id, st_time: datetime.datetime):
+def create_work_time(settings: Settings, u_id, st_time: datetime):
     logging.info("Start create_work_time(...)")
     w = Work(settings, u_id)
     w.set_start_working_time(st_time)
@@ -39,8 +42,7 @@ def create_work_time(settings: Settings, u_id, st_time: datetime.datetime):
     logging.info("End create_work_time(...)")
 
 
-async def send():
-    global settings
+async def send(settings: Settings):
     callback = settings.callback
 
     reminder = InlineKeyboardMarkup(row_width=1)
@@ -74,29 +76,28 @@ async def send():
         logging.info("End mom_memery_on()")
 
     
-    async def check_work_last_online():
-        global settings
+    async def check_work_last_online(settings: Settings):
         for key in list(settings.work_time_dict):
             val = settings.work_time_dict[key]
-            t = datetime.datetime.now() - val.last_online_time
-            if t > datetime.timedelta(days=5):
+            t = datetime.now() - val.last_online_time
+            if t > timedelta(days=5):
                 settings.work_time_dict[key].close_connection()
                 del settings.work_time_dict[key]
 
     logging.info("Start initing all schedules")
 
-    schedule.every().day.at("22:00").do(knopa_memery_on)
+    schedule_every().day.at("22:00").do(knopa_memery_on)
 
-    schedule.every().day.at("8:00").do(mom_memery_on)
-    schedule.every().day.at("20:00").do(mom_memery_on)
+    schedule_every().day.at("8:00").do(mom_memery_on)
+    schedule_every().day.at("20:00").do(mom_memery_on)
 
-    schedule.every().day.at("12:00").do(push_ups_memery_on)
+    schedule_every().day.at("12:00").do(push_ups_memery_on)
 
-    schedule.every().hour.do(check_work_last_online)
+    schedule_every().hour.do(check_work_last_online, settings)
 
     logging.info("End initing all schedules")
 
     logging.info("Start running schedules cycle (while True)")
     while True:
-        await schedule.run_pending()
-        await asyncio.sleep(60)
+        await schedule_run_pending()
+        await asleep(60)

@@ -1,22 +1,32 @@
 import time
-from datetime import datetime
+import logging
 
-from aiogram.types import message
+from datetime import datetime, timedelta
 from Keyboard import Keyboard
 
-from functions_tg import *
+from Work import Work
+from Settings import Settings
 from DataBaseConnectors.BackupDBC import BackupDBC
 from DataBaseConnectors.CustomerDBC import CustomerDBC
+from functions_tg import (
+    get_work_time,
+    create_work_time,
+    send
+)
 
 from aiogram.types.inline_keyboard import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram import executor, types
 from aiogram.dispatcher.filters import Text
 
+from asyncio import create_task
+
+settings = Settings()
+
 keyboard = Keyboard(settings)
 callback = settings.callback
 
 async def on_startup(x):
-    asyncio.create_task(send())
+    create_task(send(settings))
 
 async def on_shutdown(x):
     for key in list(settings.work_time_dict):
@@ -421,7 +431,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 tr_val = lambda v: str(v) if len(str(v)) == 2 else "0" + str(v)
 @settings.dp.callback_query_handler(callback.add_delete_work_period.filter(status="Add"))
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
-    today = datetime.datetime.today()
+    today = datetime.today()
     days = InlineKeyboardMarkup(row_width=5)
     for k in range(1, today.day + 1):
         days.insert(callback.days_btn_callback[k])
@@ -436,7 +446,7 @@ async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
 async def callback_work_report(call: types.CallbackQuery, callback_data: dict):
     work: Work = get_work_time(settings, call.from_user["id"], call.from_user["username"])[0]
 
-    today = datetime.datetime.today()
+    today = datetime.today()
     work.date_callback_constructor = "{2}.{1}.{0}".format(today.year, tr_val(today.month), tr_val(callback_data.get("val")))
     
     hours = InlineKeyboardMarkup(row_width=6)
@@ -487,7 +497,7 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
         work.callback_start_time_working = work.get_one_time_from(work.time_callback_constructor.replace(":", ".") + ".00")
         work.start_constructor_done = True
 
-        today = datetime.datetime.today()
+        today = datetime.today()
         hours = InlineKeyboardMarkup(row_width=6)
 
         for k in range(24):
@@ -509,8 +519,8 @@ async def save_min_date_callback(call: types.CallbackQuery, callback_data: dict)
             )
         h, m, s = map(int, str(work.customer_db.get_time_zone(work.user_id)).split(":"))
         work.save_spec_data(call.from_user["id"], 
-                    datetime.datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) - datetime.timedelta(hours=h, minutes=m),
-                    datetime.datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta - datetime.timedelta(hours=h, minutes=m))
+                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) - timedelta(hours=h, minutes=m),
+                    datetime.combine(work.callback_start_date_working.date(), work.callback_start_time_working.time()) + delta - timedelta(hours=h, minutes=m))
 
         delete_callback = InlineKeyboardMarkup(row_width=1)
         delete_callback.insert(callback.date_back_callback)
@@ -562,7 +572,7 @@ async def get_stat(message: types.Message):
 start_time = time.time()
 if __name__ == "__main__":
     db = BackupDBC(settings.db_data)
-    # ! Need to convert resume_work[1] to datetime.datetime
+    # ! Need to convert resume_work[1] to datetime
     resume_work: Work = db.get_all_rows()  
 
     for row in resume_work:

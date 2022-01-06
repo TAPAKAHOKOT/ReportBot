@@ -1,35 +1,40 @@
 import logging
 from aiogram import Bot, Dispatcher
 from CallbackItems import CallbackItems
-import json
-import os
+from json import load as json_load
 from dotenv import load_dotenv
+from os import (
+    getenv,
+    mkdir
+)
 
 class Settings:
     def __init__(self):
         load_dotenv()
 
         # ! <<< TESTING >>>
-        TESTING = os.getenv('TESTING') == 'TRUE'
+        TESTING = getenv('TESTING') == 'TRUE'
         # ! <<< TESTING >>>
 
         # database connectiong settings
-        self.db_user = os.getenv('DB_USER')
-        self.db_password = os.getenv('DB_PASSWORD')
-        self.db_host = os.getenv('DB_HOST')
-        self.db_port = os.getenv('DB_PORT')
-        self.db_name = os.getenv('DB_NAME')
-        self.db_data = {"usr": self.db_user,
-                        "pwd": self.db_password,
-                        "host": self.db_host,
-                        "port": self.db_port,
-                        "name": self.db_name}
+        self.db_user = getenv('DB_USER')
+        self.db_password = getenv('DB_PASSWORD')
+        self.db_host = getenv('DB_HOST')
+        self.db_port = getenv('DB_PORT')
+        self.db_name = getenv('DB_NAME')
+        self.db_data = {
+            "usr": self.db_user,
+            "pwd": self.db_password,
+            "host": self.db_host,
+            "port": self.db_port,
+            "name": self.db_name
+        }
 
         # Logging settings
         # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         try:
-            os.mkdir("logs")
-        except:
+            mkdir("logs")
+        except FileExistsError:
             pass
 
         file_log = logging.FileHandler('logs/Log.log', mode='w')
@@ -43,10 +48,10 @@ class Settings:
         logging.info("Init settigs in the %s mode" % TESTING)
 
         self.b_vers = "3.0.6"
-        print("Bot version " + str(self.b_vers))
+        logging.info("Bot version " + str(self.b_vers))
 
         with open('botsAPi.txt') as json_file:
-            data = json.load(json_file)
+            data = json_load(json_file)
 
         self.my_id = 472914986
         self.mom_id = 966892190

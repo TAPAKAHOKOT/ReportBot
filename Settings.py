@@ -10,7 +10,7 @@ class Settings:
         load_dotenv()
 
         # ! <<< TESTING >>>
-        TESTING = os.getenv('TESTING')
+        TESTING = os.getenv('TESTING') == 'TRUE'
         # ! <<< TESTING >>>
 
         # database connectiong settings

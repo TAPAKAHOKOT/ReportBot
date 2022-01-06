@@ -1,21 +1,24 @@
 import logging
-from binance.client import Client
 from aiogram import Bot, Dispatcher
 from CallbackItems import CallbackItems
 import json
+import os
+from dotenv import load_dotenv
 
 class Settings:
-    def __init__(self, testing: bool):
+    def __init__(self):
+        load_dotenv()
+
         # ! <<< TESTING >>>
-        TESTING = testing
+        TESTING = os.getenv('TESTING')
         # ! <<< TESTING >>>
 
         # database connectiong settings
-        self.db_user = "postgres"
-        self.db_password = "4608"
-        self.db_host="127.0.0.1"
-        self.db_port="5432"
-        self.db_name = "report_bot"
+        self.db_user = os.getenv('DB_USER')
+        self.db_password = os.getenv('DB_PASSWORD')
+        self.db_host = os.getenv('DB_HOST')
+        self.db_port = os.getenv('DB_PORT')
+        self.db_name = os.getenv('DB_NAME')
         self.db_data = {"usr": self.db_user,
                         "pwd": self.db_password,
                         "host": self.db_host,
@@ -24,6 +27,11 @@ class Settings:
 
         # Logging settings
         # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        try:
+            os.mkdir("logs")
+        except:
+            pass
+
         file_log = logging.FileHandler('logs/Log.log', mode='w')
         console_out = logging.StreamHandler()
         logging.basicConfig(level=logging.INFO, 
@@ -39,11 +47,6 @@ class Settings:
 
         with open('botsAPi.txt') as json_file:
             data = json.load(json_file)
-
-        self.api_key = data["b_api_key"]
-        self.api_secret = data["b_api_secret"]
-
-        self.client = Client(self.api_key, self.api_secret)
 
         self.my_id = 472914986
         self.mom_id = 966892190

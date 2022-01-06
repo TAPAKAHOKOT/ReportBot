@@ -4,20 +4,14 @@ from Settings import Settings
 from aiogram.types.inline_keyboard import InlineKeyboardMarkup
 import aioschedule as schedule
 import asyncio
-from Work import Work
+from work import Work
 import datetime
 
 from DataBaseConnectors.CustomerDBC import CustomerDBC
 
 import logging
-import sys
 
-TESTING = sys.argv[1] if len(sys.argv) > 1 else "TEST"
-
-TESTING = not (TESTING == "REL")
-
-settings = Settings(TESTING)
-
+settings = Settings()
 
 def get_work_time(settigns: Settings, u_id, u_un) -> Work:
     logging.info("Start get_work_time(...)")

@@ -86,12 +86,12 @@ async def send(settings: Settings):
 
     logging.info("Start initing all schedules")
 
-    schedule_every().day.at("22:00").do(knopa_memery_on)
+    # schedule_every().day.at("22:00").do(knopa_memery_on)
 
-    schedule_every().day.at("8:00").do(mom_memery_on)
-    schedule_every().day.at("20:00").do(mom_memery_on)
+    # schedule_every().day.at("8:00").do(mom_memery_on)
+    # schedule_every().day.at("20:00").do(mom_memery_on)
 
-    schedule_every().day.at("12:00").do(push_ups_memery_on)
+    # schedule_every().day.at("12:00").do(push_ups_memery_on)
 
     schedule_every().hour.do(check_work_last_online, settings)
 

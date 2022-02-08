@@ -11,7 +11,7 @@ Language: [![Python 3.8.5 Badge](https://img.shields.io/badge/Python-3.8.5-blue)
 <a name="table_of_contents"></a>
 # ReportBot
 
-### [Test the bot!](https://t.me/clear_reports_sender_bot)
+### - [Test the bot!](https://t.me/clear_reports_sender_bot)
 
 ## With this bot you can track your worked hours. 
 
